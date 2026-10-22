@@ -27,8 +27,11 @@
 `署名要求：引用须注明 Reichenbach/University of Stuttgart + DOI + CC BY 4.0。`
 
 数据集标题按 KB7 出处与许可表首行（`docs/kb/KB7-dataset-da-rus-cat.md:10`）登记。
-**未核验**：KB7:10 与 `data/raw/Export10_244531.csv.source.txt:6` 对 DARUS-3600 标题给出**两条不同的逐字串**，
-本仓库无第三方工件可裁定哪一条是发布方原文；两处均按各自出处照抄，不得合并成一句。
+**已裁决（2026-10-22）**：仓内 API 留档 `data/raw/darus3600.json`（latestVersion
+metadataBlocks typeName=title）与 KB7:10 **逐字一致**——发布方原文即 KB7 所记；
+`Export10_244531.csv.source.txt:6` 旧记短标题系转述有误，已当日纠偏（见该侧车
+第 6 行纠偏注与 notes 脱敏记录），两条字串不再并存。同日完成 KB2 §六脱敏
+（发布门断言三 token 归零，执行记录 `data/redact_pii_20261022.py` + 侧车 md5 前后对照）。
 
 ### 2. ScienceDB（中国科学院合肥物质科学研究院 等离子体研究所）—— CC BY 4.0，须独立署名
 
