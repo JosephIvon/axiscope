@@ -71,11 +71,14 @@ metadataBlocks typeName=title）与 KB7:10 **逐字一致**——发布方原文
 CWRU / Paderborn CM / Aalto / MFPT 的正式标识在 `docs/kb/KB7-dataset-da-rus-cat.md:434-437` 登记为 `[待核]`，
 并按 A-67（`:427-428`）规定：「本文不编造 DOI、论文标题、文件名、采样率或任何数值」。本节同样不补。
 
-### 6. 脱敏门禁（发布前必做，署名不得清除）
+### 6. 脱敏门禁（发布前必做 → **已执行 2026-10-22**）
 
-脱敏字段级规则与断言以 `docs/kb/KB2-waveform-formats.md` §六（`:737`–`:768`）为准，其中 `:761` 逐字：
+脱敏字段级规则与断言以 `docs/kb/KB2-waveform-formats.md` §六（`:780`–`:818`）为准，其中 `:804` 逐字：
 `脱敏**只清除主机路径 / ADS NetID / 绝对墙钟时刻**，绝不清除署名与 DOI，也不改动数值。`
-本仓库当前**尚未完成**该项，命中清单见各 KB2 样本卡的「发布前必做」行（`docs/kb/KB2-waveform-formats.md:527`、`:561`）。
+命中清单见各 KB2 样本卡的「发布前必做」行（`docs/kb/KB2-waveform-formats.md:527`、`:561`）。
+**已执行（2026-10-22，`adf4c4b`）**：一次性执行记录 `data/redact_pii_20261022.py`；
+`probe_pii.py` 复跑三个标识值 token（`Versuchsstand` / `141.58.` / `C:\`）归零；
+两个侧车登记 md5 前后对照（Export10 `8cba13df…`→`178a6308…`、DD_head `995d0d91…`→`3f80439d…`）。
 
 ### 7. 复用设计标注（非本项目原创的部分）
 
