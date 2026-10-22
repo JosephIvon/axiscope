@@ -1,0 +1,11 @@
+# 数据集：均有 DOI 可随时重下（A-131 口径——代码与文档入库，原始数据不入库）
+data/raw/
+data/incoming/
+data/staging/
+
+# 构建产物与可再生缓存
+build/
+__pycache__/
+*.pyc
+.pytest_cache/
+.tmp_selftest/

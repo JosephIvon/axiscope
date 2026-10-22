@@ -1,0 +1,173 @@
+[
+ {
+  "file": "2563_LDD_Transfer_function_Force_controlled.csv",
+  "path": "data/incoming/2563_LDD_Transfer_function_Force_controlled.csv",
+  "bytes": 64274,
+  "sha256": "90652a05b2034a054488e8e89dafa514569c3b7bfd5fe22449a3fe03532a4111",
+  "kind": "waveform_candidate",
+  "verdict": "reject",
+  "redlines_fired": [
+   "有效时长<0.5s (实测 0.1279s)",
+   "cur_q/vel_fb/fe 未识别（2/2 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）"
+  ],
+  "notes": [],
+  "format": {
+   "layout": "plain_matrix",
+   "encoding": "utf-8",
+   "delimiter": "semicolon",
+   "header_rows": 1,
+   "line_ending": "CRLF",
+   "bom": false,
+   "decimal_comma": true,
+   "looks_like_html": false,
+   "size_truncated_at_read": false
+  },
+  "n_file_lines": 2048,
+  "n_rows_shape_mismatch": 0,
+  "n_blank_rows_skipped": 1,
+  "n_total_columns": 3,
+  "n_data_rows": 2047,
+  "bytes_per_row": 31.4,
+  "header_meta": {
+   "X (ms)": "C0:Lineardirektantrieb.r77\tC1:Lineardirektantrieb.r78[0]"
+  },
+  "timebase": {
+   "col": 0,
+   "name": "X (ms)",
+   "time_col_source": "monotonic_heuristic",
+   "unit_inferred": "ms",
+   "n": 2047,
+   "t0": 0.0,
+   "t1": 127.875,
+   "strictly_monotonic": true,
+   "monotonic": true,
+   "any_duplicate": false,
+   "dt_median": 0.0625,
+   "dt_mean": 0.0625,
+   "dt_min": 0.0625,
+   "dt_max": 0.0625,
+   "dt_std": 0.0,
+   "n_distinct_dt": 1,
+   "dt_jitter_ratio": 0.0,
+   "duration_units": 127.875,
+   "duration_hypotheses_s": {
+    "us": 0.000127875,
+    "ms": 0.12787500000000002,
+    "s": 127.875
+   },
+   "fs_hypotheses_hz": {
+    "us": 16000000.0,
+    "ms": 16000.0,
+    "s": 16.0
+   },
+   "unit_source": "column_name:ms",
+   "unit_ambiguous": false,
+   "duration_s": 0.127875,
+   "fs_hz": 16000.0
+  },
+  "channels": [
+   {
+    "raw_name": "C0:Lineardirektantrieb.r77",
+    "col": 1,
+    "unit": null,
+    "quantity": null,
+    "direction": null,
+    "is_diff": false,
+    "axis_tag": "lineardirektantrieb",
+    "canonical": null,
+    "stats": {
+     "min": -19.999996,
+     "max": 19.999996,
+     "mean": 0.00977,
+     "std": 19.999994,
+     "distinct": 2,
+     "rms": 19.999994,
+     "crest_factor": 1.000489,
+     "nan_ratio": 0.0,
+     "span": 39.999992,
+     "is_enumerated": false,
+     "is_dynamic": true,
+     "dyn_snr": Infinity,
+     "nonzero_motion_fraction": 0.5,
+     "n_move_segments": 128,
+     "move_time_s": 0.031938,
+     "max_segment_len": 10,
+     "n_direction_changes": 511,
+     "is_constant": false,
+     "near_linear_ramp": false,
+     "sine_like": false
+    }
+   },
+   {
+    "raw_name": "C1:Lineardirektantrieb.r78[0]",
+    "col": 2,
+    "unit": null,
+    "quantity": null,
+    "direction": null,
+    "is_diff": false,
+    "axis_tag": "lineardirektantrieb",
+    "canonical": null,
+    "stats": {
+     "min": -20.397829,
+     "max": 21.063169,
+     "mean": 0.009769,
+     "std": 8.101263,
+     "distinct": 2047,
+     "rms": 8.101263,
+     "crest_factor": 2.59878,
+     "nan_ratio": 0.0,
+     "span": 41.460998,
+     "is_enumerated": false,
+     "is_dynamic": true,
+     "dyn_snr": 12.155957,
+     "nonzero_motion_fraction": 0.719941,
+     "n_move_segments": 227,
+     "move_time_s": 0.068937,
+     "max_segment_len": 20,
+     "n_direction_changes": 220,
+     "is_constant": false,
+     "near_linear_ramp": false,
+     "sine_like": false
+    }
+   }
+  ],
+  "fe_identity": {
+   "status": "not_computable",
+   "needs": "同一 axis_tag 下同时存在 pos_cmd / pos_fb / fe",
+   "available_roles": []
+  },
+  "measured": {
+   "n_filtered": 2047,
+   "duration_s": 0.127875,
+   "dt_jitter_ratio": 0.0,
+   "nan_ratio_worst_channel": 0.0,
+   "n_move_segments_max": 227,
+   "present_canonical": [],
+   "missing_critical": [
+    "cur_q",
+    "fe",
+    "vel_fb"
+   ]
+  },
+  "soft_degradations": [],
+  "bytes_per_cell": 10.5,
+  "leaks": [],
+  "sidecar_claims": [
+   {
+    "claim": "source sidecar",
+    "status": "ABSENT",
+    "note": "无 .source.txt ⟹ external_reference 与 verified_against 无从登记，该样本不可进 KB2 接入卡"
+   }
+  ],
+  "claims_ledger": {
+   "verified": 0,
+   "total": 0,
+   "excluded_same_source": 0,
+   "contradicted": 0,
+   "unverifiable": 0,
+   "not_registered": 0,
+   "missing_fields": [],
+   "sidecar_absent": true
+  }
+ }
+]

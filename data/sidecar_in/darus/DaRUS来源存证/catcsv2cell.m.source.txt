@@ -1,0 +1,14 @@
+url:                 https://darus.uni-stuttgart.de/api/access/datafile/251089
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（DaRUS / Dataverse 公开 API 直下）
+publisher:           Reichenbach, Thomas（DaRUS，University of Stuttgart / ISW）
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.18419/DARUS-3600
+original_filename:   catcsv2cell.m
+format_family:       其他（MATLAB 函数，非波形）
+device_or_software:  MATLAB；配套 Cable Actuator Testbed（TwinCAT 3 采集）
+sampling_rate:       N/A（脚本，内含 SampleTime 参数 0.001 s）
+rows:                N/A（脚本，1845 B）
+channels:            N/A
+variable_semantics:  函数说明原文："converts a TwinCAT-Scope generated CSV into a cell with user-defined variable names"；"Data starts always with time vector"。读取后用 Exp.Raw.<VarNames{1}> = A(:,1)*SampleTime 得到时间列，其余通道取 A(:,iD*2-2)，这解释了 TwinCAT CSV 每通道占两个字段的排布方式。
+notes:               MD5 = 1238c9f3c930f977b103fc20624faf9e，size = 1845 B，与 DaRUS API 记录一致。非波形数据；是 TwinCAT CSV 列结构（每通道 索引+值）的权威解释来源。

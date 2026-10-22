@@ -1,0 +1,78 @@
+数据文件批量校验报告（初筛：时基 / 通道 / 运动特征）
+判据出处：KB2 §5.1 六条硬拒 + C1 数据质量红线；抖动口径同 C2 quality.dt_jitter_ratio
+自述一律不采信：.source.txt 声明值逐条 vs 实测（A-88/A-89）
+============================================================================================================
+
+◆ 示波器波形_泰克Tektronix_TDS2012C导出样例.csv   [waveform_candidate]   verdict=reject_unparsable
+  大小=79,086 B  sha256=8964fceb717e9e06…
+  格式：layout=unparsed 分隔=comma 编码=utf-8 表头行=None 换行=LF BOM=False
+  行数：数据 2501 行，每行 31.6 B，每单元格 None B
+  时基：时基不可用
+  通道：0 列，C1 规范名 → 
+  运动：最多运动段=0 段，非零运动占比峰值=0.000，跟随误差恒等式=None
+  红线：命中 未找到可解析的数据块（表头/列数无法定位）
+
+◆ 示波器波形_普源Rigol_DS系列导出样例.csv   [waveform_candidate]   verdict=reject_unparsable
+  大小=160,045 B  sha256=76d534fcae7310d6…
+  格式：layout=unparsed 分隔=comma 编码=utf-8 表头行=None 换行=LF BOM=False
+  行数：数据 10002 行，每行 16.0 B，每单元格 None B
+  时基：时基不可用
+  通道：0 列，C1 规范名 → 
+  运动：最多运动段=0 段，非零运动占比峰值=0.000，跟随误差恒等式=None
+  红线：命中 未找到可解析的数据块（表头/列数无法定位）
+
+◆ 示波器波形_SEFRAM_5062DS导出样例.csv   [waveform_candidate]   verdict=reject_unparsable
+  大小=62,772 B  sha256=e2cfc65436b55f1a…
+  格式：layout=unparsed 分隔=comma 编码=utf-8 表头行=None 换行=CRLF BOM=False
+  行数：数据 12515 行，每行 5.0 B，每单元格 None B
+  时基：时基不可用
+  通道：0 列，C1 规范名 → 
+  运动：最多运动段=0 段，非零运动占比峰值=0.000，跟随误差恒等式=None
+  红线：命中 未找到可解析的数据块（表头/列数无法定位）
+
+◆ 参数分析仪波形_PMU_1t1r_CVSV导出样例.csv   [waveform_candidate]   verdict=reject
+  大小=1,848,223 B  sha256=6ac3ec54d63231f9…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8-sig(BOM) 表头行=1 换行=CRLF BOM=True
+  行数：数据 22260 行，每行 83.0 B，每单元格 7.5 B
+  时基：fs实测=单位未定 抖动=0.000 单调=Y
+        时间列单位未定（不猜，红线不开）：dt中位=0 → us 假设时长=1.11295e-10s / ms 假设=1.11295e-07s / s 假设=0.000111295s
+  通道：10 列，C1 规范名 → PMU_SegArb_ExampleB→cur_other[?](0), VMeasCh1→未映射[ch1](2.23), IMeasCh1→未映射[ch1](0.00225), VMeasCh2→未映射[ch2](2.08), IMeasCh2→未映射[ch2](0.00225), TimeOutput→未映射[?](0), StatusCh1→未映射[ch1](0), StatusCh2→未映射[ch2](0.514), G→未映射[?](1.48e+07), R→未映射[?](0)
+        未映射（不猜语义，KB2 §三）：['VMeasCh1', 'IMeasCh1', 'VMeasCh2', 'IMeasCh2', 'TimeOutput', 'StatusCh1', 'StatusCh2', 'G']
+        整数且值域≤8（疑为编号/枚举列，非波形量）：['PMU_SegArb_ExampleB']
+  运动：最多运动段=2120 段，非零运动占比峰值=0.896，跟随误差恒等式=not_computable
+  红线：命中 nan_ratio>0.05 (最差通道 1.000) | cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对[source sidecar] ABSENT — 无 .source.txt ⟹ external_reference 与 verified_against 无从登记，该样本不可进 KB2 接入卡
+
+◆ C1_periodic.csv   [waveform_candidate]   verdict=reject
+  大小=29,028,739 B  sha256=b2bf814d183c0e14…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8 表头行=1 换行=LF BOM=False
+  行数：数据 200000 行，每行 145.1 B，每单元格 13.2 B
+  时基：fs实测=单位未定 抖动=0.000 单调=Y
+        时间列单位未定（不猜，红线不开）：dt中位=0.002 → us 假设时长=0.000399998s / ms 假设=0.399998s / s 假设=399.998s，fs 相应为 5e+08Hz / 5e+05Hz / 500Hz
+  通道：10 列，C1 规范名 → tout→未映射[?](0.599), q1→未映射[?](0.749), q2→未映射[?](0.3), j1_qd→未映射[j1](0.45), j2_qd→未映射[qd](0.599), theta1→未映射[?](0.749), theta2→未映射[?](0.303), j1_eq→未映射[j1](0.303), j2_eq→未映射[j2](0.404), j1_etheta_pos→pos_fb[j1](0.354)
+        未映射（不猜语义，KB2 §三）：['tout', 'q1', 'q2', 'j1_qd', 'j2_qd', 'theta1', 'theta2', 'j1_eq']
+  运动：最多运动段=125 段，非零运动占比峰值=0.865，跟随误差恒等式=not_computable
+  红线：命中 cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对[source sidecar] ABSENT — 无 .source.txt ⟹ external_reference 与 verified_against 无从登记，该样本不可进 KB2 接入卡
+
+◆ C1_p2p.csv   [waveform_candidate]   verdict=reject
+  大小=14,667,378 B  sha256=ff0b0b9b1eed869a…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8 表头行=1 换行=LF BOM=False
+  行数：数据 100001 行，每行 146.7 B，每单元格 13.3 B
+  时基：fs实测=单位未定 抖动=0.000 单调=Y
+        时间列单位未定（不猜，红线不开）：dt中位=0.002 → us 假设时长=0.0002s / ms 假设=0.2s / s 假设=200s，fs 相应为 5e+08Hz / 5e+05Hz / 500Hz
+  通道：10 列，C1 规范名 → tout→未映射[?](0.6), q1→未映射[?](0.4), q2→未映射[?](0.6), j1_qd→未映射[j1](0.4), j2_qd→未映射[qd](0.6), theta1→未映射[?](0.4), theta2→未映射[?](0.00664), j1_eq→未映射[j1](0.00534), j2_eq→未映射[j2](0.00871), j1_etheta_pos→pos_fb[j1](0.00639)
+        未映射（不猜语义，KB2 §三）：['tout', 'q1', 'q2', 'j1_qd', 'j2_qd', 'theta1', 'theta2', 'j1_eq']
+  运动：最多运动段=1298 段，非零运动占比峰值=0.383，跟随误差恒等式=not_computable
+  红线：命中 cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对[source sidecar] ABSENT — 无 .source.txt ⟹ external_reference 与 verified_against 无从登记，该样本不可进 KB2 接入卡
+
+============================================================================================================
+汇总（执行 N / 跳过 M 分列，A-87 口径）
+  示波器波形_泰克Tektronix_TDS2012C导出样例.csv           waveform_candidate reject_unparsable      红线 1
+  示波器波形_普源Rigol_DS系列导出样例.csv                   waveform_candidate reject_unparsable      红线 1
+  示波器波形_SEFRAM_5062DS导出样例.csv                  waveform_candidate reject_unparsable      红线 1
+  参数分析仪波形_PMU_1t1r_CVSV导出样例.csv                waveform_candidate reject                 红线 2
+  C1_periodic.csv                              waveform_candidate reject                 红线 1
+  C1_p2p.csv                                   waveform_candidate reject                 红线 1
+  执行 6 / 跳过 0（非波形存证不判红线） ⟹ accept 0 / reject 6

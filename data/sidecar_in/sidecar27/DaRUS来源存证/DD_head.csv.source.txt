@@ -1,0 +1,14 @@
+url:                 来源未登记
+retrieved_at:        来源未登记（本地文件未随批次落盘，无法记录抓取时间）
+retrieved_by:        N/A（未能在本工作目录定位到该文件，且无对应下载记录）
+publisher:           来源未登记
+license:             来源未登记
+dataset_doi:         来源未登记（候选：10.18419/DARUS-5171 或 10.18419/DARUS-3600，均未证实）
+original_filename:   未知（本地文件名 DD_head.csv 疑为对某个原始 "Export NN.csv" 表头段的截取重命名）
+format_family:       疑似 TwinCAT Scope View（待确认，未证实）
+device_or_software:  未知
+sampling_rate:       无法实测（缺原始文件）
+rows:                无法实测
+channels:            无法实测
+variable_semantics:  来源未登记
+notes:               ⚠️ 来源未登记。本文件未出现在工作目录中；已对 DaRUS-3600（393 个文件）与 DaRUS-5171（3488 个文件）的完整清单做全量匹配，均不存在名为 *head* 或 DD_head.csv 的文件。按红线规则记"来源未登记"，补齐前不得据此声称任何厂商格式代表性。需补充三项：① 该文件在本地的实际落盘路径；② 对应的来源原始文件（哪个设备、哪次导出）；③ 是全量导出还是仅表头截取。未证实的候选（不作结论）：DARUS-5171 内 CableDirectDrive_Testbed/2024-07-23_LdaFricIdent/Data/{RW,UW}/Export 10.csv，其中 "DD" 或指 DirectDrive。

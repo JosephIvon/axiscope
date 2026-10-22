@@ -1,0 +1,14 @@
+url:                 https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，本地解压所得）
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（从 电机位置与跟随误差_公开数据集_原始data.zip 解压，与包内文件逐字节相同）
+publisher:           Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）
+original_filename:   Controller2Point2Point.mat
+format_family:       其他（MATLAB v5 MAT-file，Platform: PCWIN64）
+device_or_software:  两台机器人关节 × 三种控制器（Controller2，点位轨迹）
+sampling_rate:       500 Hz（tout 步长 = 2.0e-3 s）
+rows:                100001（每个变量 shape = (100001, 1)，float64）
+channels:            11（tout, q1, q2, j1_qd, j2_qd, theta1, theta2, j1_eq, j2_eq, j1_etheta_pos, j2_etheta_pos）
+variable_semantics:  数据集文档未逐列定义变量含义与单位；此处仅登记 .mat 内部字段名。⚠️ 属"来源未登记"项，不得自行推断。
+notes:               MD5 = 63240318fbe1cabefa4cf43963b9a86d，size = 5467352 B。文件头："MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Mon Oct 17 15:09:39 2022"。数据集主存证。

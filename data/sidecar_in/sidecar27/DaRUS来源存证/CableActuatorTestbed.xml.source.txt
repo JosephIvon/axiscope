@@ -1,0 +1,14 @@
+url:                 https://darus.uni-stuttgart.de/api/access/datafile/244544
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（DaRUS / Dataverse 公开 API 直下）
+publisher:           Reichenbach, Thomas（DaRUS，University of Stuttgart / ISW）
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.18419/DARUS-3600
+original_filename:   CableActuatorTestbed.xml
+format_family:       其他（试验台参数配置，非波形）
+device_or_software:  Cable Actuator Testbed（Winch 试验台）；测量设备 ASCOspeed(5500)、LSV(2100-30)；控制器 torque-cable-force(pid)
+sampling_rate:       N/A（配置文档，1817 B）
+rows:                N/A
+channels:            N/A
+variable_semantics:  文档给出试验台与控制参数原文：控制器 kff/kp/ki/kd、time low_pass/off、测量设备 settings（ASCOspeed AVErage=2 / INCFactor=50；LSV NoPulses=50000 / ZeroVelocity=0.15）等，用于解释采集通道的标定。
+notes:               MD5 = 2b4b7864e01cd43fc4f64c53fcbca1da，size = 1817 B，与 DaRUS API 记录一致。同一 MD5 的文件在 DARUS-5171 亦出现（路径 Winch_Testbed/2023-10-12_ViscousFrictionIdent/Settings/CableActuatorTestbed.xml，id=394178），两处为同一文件。非波形数据。

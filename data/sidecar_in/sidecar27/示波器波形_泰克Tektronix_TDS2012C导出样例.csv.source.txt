@@ -1,0 +1,14 @@
+url:                 https://codeload.github.com/admk/Tektronix-Waveform-Converter/tar.gz/refs/heads/master（仓库测试样例 Test Samples/TEK0003.CSV）
+retrieved_at:        2026-10-20
+retrieved_by:        AI 资源检索子智能体（经 codeload.github.com 打包下载后取 Test Samples/TEK0003.CSV）
+publisher:           admk（GitHub 仓库 admk/Tektronix-Waveform-Converter）
+license:             仓库未声明 LICENSE（无许可证文件）；系公开仓库内的示波器导出测试样例，引用请注明来源，商用需谨慎
+dataset_doi:         NONE
+original_filename:   TEK0003.CSV
+format_family:       Tektronix TDS ASCII
+device_or_software:  Tektronix TDS2012C（文件内自报 Model Number = TDS2012C，Serial Number = C011240，Firmware Version = FV:v24.09）
+sampling_rate:       50000000 Hz（50 MHz；Sample Interval = 2.000000e-08 s）
+rows:                2500 数据行（Record Length = 2.500000e+03；文件总行 2500，参数块与数据同行排布）
+channels:            2（Time[第4列] / Voltage[第5列]；参数块占第1-2列，与数据同一行）
+variable_semantics:  取自文件参数块原文：Record Length = 记录长度(点)；Sample Interval = 采样间隔(s)；Trigger Point = 触发点(点)；Source = CH1；Vertical Units = V；Horizontal Units = s；Vertical Scale / Horizontal Scale = 纵向/横向刻度。数据区两列依次为 (Time, Voltage)。
+notes:               MD5 = 55faacd40232eb995b12553c1ce46fea，与台账一致。原文件名 TEK0003.CSV，本地已重命名。文件内含真实仪器序列号 C011240 与固件 FV:v24.09，是该型号面板直接导出的直接证据（非二次加工）。

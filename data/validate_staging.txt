@@ -1,0 +1,158 @@
+数据文件批量校验报告（初筛：时基 / 通道 / 运动特征）
+判据出处：KB2 §5.1 六条硬拒 + C1 数据质量红线；抖动口径同 C2 quality.dt_jitter_ratio
+自述一律不采信：.source.txt 声明值逐条 vs 实测（A-88/A-89）
+============================================================================================================
+
+◆ 电机位置与跟随误差_公开数据集_Controller1周期轨迹.csv   [waveform_candidate]   verdict=reject
+  大小=29,028,739 B  sha256=b2bf814d183c0e14…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8 表头行=1 换行=LF BOM=False
+  行数：数据 200001 行，每行 145.1 B，每单元格 13.2 B
+  时基：fs实测=500.0Hz 抖动=0.000 时长=400.000s 单调=Y 单位来源=sidecar_attested:s
+  通道：10 列，C1 规范名 → tout→未映射[?](0.599), q1→未映射[?](0.749), q2→未映射[?](0.3), j1_qd→未映射[j1](0.45), j2_qd→未映射[qd](0.599), theta1→未映射[?](0.749), theta2→未映射[?](0.303), j1_eq→未映射[j1](0.303), j2_eq→未映射[j2](0.404), j1_etheta_pos→pos_fb[j1](0.354)
+        未映射（不猜语义，KB2 §三）：['tout', 'q1', 'q2', 'j1_qd', 'j2_qd', 'theta1', 'theta2', 'j1_eq']
+  运动：最多运动段=125 段，非零运动占比峰值=0.865，跟随误差恒等式=not_computable
+  红线：命中 cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对账：数值/哈希类 2/4 条与实体文件核过（证伪 0、无从核对 0），其中 2 条因同源/单位自证不计入 k；「来源未登记」1 项
+    自述核对[url] REGISTERED 「https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，经 scipy 转为 CSV）」 — 已登记 url，但 source_tier（public-doc / official-artifact）须按域名与许可人工判读，脚本不代判
+    自述核对[publisher] REGISTERED 「Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[license] REGISTERED 「CC BY 4.0（可再分发，需署名）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[dataset_doi] REGISTERED 「10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[original_filename] REGISTERED 「NONE（由 data/Controller1Periodic.mat 转换而来，非原始导出）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[format_family] REGISTERED 「其他（派生 CSV；源为 MATLAB v5 .mat）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[device_or_software] REGISTERED 「两台机器人关节 × 三种控制器（Controller1，周期轨迹）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[variable_semantics] NOT_REGISTERED 「同原始数据集：数据集文档未逐列定义变量含义与单位，仅登记 .mat/CSV 字段名。⚠️ 属"来源未登记"项，不得自行推断。」 — 已如实标注「来源未登记」，不得据此声称厂商代表性
+    自述核对[template_v2] MISSING — 缺 derived_from/upstream_id/verified_against/verified_by——旧 sidecar 未登记「是否派生 / 上游文件号 / 我方核对对象 / 核对主体」，来源等级无法升格
+    自述核对[rows] SUPPORTED 声称=200001.0 实测=200001 — 实测一致（口径：可解析数据行）
+    自述核对[channels] SUPPORTED 声称=11.0 实测=11 — 实测一致（口径：含时间列的全部列）
+    自述核对[fs_hz] SUPPORTED_NON_INDEPENDENT 声称=500.0 实测=499.9999999976126 — 实测一致（口径：时间列差分）；但单位来源=sidecar_attested:s（同源互证，A-88 无独立证明力，不计入已核对 k）
+    自述核对[hash] MATCHES_FILE 声称=['4da745ed98aa702a32d87ae670eb986b'] 实测=4da745ed98aa702a32d87ae670eb986b — 自述哈希与实体一致；⚠️ 本文件为本地派生/转码产物，自述方与生成方同源，哈希相符只说明未转坏，不构成外部来源证据，不计入已核对 k
+
+◆ 电机位置与跟随误差_公开数据集_Controller1点位轨迹.csv   [waveform_candidate]   verdict=reject
+  大小=14,667,378 B  sha256=ff0b0b9b1eed869a…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8 表头行=1 换行=LF BOM=False
+  行数：数据 100001 行，每行 146.7 B，每单元格 13.3 B
+  时基：fs实测=500.0Hz 抖动=0.000 时长=200.000s 单调=Y 单位来源=sidecar_attested:s
+  通道：10 列，C1 规范名 → tout→未映射[?](0.6), q1→未映射[?](0.4), q2→未映射[?](0.6), j1_qd→未映射[j1](0.4), j2_qd→未映射[qd](0.6), theta1→未映射[?](0.4), theta2→未映射[?](0.00664), j1_eq→未映射[j1](0.00534), j2_eq→未映射[j2](0.00871), j1_etheta_pos→pos_fb[j1](0.00639)
+        未映射（不猜语义，KB2 §三）：['tout', 'q1', 'q2', 'j1_qd', 'j2_qd', 'theta1', 'theta2', 'j1_eq']
+  运动：最多运动段=1298 段，非零运动占比峰值=0.383，跟随误差恒等式=not_computable
+  红线：命中 cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对账：数值/哈希类 2/4 条与实体文件核过（证伪 0、无从核对 0），其中 2 条因同源/单位自证不计入 k；「来源未登记」1 项
+    自述核对[url] REGISTERED 「https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，经 scipy 转为 CSV）」 — 已登记 url，但 source_tier（public-doc / official-artifact）须按域名与许可人工判读，脚本不代判
+    自述核对[publisher] REGISTERED 「Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[license] REGISTERED 「CC BY 4.0（可再分发，需署名）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[dataset_doi] REGISTERED 「10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[original_filename] REGISTERED 「NONE（由 data/Controller1Point2Point.mat 转换而来，非原始导出）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[format_family] REGISTERED 「其他（派生 CSV；源为 MATLAB v5 .mat）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[device_or_software] REGISTERED 「两台机器人关节 × 三种控制器（Controller1，点位轨迹）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[variable_semantics] NOT_REGISTERED 「同原始数据集：数据集文档未逐列定义变量含义与单位，仅登记 .mat/CSV 字段名。⚠️ 属"来源未登记"项，不得自行推断。」 — 已如实标注「来源未登记」，不得据此声称厂商代表性
+    自述核对[template_v2] MISSING — 缺 derived_from/upstream_id/verified_against/verified_by——旧 sidecar 未登记「是否派生 / 上游文件号 / 我方核对对象 / 核对主体」，来源等级无法升格
+    自述核对[rows] SUPPORTED 声称=100001.0 实测=100001 — 实测一致（口径：可解析数据行）
+    自述核对[channels] SUPPORTED 声称=11.0 实测=11 — 实测一致（口径：含时间列的全部列）
+    自述核对[fs_hz] SUPPORTED_NON_INDEPENDENT 声称=500.0 实测=499.99999999983305 — 实测一致（口径：时间列差分）；但单位来源=sidecar_attested:s（同源互证，A-88 无独立证明力，不计入已核对 k）
+    自述核对[hash] MATCHES_FILE 声称=['446134687a304f0e823051773f10fd1b'] 实测=446134687a304f0e823051773f10fd1b — 自述哈希与实体一致；⚠️ 本文件为本地派生/转码产物，自述方与生成方同源，哈希相符只说明未转坏，不构成外部来源证据，不计入已核对 k
+
+◆ 电机位置与跟随误差_公开数据集_Controller2周期轨迹.csv   [waveform_candidate]   verdict=reject
+  大小=29,016,455 B  sha256=12db00b49f0a54e0…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8 表头行=1 换行=LF BOM=False
+  行数：数据 200001 行，每行 145.1 B，每单元格 13.2 B
+  时基：fs实测=500.0Hz 抖动=0.000 时长=400.000s 单调=Y 单位来源=sidecar_attested:s
+  通道：10 列，C1 规范名 → tout→未映射[?](0.6), q1→未映射[?](0.75), q2→未映射[?](0.6), j1_qd→未映射[j1](0.45), j2_qd→未映射[qd](0.6), theta1→未映射[?](0.75), theta2→未映射[?](0.00691), j1_eq→未映射[j1](0.409), j2_eq→未映射[j2](0.0071), j1_etheta_pos→pos_fb[j1](0.418)
+        未映射（不猜语义，KB2 §三）：['tout', 'q1', 'q2', 'j1_qd', 'j2_qd', 'theta1', 'theta2', 'j1_eq']
+  运动：最多运动段=43 段，非零运动占比峰值=0.826，跟随误差恒等式=not_computable
+  红线：命中 cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对账：数值/哈希类 2/4 条与实体文件核过（证伪 0、无从核对 0），其中 2 条因同源/单位自证不计入 k；「来源未登记」1 项
+    自述核对[url] REGISTERED 「https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，经 scipy 转为 CSV）」 — 已登记 url，但 source_tier（public-doc / official-artifact）须按域名与许可人工判读，脚本不代判
+    自述核对[publisher] REGISTERED 「Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[license] REGISTERED 「CC BY 4.0（可再分发，需署名）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[dataset_doi] REGISTERED 「10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[original_filename] REGISTERED 「NONE（由 data/Controller2Periodic.mat 转换而来，非原始导出）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[format_family] REGISTERED 「其他（派生 CSV；源为 MATLAB v5 .mat）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[device_or_software] REGISTERED 「两台机器人关节 × 三种控制器（Controller2，周期轨迹）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[variable_semantics] NOT_REGISTERED 「同原始数据集：数据集文档未逐列定义变量含义与单位，仅登记 .mat/CSV 字段名。⚠️ 属"来源未登记"项，不得自行推断。」 — 已如实标注「来源未登记」，不得据此声称厂商代表性
+    自述核对[template_v2] MISSING — 缺 derived_from/upstream_id/verified_against/verified_by——旧 sidecar 未登记「是否派生 / 上游文件号 / 我方核对对象 / 核对主体」，来源等级无法升格
+    自述核对[rows] SUPPORTED 声称=200001.0 实测=200001 — 实测一致（口径：可解析数据行）
+    自述核对[channels] SUPPORTED 声称=11.0 实测=11 — 实测一致（口径：含时间列的全部列）
+    自述核对[fs_hz] SUPPORTED_NON_INDEPENDENT 声称=500.0 实测=499.9999999976126 — 实测一致（口径：时间列差分）；但单位来源=sidecar_attested:s（同源互证，A-88 无独立证明力，不计入已核对 k）
+    自述核对[hash] MATCHES_FILE 声称=['45066edfb85cf4b6eb5febac96326e30'] 实测=45066edfb85cf4b6eb5febac96326e30 — 自述哈希与实体一致；⚠️ 本文件为本地派生/转码产物，自述方与生成方同源，哈希相符只说明未转坏，不构成外部来源证据，不计入已核对 k
+
+◆ 电机位置与跟随误差_公开数据集_Controller2点位轨迹.csv   [waveform_candidate]   verdict=reject
+  大小=14,613,707 B  sha256=d58827d60389e4fe…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8 表头行=1 换行=LF BOM=False
+  行数：数据 100001 行，每行 146.1 B，每单元格 13.3 B
+  时基：fs实测=500.0Hz 抖动=0.000 时长=200.000s 单调=Y 单位来源=sidecar_attested:s
+  通道：10 列，C1 规范名 → tout→未映射[?](0.605), q1→未映射[?](0.403), q2→未映射[?](0.6), j1_qd→未映射[j1](0.4), j2_qd→未映射[qd](0.605), theta1→未映射[?](0.404), theta2→未映射[?](0.00657), j1_eq→未映射[j1](0.00565), j2_eq→未映射[j2](0.00676), j1_etheta_pos→pos_fb[j1](0.00578)
+        未映射（不猜语义，KB2 §三）：['tout', 'q1', 'q2', 'j1_qd', 'j2_qd', 'theta1', 'theta2', 'j1_eq']
+  运动：最多运动段=19 段，非零运动占比峰值=0.379，跟随误差恒等式=not_computable
+  红线：命中 cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对账：数值/哈希类 2/4 条与实体文件核过（证伪 0、无从核对 0），其中 2 条因同源/单位自证不计入 k；「来源未登记」1 项
+    自述核对[url] REGISTERED 「https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，经 scipy 转为 CSV）」 — 已登记 url，但 source_tier（public-doc / official-artifact）须按域名与许可人工判读，脚本不代判
+    自述核对[publisher] REGISTERED 「Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[license] REGISTERED 「CC BY 4.0（可再分发，需署名）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[dataset_doi] REGISTERED 「10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[original_filename] REGISTERED 「NONE（由 data/Controller2Point2Point.mat 转换而来，非原始导出）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[format_family] REGISTERED 「其他（派生 CSV；源为 MATLAB v5 .mat）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[device_or_software] REGISTERED 「两台机器人关节 × 三种控制器（Controller2，点位轨迹）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[variable_semantics] NOT_REGISTERED 「同原始数据集：数据集文档未逐列定义变量含义与单位，仅登记 .mat/CSV 字段名。⚠️ 属"来源未登记"项，不得自行推断。」 — 已如实标注「来源未登记」，不得据此声称厂商代表性
+    自述核对[template_v2] MISSING — 缺 derived_from/upstream_id/verified_against/verified_by——旧 sidecar 未登记「是否派生 / 上游文件号 / 我方核对对象 / 核对主体」，来源等级无法升格
+    自述核对[rows] SUPPORTED 声称=100001.0 实测=100001 — 实测一致（口径：可解析数据行）
+    自述核对[channels] SUPPORTED 声称=11.0 实测=11 — 实测一致（口径：含时间列的全部列）
+    自述核对[fs_hz] SUPPORTED_NON_INDEPENDENT 声称=500.0 实测=499.99999999983305 — 实测一致（口径：时间列差分）；但单位来源=sidecar_attested:s（同源互证，A-88 无独立证明力，不计入已核对 k）
+    自述核对[hash] MATCHES_FILE 声称=['2735a131ccaaf3575aae61d806111017'] 实测=2735a131ccaaf3575aae61d806111017 — 自述哈希与实体一致；⚠️ 本文件为本地派生/转码产物，自述方与生成方同源，哈希相符只说明未转坏，不构成外部来源证据，不计入已核对 k
+
+◆ 电机位置与跟随误差_公开数据集_Controller3周期轨迹.csv   [waveform_candidate]   verdict=reject
+  大小=29,006,561 B  sha256=e7d4f86970948d35…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8 表头行=1 换行=LF BOM=False
+  行数：数据 200001 行，每行 145.0 B，每单元格 13.2 B
+  时基：fs实测=500.0Hz 抖动=0.000 时长=400.000s 单调=Y 单位来源=sidecar_attested:s
+  通道：10 列，C1 规范名 → tout→未映射[?](0.6), q1→未映射[?](0.75), q2→未映射[?](0.6), j1_qd→未映射[j1](0.45), j2_qd→未映射[qd](0.599), theta1→未映射[?](0.75), theta2→未映射[?](0.00343), j1_eq→未映射[j1](0.301), j2_eq→未映射[j2](0.00533), j1_etheta_pos→pos_fb[j1](0.367)
+        未映射（不猜语义，KB2 §三）：['tout', 'q1', 'q2', 'j1_qd', 'j2_qd', 'theta1', 'theta2', 'j1_eq']
+  运动：最多运动段=454 段，非零运动占比峰值=0.859，跟随误差恒等式=not_computable
+  红线：命中 cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对账：数值/哈希类 2/4 条与实体文件核过（证伪 0、无从核对 0），其中 2 条因同源/单位自证不计入 k；「来源未登记」1 项
+    自述核对[url] REGISTERED 「https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，经 scipy 转为 CSV）」 — 已登记 url，但 source_tier（public-doc / official-artifact）须按域名与许可人工判读，脚本不代判
+    自述核对[publisher] REGISTERED 「Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[license] REGISTERED 「CC BY 4.0（可再分发，需署名）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[dataset_doi] REGISTERED 「10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[original_filename] REGISTERED 「NONE（由 data/Controller3Periodic.mat 转换而来，非原始导出）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[format_family] REGISTERED 「其他（派生 CSV；源为 MATLAB v5 .mat）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[device_or_software] REGISTERED 「两台机器人关节 × 三种控制器（Controller3，周期轨迹）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[variable_semantics] NOT_REGISTERED 「同原始数据集：数据集文档未逐列定义变量含义与单位，仅登记 .mat/CSV 字段名。⚠️ 属"来源未登记"项，不得自行推断。」 — 已如实标注「来源未登记」，不得据此声称厂商代表性
+    自述核对[template_v2] MISSING — 缺 derived_from/upstream_id/verified_against/verified_by——旧 sidecar 未登记「是否派生 / 上游文件号 / 我方核对对象 / 核对主体」，来源等级无法升格
+    自述核对[rows] SUPPORTED 声称=200001.0 实测=200001 — 实测一致（口径：可解析数据行）
+    自述核对[channels] SUPPORTED 声称=11.0 实测=11 — 实测一致（口径：含时间列的全部列）
+    自述核对[fs_hz] SUPPORTED_NON_INDEPENDENT 声称=500.0 实测=499.9999999976126 — 实测一致（口径：时间列差分）；但单位来源=sidecar_attested:s（同源互证，A-88 无独立证明力，不计入已核对 k）
+    自述核对[hash] MATCHES_FILE 声称=['fbf87c0064443f404ea2ae3a27bfadcd'] 实测=fbf87c0064443f404ea2ae3a27bfadcd — 自述哈希与实体一致；⚠️ 本文件为本地派生/转码产物，自述方与生成方同源，哈希相符只说明未转坏，不构成外部来源证据，不计入已核对 k
+
+◆ 电机位置与跟随误差_公开数据集_Controller3点位轨迹.csv   [waveform_candidate]   verdict=reject
+  大小=14,668,097 B  sha256=c4aaa405ebb8b55f…
+  格式：layout=plain_matrix 分隔=comma 编码=utf-8 表头行=1 换行=LF BOM=False
+  行数：数据 100001 行，每行 146.7 B，每单元格 13.3 B
+  时基：fs实测=500.0Hz 抖动=0.000 时长=200.000s 单调=Y 单位来源=sidecar_attested:s
+  通道：10 列，C1 规范名 → tout→未映射[?](0.6), q1→未映射[?](0.4), q2→未映射[?](0.6), j1_qd→未映射[j1](0.4), j2_qd→未映射[qd](0.6), theta1→未映射[?](0.4), theta2→未映射[?](0.00528), j1_eq→未映射[j1](0.00234), j2_eq→未映射[j2](0.00719), j1_etheta_pos→pos_fb[j1](0.00293)
+        未映射（不猜语义，KB2 §三）：['tout', 'q1', 'q2', 'j1_qd', 'j2_qd', 'theta1', 'theta2', 'j1_eq']
+  运动：最多运动段=809 段，非零运动占比峰值=0.574，跟随误差恒等式=not_computable
+  红线：命中 cur_q/vel_fb/fe 未识别（9/10 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对账：数值/哈希类 2/4 条与实体文件核过（证伪 0、无从核对 0），其中 2 条因同源/单位自证不计入 k；「来源未登记」1 项
+    自述核对[url] REGISTERED 「https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，经 scipy 转为 CSV）」 — 已登记 url，但 source_tier（public-doc / official-artifact）须按域名与许可人工判读，脚本不代判
+    自述核对[publisher] REGISTERED 「Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[license] REGISTERED 「CC BY 4.0（可再分发，需署名）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[dataset_doi] REGISTERED 「10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[original_filename] REGISTERED 「NONE（由 data/Controller3Point2Point.mat 转换而来，非原始导出）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[format_family] REGISTERED 「其他（派生 CSV；源为 MATLAB v5 .mat）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[device_or_software] REGISTERED 「两台机器人关节 × 三种控制器（Controller3，点位轨迹）」 — 字段已填写；内容真伪不在本脚本核对范围
+    自述核对[variable_semantics] NOT_REGISTERED 「同原始数据集：数据集文档未逐列定义变量含义与单位，仅登记 .mat/CSV 字段名。⚠️ 属"来源未登记"项，不得自行推断。」 — 已如实标注「来源未登记」，不得据此声称厂商代表性
+    自述核对[template_v2] MISSING — 缺 derived_from/upstream_id/verified_against/verified_by——旧 sidecar 未登记「是否派生 / 上游文件号 / 我方核对对象 / 核对主体」，来源等级无法升格
+    自述核对[rows] SUPPORTED 声称=100001.0 实测=100001 — 实测一致（口径：可解析数据行）
+    自述核对[channels] SUPPORTED 声称=11.0 实测=11 — 实测一致（口径：含时间列的全部列）
+    自述核对[fs_hz] SUPPORTED_NON_INDEPENDENT 声称=500.0 实测=499.99999999983305 — 实测一致（口径：时间列差分）；但单位来源=sidecar_attested:s（同源互证，A-88 无独立证明力，不计入已核对 k）
+    自述核对[hash] MATCHES_FILE 声称=['d01d2f2b47fc9b668927d45744d0f682'] 实测=d01d2f2b47fc9b668927d45744d0f682 — 自述哈希与实体一致；⚠️ 本文件为本地派生/转码产物，自述方与生成方同源，哈希相符只说明未转坏，不构成外部来源证据，不计入已核对 k
+
+============================================================================================================
+汇总（执行 N / 跳过 M 分列，A-87 口径）
+  电机位置与跟随误差_公开数据集_Controller1周期轨迹.csv          waveform_candidate reject                 红线 1
+  电机位置与跟随误差_公开数据集_Controller1点位轨迹.csv          waveform_candidate reject                 红线 1
+  电机位置与跟随误差_公开数据集_Controller2周期轨迹.csv          waveform_candidate reject                 红线 1
+  电机位置与跟随误差_公开数据集_Controller2点位轨迹.csv          waveform_candidate reject                 红线 1
+  电机位置与跟随误差_公开数据集_Controller3周期轨迹.csv          waveform_candidate reject                 红线 1
+  电机位置与跟随误差_公开数据集_Controller3点位轨迹.csv          waveform_candidate reject                 红线 1
+  执行 6 / 跳过 0（非波形存证不判红线） ⟹ accept 0 / reject 6

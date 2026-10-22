@@ -1,0 +1,168 @@
+{
+  "schema": "axiscope.features/1",
+  "ref": {"sample_id": "AX1-20260311", "sha256": "…"},
+  "fs_hz": 8000.0,
+  "present_channels": ["pos_cmd", "pos_fb", "fe", "cur_q"],
+  "freq_limits": {
+    "fs_hz": 8000.0, "nyquist_hz": 4000.0, "reliable_band_hz": 3200.0,
+    "blocked_rules": [], "reason": null
+  },
+  "position_quantum_mm": 0.00002,
+  "global": {
+    "fe_rms_counts": 412.6,
+    "fe_rms_mm": 0.00825,
+    "fe_p999_counts": 1380.0,
+    "fe_max_counts": 2104.0,
+    "fe_mean_counts": -56.0,
+    "fe_sign_change_rate_hz": 612.0,
+    "cur_q_rms_a": 0.85, "cur_q_rms_pct": 18.4,
+    "cur_q_peak_abs_a": 3.4, "cur_q_peak_abs_pct": 74.0,
+    "cur_q_saturation_ratio": 0.012,
+    "thermal_drift_counts_per_min": 3.1,
+    "thermal_fe_correlation_r": null,
+    "reversal_error_counts": 268.0,
+    "backlash_estimate_counts": 268.0,
+    "friction_stiction_ratio": 1.9
+  },
+  "spectral": {
+    "fe": {"freq_hz": [0, 1.95, 3.91, 5.86], "psd": [0, 1, 2, 3], "npy": "features/fe_psd.npy",
+            "dominant_freq_hz": 1181.0, "dominant_psd_ratio": 0.34, "tonality_index": 0.62},
+    "cur_q": {"freq_hz": [0, 1.95, 3.91, 5.86], "psd": [0, 0.4, 1.1, 0.7], "npy": "features/curq_psd.npy",
+               "dominant_freq_hz": 1183.0, "dominant_psd_ratio": 0.41, "tonality_index": 0.71,
+               "harmonic_ratios": [2.0, 3.0]},
+    "vel_fb": {"dominant_freq_hz": null}
+  },
+  "resonance": {
+    "candidates": [
+      {"freq_hz": 1181.0,
+       "coherence_torque_velocity": 0.86,
+       "antiresonance_freq_hz": 440.0,
+       "present_in_dwell": true,
+       "present_in_rest": false,
+       "tracks_command_frequency": false,
+       "amplitude_ratio_vs_broadband": 8.4,
+       "quality_factor_estimate": 27.0,
+       "three_db_width_bins": 22,
+       "is_double_inertia_pair": true}
+    ],
+    "nyquist_hz": 4000.0,
+    "resolution_hz": 1.95,
+    "estimation": {"window": "hann", "nperseg": 4096, "noverlap": 2048,
+                    "method": "welch", "pair_separation_bins": 380,
+                    "n_segments": 8, "bins_in_band": 96}
+  },
+  "sensor_disagreement": {
+    "pairs": [{"a": "pos_fb", "b": "laser_ref", "a_role": "canonical", "b_role": "extra",
+                "unit": "counts", "rms_counts": 51.0,
+                "max_counts": 240.0, "datum_offset": 12.0, "corr": 0.998,
+                "dominant_order_per_rev": 1.0, "direction": "b_a"}],
+    "note": "多余反馈经 C1 `cross_validation.pairs` 引入；分歧本身是证据，不是噪声。rms/max 已扣原点常偏（规则 16 / A-106），常偏登记在 `datum_offset`；`*_counts` 的后缀是历史名，真实单位看 `unit`（A-97）"
+  },
+  "feedback_integrity": {
+    "corr_pos_fb_vs_pos_cmd": 0.983,
+    "fe_zero_ratio": 0.021,
+    "pos_fb_static_on_move_ratio": 0.0,
+    "identity_check": {"performed": true, "reason": null},
+    "second_feedback_available": true,
+    "masquerade_suspected": false,
+    "note": "C1 派生规则 2 的 fe 假朋友自检正式化（A-5）：corr >= 0.99 且 fe 几乎恒零 ⟹ pos_fb 很可能是指令位置（DPOS）被适配器冒充成反馈。这与「反馈通道本身坏了」在波形上同形，区分只能靠 second_feedback_available（A-46 / KB4 CP-11）。`second_feedback_available` 只统计**过了恒等式核对**的列（规则 18 / A-105 ②③）；本示例只演示 `identity_check` 的 `performed`/`reason` 两键形态，计数键集见 C1 派生规则 9 与规则 18"
+  },
+  "ripple": {
+    "probing": [
+      {"segment_id": 5, "vel_mean_counts_s": 52000.0,
+       "ripple_pp_counts": 340.0, "ripple_rms_counts": 78.0,
+       "dominant_order_per_rev": 1.0,
+       "ripple_over_velocity_pct_per_rev": 0.65,
+       "correlated_with_cur_q": 0.88}]
+  },
+  "crawling": {
+    "low_speed_segments": [
+      {"segment_id": 2, "vel_mean_counts_s": 120.0,
+       "is_sawtooth": true, "sawtooth_freq_hz": 6.4,
+       "vel_min_ratio": 0.0, "stall_count": 3,
+       "corr_vel_vs_curq": 0.79}]
+  },
+  "ff_mismatch": {
+    "accel_regime_rms_counts": 690.0,
+    "decel_regime_rms_counts": 305.0,
+    "asymmetry_ratio": 2.26,
+    "fe_vs_accel_corr": 0.83,
+    "residual_slope_vs_jerk_corr": 0.44
+  },
+  "encoder": {
+    "per_rev_periodic_present": true,
+    "per_rev_amplitude_counts": 96.0,
+    "harmonics_per_rev": 1,
+    "detrended_r2": 0.62,
+    "phase_locked_to_pos_modulo": true
+  },
+  "quality_ref": {"quantization_step_counts": 1.0, "motor_rev_counts": 524288,
+                   "dt_jitter_ratio": 0.02, "nan_ratio": 0.0, "gap_max_s": 0.00025,
+                   "source": "C1 meta.quality（镜像进 C2，规则证据只能走 C2 路径，A-10）"},
+  "step_response": [
+    {"segment_id": 1, "overshoot_pct": 18.4,
+     "settling_time_ms": 42.0, "settle_band_counts": 20.0,
+     "settle_band_pct_of_move": 0.04,
+     "ringing_cycles_to_settle": 3.5, "damping_ratio_estimate": 0.28,
+     "rise_time_ms": 11.0, "limit_cycle_present": false,
+     "limit_cycle_amplitude_counts": null, "limit_cycle_freq_hz": null}],
+  "tracking": {
+    "path_segments": [
+      {"segment_id": 8, "kind": "path",
+       "fe_rms_counts": 1520.0, "fe_max_counts": 3100.0,
+       "corner_error_counts": 420.0,
+       "velocity_feedforward_pct_applied": null,
+       "acceleration_feedforward_pct_applied": null,
+       "corr_fe_vs_accel": 0.91, "corr_fe_vs_jerk": 0.32}]
+  },
+  "bandwidth": {
+    "position_loop_crossover_hz": 42.0,
+    "phase_margin_deg": 38.0, "gain_margin_db": 7.2,
+    "method": "command_response_h1",
+    "confidence": 0.6,
+    "note": "由 pos_cmd/pos_fb 的 H1 估计，非注入激励，仅供定性"
+  },
+  "event_context": {
+    "available": true,
+    "n_events": 1204,
+    "n_by_source": {"motion": 640, "drive": 3, "interp": 12, "network": 5,
+                     "host": 2, "vision": 480, "process": 62},
+    "n_alarm": 3,
+    "host_pause_max_ms": 41.2,
+    "interp_underrun_count": 12,
+    "interp_underrun_during_path": 11,
+    "network_cycle_miss_count": 5,
+    "bus_cycle_hold_max_ms": 2.1,
+    "vision_result_latency_p95_ms": 31.2,
+    "fe_spike_count": 17,
+    "fe_spike_aligned_to_host_pause": 2,
+    "fe_spike_aligned_to_underrun": 11,
+    "fe_spike_aligned_to_network_miss": 4,
+    "fe_spike_aligned_to_vision_result": 3,
+    "fe_spike_aligned_to_recipe_change": 0,
+    "alignment_residual_ms": 0.25,
+    "sync": {"method": "trigger_edge", "verified": true, "uncertainty_ms": 0.5},
+    "causal_claims_permitted": true,
+    "step_labels": [{"t0": 0.400, "t1": 0.470, "step": "place", "recipe": "AuSn_280C_die4"}]
+  },
+  "segment_coverage": {
+    "rest": 2, "move": 6, "settling": 6, "dwell": 3,
+    "probing": 1, "path": 1, "homing": 0, "scanning": 0, "curing": 0
+  },
+  "unavailable": [
+    {"feature": "freq_limits.reason",
+     "reason": "blocked_rules 为空（reliable_band_hz = 3200 Hz 覆盖本包全部判据声明的频点）⟹ 没有越带事由可写；KB3 §1.11 该行的「算不出的条件」是 —（文本槽），但 C2 规则 2 的逐路口径覆盖包内每个 null，故照样登记一行"},
+    {"feature": "spectral.vel_fb.dominant_freq_hz",
+     "reason": "present_channels 无 vel_fb ⟹ 该路谱从未算过（C2 规则 2：null 不是 0）"},
+    {"feature": "global.thermal_fe_correlation_r",
+     "reason": "本样本 present_channels 无 temp ⟹ FE 与温度相关性不可算（值为 null，不是 0）"},
+    {"feature": "step_response[0].limit_cycle_amplitude_counts",
+     "reason": "limit_cycle_present = false ⟹ 极限环未判定，无幅值可登记（KB3 §1.8 该行「算不出的条件」：present ∈ {null, false} ⟹ null，不得当 0）"},
+    {"feature": "step_response[0].limit_cycle_freq_hz",
+     "reason": "同上：present = false ⟹ 没有极限环峰频可登记；峰在 [f_min, f_b] 内与否无从谈起（KB3 §1.8）"},
+    {"feature": "tracking.path_segments[0].velocity_feedforward_pct_applied",
+     "reason": "反演回归的自变量 vel_cmd 不在 present_channels ⟹ 前馈比例无从反演（KB3 §1.9 该行「算不出的条件」：vel_cmd 缺失 ⟹ null，C2 示例正是 null）"},
+    {"feature": "tracking.path_segments[0].acceleration_feedforward_pct_applied",
+     "reason": "回归量为 a，本包无 vel_cmd 也无 pos_cmd 二阶差分的登记来源 ⟹ a 不可辨；cur_q 虽在位，但它是交叉核验的另一半（KB3 §1.9 该行「算不出的条件」：cur_q 缺失或 a 不可辨 ⟹ null）"}
+  ]
+}

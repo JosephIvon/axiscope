@@ -1,0 +1,14 @@
+url:                 https://darus.uni-stuttgart.de/api/access/datafile/244531
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（DaRUS / Dataverse 公开 API 直下，无需登录）
+publisher:           Reichenbach, Thomas（DaRUS，University of Stuttgart / ISW）
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.18419/DARUS-3600（数据集标题 "Measurement data for the identification of dynamic running properties of synthetic fiber ropes"）
+original_filename:   Export 10.csv（注意：原名带空格，本地为无空格重命名 Export10_244531.csv；后缀 244531 = DaRUS 文件编号）
+format_family:       TwinCAT Scope View
+device_or_software:  Beckhoff TwinCAT 3 测量工程（文件内自报 File = [REDACTED_HOST_PATH] 10.csv）；Cable Actuator Testbed / Winch_Testbed；导出时刻 2023-05-24 [REDACTED_WALLCLOCK] ~ [REDACTED_WALLCLOCK]
+sampling_rate:       1000 Hz（元数据行 SampleTime[ms] = 1）
+rows:                18651 数据行（行号 0~18650；文件总行 18666，含 13 行元数据/表头区 + 1 行末尾异常行）
+channels:            32（详见 variable_semantics；每通道在 CSV 中写成"行索引 + 值"一对，故数据行共 64 个制表符分隔字段）
+variable_semantics:  通道名取自文件元数据行（TwinCAT SymbolName，前缀 Measurement_Connector.），原文顺序为：dForce_load, dPower_load, dPower_test, dVelocity_asco_enc, dVelocity_asco, dRate_asco, dPosition_asco_enc, dPosition_asco, dForceSensorNo, bMovingForward, bTrigger_Scope, bTrigger_Record, bTrigger_Export, dTorque_test, dTorque_load, dVelocity_diff, dVelocity_test_tar, dVelocity_test, dVelocity_load_tar, dVelocity_load, dPosition_diff, dPosition_load, dPosition_test, dPosition_test_tar, dPosition_load_tar, dForce_diff, dForce_colinear, dForce_orthogonal, dForce_test, dForce_tar, dPosition_lsv_enc, dVelocity_lsv_enc。配套分析脚本 main.m 中 VarNames 按同一列序给出短名映射：t(=首列行索引×SampleTime), f_load, power_load, power_test, v_asco_enc, v_asco, asco_rate, p_asco_enc, p_asco, fno, mfw, trig_scope, trig_record, trig_export, t_test, t_load, v_diff_enc, v_test_tar, v_test, v_load_tar, v_load, p_diff_enc, p_load, p_test, p_test_tar, p_load_tar, f_diff, f_colinear, f_orthogonal, f_test, f_tar, p_lsv_enc, v_lsv_enc。数据集页面未逐项给出各通道物理单位。
+notes:               MD5 = 8cba13dfae7d1a3cdf48d3e20851dadb，size = 9175989 B，与 DaRUS API 记录逐字节一致。⚠️ 两点纠偏：(1) 本文件属 DARUS-3600，非清单所写的 DARUS-5171；(2) DARUS-5171 内亦有大量同名 "Export 10.csv"，两者不可混淆。引用须署名 Reichenbach, Thomas。

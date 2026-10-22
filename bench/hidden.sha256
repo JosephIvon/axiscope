@@ -1,0 +1,6 @@
+# C5 §2 冻结文件 —— 隐藏测试集输入样本字节摘要（KB8 §1.4 口径）
+# digest = SHA256( bytes(meta.json) || 0x00 || bytes(waveform.tsv) || 0x00 || bytes(events.jsonl 或空) )
+# 冻结后追加任一案例 => 全量重划 + 版本号 +1（KB8 §4 红线 2）
+492d748ce703e36bac6d96064af480c6f1558be769800aee46f4518cc8177c13  bench/samples/T1a-DARUS-CTL-0002
+f53928d5339c6ba1789082f5f76249f2b0ac15a11168a1f86b05816b6feeeb1a  bench/samples/T1a-DARUS-INJ01-0001
+89b7c71b03873c8169bf9234e98ded9f01a5514461954a57132b45a8da93cd97  bench/samples/T1a-DARUS-INJ11-0001

@@ -1,0 +1,14 @@
+url:                 https://codeload.github.com/s-leroux/SEFRAM-5062DC-CSV/tar.gz/refs/heads/master（inductor/DS0001.CSV）
+retrieved_at:        2026-10-20
+retrieved_by:        AI 资源检索子智能体（经 codeload.github.com 打包下载）
+publisher:           s-leroux（GitHub 仓库 s-leroux/SEFRAM-5062DC-CSV 作者）
+license:             仓库未声明 LICENSE；README 说明用于演示读取 SEFRAM 5062DS 导出的 CSV，引用请注明来源
+dataset_doi:         NONE
+original_filename:   DS0001.CSV
+format_family:       SEFRAM ASCII（其他）
+device_or_software:  SEFRAM 5062DS（文件内自报 Firmware = V1.09，Time = 21-Mai-12 9:08）
+sampling_rate:       500000000 Hz（500 MHz；Sampling Period = 2.000E-09 s）
+rows:                12500 数据行（Memory Length = 12500；文件总行 12514 = 13 行参数块 + 1 行 Waveform Data 标记 + 12500 行数据）
+channels:            1（单列电压采样值）
+variable_semantics:  取自文件参数块原文：Memory Length = 存储长度(点)；Trigger Level = 触发电平(V)；Source = CH1；Vertical Units = V；Horizontal Scale = 横向刻度(s/div)；Sampling Period = 采样周期(s)；Firmware = V1.09；Time = 导出时刻。Waveform Data 标记之下为单列电压值。
+notes:               MD5 = bfc57ef042a7096ab69cf4a95a30a8e7，与台账一致。原文件名 DS0001.CSV，本地已重命名。同仓库 inductor 目录另有 DS0002.CSV。

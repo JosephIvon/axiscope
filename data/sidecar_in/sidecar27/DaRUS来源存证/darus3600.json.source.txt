@@ -1,0 +1,14 @@
+url:                 https://darus.uni-stuttgart.de/api/datasets/:persistentId/?persistentId=doi:10.18419/DARUS-3600
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（DaRUS / Dataverse 公开 API，gzip 压缩传输直取）
+publisher:           DaRUS（University of Stuttgart）元数据 API；数据集作者：Reichenbach, Thomas
+license:             数据集本身为 CC BY 4.0（本 JSON 为公开 API 响应）
+dataset_doi:         10.18419/DARUS-3600
+original_filename:   NONE（API 响应，非厂商/设备导出）
+format_family:       其他（Dataverse 数据集元数据 JSON）
+device_or_software:  DaRUS 数据仓储 API（数据集标题 "Measurement data for the identification of dynamic running properties of synthetic fiber ropes"）
+sampling_rate:       N/A（元数据）
+rows:                N/A
+channels:            N/A
+variable_semantics:  N/A（元数据文件，非波形）。文件内含 393 个条目清单：349 个 csv、18 个 svdx、18 个 nc、5 个 m、1 个 md、1 个 xml、1 个 lsvs。
+notes:               MD5 = 03304a63cca42fe2a31b0097cb985b0d，size = 298955 B。JSON 解析通过，latestVersion.files 共 393 项。发布日 2023-10-17，版本 1.0（RELEASED）。本清单即 Export10_244531.csv（id=244531）、main.m(251085)、catanalyze.m(251087)、catcsv2cell.m(251089)、ASCOspeed_Settings.md(244662)、CableActuatorTestbed.xml(244544) 六项的编号出处。

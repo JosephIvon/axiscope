@@ -1,0 +1,497 @@
+{
+  "schema": "axiscope.diagnosis/1",
+  "case_id": "AX1-20260311-02",
+  "generated_at": "2026-03-11T15:02:31+08:00",
+  "engine_version": "0.1.0",
+  "inputs": {
+    "sample_id": "AX1-20260311",
+    "present_channels": [
+      "pos_cmd",
+      "pos_fb",
+      "fe",
+      "cur_q"
+    ],
+    "missing_channels": [
+      "vel_fb",
+      "temp"
+    ],
+    "counts_per_mm": 50000.0,
+    "drive_params_known": [
+      "rigidity_level"
+    ],
+    "context_complaint": "高速取片后末端抖动，节拍被迫从 1.8s 放宽到 2.6s",
+    "features_snapshot": "c2_example_a_no_events",
+    "event_context_available": false
+  },
+  "verdict": {
+    "primary": "H1",
+    "summary": "首要解释是速度/位置前馈失配（S2、C=0.48）：`differential.asymmetry_ratio` 由 3 个 `move` 段给出、fe_rms 412.6 counts 在换向处不对称，反证是「本应出现的对称性未出现」。1.18 kHz 机械谐振（S3、C=0.65；反共振谷 440 Hz、λ≈6.2 的双惯量对，加减速瞬态在 settling 段 [0.089, 0.140] s 内激励该模态、ζ≈0.28 衰减）列 rank 2。**按 KB4 §2.9 字典序，第一排序键是 severity，S2 < S3 ⟹ 前馈居首**，其置信度反而更低（0.48 < 0.65）是证据强度与样本量所致，不是排序错误。下一步先做同一轨迹正反各 5 次重复，把方向性与工艺相关性分开，再评估是否在该频点加二阶陷波——改进量来自 P-B 仿真（V1），非现场实测；共振频率 −20% 扰动下最坏改进量 28.7%。置信度 0.43 = C(H1) 0.4818 × (1 − 0.05×2)，扣减按 2 个去重缺席原因（`absent_temp_channel`、`absent_events_jsonl`）。",
+    "overall_confidence": 0.43,
+    "confidence_note": "逐格可重算（KB4 §2.2/§2.3，规则 16/20）：H1（前馈失配，S2）两条支持 S = 0.518/0.494（`n/n_ref = 100/50` ⟹ `n_factor = 0.8`，样本量口径见 H1.scaffolding_note）⟹ A_sup = 0.507；反证 operator 是 `<` ⟹ rho_prime = 412.6/690 = 0.598 < 1 ⟹ v_j = 0.05（KB4 §2.4「本应出现的形态未出现」档；改判前的 1.672/0.10 是把 `<` 当 `>=` 取 value/threshold 的方向错值，A-101 ②）⟹ A_con = 0.05 ⟹ C(H1) = 0.48。H2（机械谐振，S3）六条支持 S = 0.459/0.768/0.765/0.779/0.680/0.609 ⟹ Smax = 0.779、Srest = 0.656、A_sup = 0.55×0.779 + 0.45×0.656 = 0.724；反证 rho_prime = 1.867 ∈ [1,2) ⟹ v_j = 0.10 ⟹ C(H2) = 0.65（逐格等于 KB4 算例 A）。**头条由 §2.9 的第一排序键 severity 决定**：S2 < S3 ⟹ H1 列 rank 1 且是 primary，尽管 C(H1) < C(H2)。verdict = 0.4818 × (1 − 0.05×2) = 0.43，扣减因子是 **2 个独立缺席原因**（`absent_temp_channel`、`absent_events_jsonl`），不是 3 条 `not_evaluable` 行（规则 17：族级标签与它覆盖的叶共享同一原因，只计一次）。",
+    "actionable": true
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "fault_mode": "electrical_feedforward_mismatch",
+      "display_name": "加速度前馈失配（加/减速段跟随误差不对称）",
+      "rank": 1,
+      "confidence": 0.48,
+      "severity": 2,
+      "supporting_evidence": [
+        {
+          "feature": "ff_mismatch.asymmetry_ratio",
+          "value": 2.26,
+          "operator": ">=",
+          "threshold": 1.5,
+          "strength": 0.518,
+          "rule_id": "R-15a",
+          "source": "docs/kb/KB3-tuning-rules.md#R-15",
+          "n": 100.0,
+          "n_ref": 50.0,
+          "conf": 1.0,
+          "freq_hz": null,
+          "band_floor_hz": null
+        },
+        {
+          "feature": "ff_mismatch.fe_vs_accel_corr",
+          "value": 0.83,
+          "operator": ">=",
+          "threshold": 0.6,
+          "strength": 0.494,
+          "rule_id": "R-15b",
+          "source": "docs/kb/KB3-tuning-rules.md#R-15",
+          "n": 100.0,
+          "n_ref": 50.0,
+          "conf": 1.0,
+          "freq_hz": null,
+          "band_floor_hz": null
+        }
+      ],
+      "contradicting_evidence": [
+        {
+          "feature": "ff_mismatch.accel_regime_rms_counts",
+          "value": 690.0,
+          "operator": "<",
+          "threshold": 412.6,
+          "rho_prime": 0.598,
+          "penalty": 0.05,
+          "rule_id": "R-15c",
+          "note": "加速区 RMS 未超过全局 fe RMS ⟹ 不对称主要来自减速侧，与纯前馈不足的典型形态不完全吻合；扣分项，非否决项。operator 是 `<` ⟹ §2.1(a) 的 ρ′ = threshold/value = 412.6/690 = 0.598 < 1，落 §2.4 的「本应出现的形态未出现」档 ⟹ v_j = 0.05。原写 rho_prime = 1.672 是把 `<` 当 `>=` 取 value/threshold 的方向错值，penalty 0.10 随之错（A-101 ②）"
+        }
+      ],
+      "recommendation": null,
+      "ruled_out_alternatives": [],
+      "next_data_to_collect": [
+        {
+          "ask": "同一轨迹、同一方向重复 5 次，另加 5 次反向",
+          "why": "当前 `asymmetry_ratio` 只有 3 个 `move` 段样本，方向性与工艺相关性分不开",
+          "unlocks": [
+            "R-15 的 kff 分支判定（A-26：该量有符号，必须镜像）",
+            "R-08 间隙的分离（无反向段时不可分）"
+          ]
+        }
+      ],
+      "scaffolding_note": "本假设的样本量是**示例自己声明的脚手架**：C2 没有承载加/减速区样本数的字段（与 `rule_table.open_gaps` 记的 Welch 段数、带内 bin 数同族，A-102 ② 只补了 resonance 侧）⟹ 故 `n = 100` 是示例给定的假定值，`n_ref = 50` 取 KB3 R-15 必要上下文「加减速区样本各 ≥ 50」。两条 `strength` 因此是 KB4 §2.1 的复算值，不是文档抄来的数——引擎在本快照上不 fire R-15（缺 n/n_ref ⟹ `rules_skipped`），本示例展示的是「样本量补齐之后」的形状。"
+    },
+    {
+      "id": "H2",
+      "fault_mode": "mechanical_resonance",
+      "display_name": "机械谐振（结构模态被瞬态激励）",
+      "rank": 2,
+      "confidence": 0.65,
+      "severity": 3,
+      "supporting_evidence": [
+        {
+          "feature": "resonance.candidates[0].coherence_torque_velocity",
+          "value": 0.86,
+          "operator": ">=",
+          "threshold": 0.7,
+          "strength": 0.459,
+          "condition_index": 2,
+          "rule_id": "R-03a",
+          "source": "docs/kb/KB3-tuning-rules.md#R-03",
+          "window": {
+            "t0": 0.089,
+            "t1": 0.14,
+            "segment_id": 1
+          },
+          "plot": "evidence/resonance_coherence.png",
+          "n": 8.0,
+          "n_ref": 4.0,
+          "conf": 1.0,
+          "freq_hz": 1181.0,
+          "band_floor_hz": 2000.0
+        },
+        {
+          "feature": "resonance.candidates[0].amplitude_ratio_vs_broadband",
+          "value": 8.4,
+          "operator": ">=",
+          "threshold": 4.0,
+          "strength": 0.768,
+          "condition_index": 3,
+          "rule_id": "R-03",
+          "source": "docs/kb/KB3-tuning-rules.md#R-03",
+          "n": 96.0,
+          "n_ref": 15.0,
+          "conf": 1.0,
+          "freq_hz": 1181.0,
+          "band_floor_hz": 2000.0
+        },
+        {
+          "feature": "resonance.candidates[0].quality_factor_estimate",
+          "value": 27.0,
+          "operator": ">=",
+          "threshold": 10.0,
+          "strength": 0.765,
+          "condition_index": 7,
+          "rule_id": "R-03",
+          "source": "docs/kb/KB3-tuning-rules.md#R-03",
+          "n": 22.0,
+          "n_ref": 8.0,
+          "conf": 1.0,
+          "freq_hz": 1181.0,
+          "band_floor_hz": 2000.0
+        },
+        {
+          "feature": "resonance.candidates[0].present_in_dwell",
+          "value": true,
+          "operator": "==",
+          "threshold": true,
+          "strength": 0.779,
+          "condition_index": 4,
+          "rule_id": "R-03",
+          "source": "docs/kb/KB3-tuning-rules.md#R-03",
+          "n": 3.0,
+          "n_ref": 1.0,
+          "conf": 1.0,
+          "freq_hz": 1181.0,
+          "band_floor_hz": 2000.0
+        },
+        {
+          "feature": "resonance.candidates[0].present_in_rest",
+          "value": false,
+          "operator": "==",
+          "threshold": false,
+          "strength": 0.68,
+          "condition_index": 5,
+          "rule_id": "R-03b",
+          "source": "docs/kb/KB3-tuning-rules.md#R-03",
+          "n": 2.0,
+          "n_ref": 1.0,
+          "conf": 1.0,
+          "freq_hz": 1181.0,
+          "band_floor_hz": 2000.0
+        },
+        {
+          "feature": "resonance.candidates[0].tracks_command_frequency",
+          "value": false,
+          "operator": "==",
+          "threshold": false,
+          "strength": 0.609,
+          "condition_index": 6,
+          "rule_id": "R-03",
+          "source": "docs/kb/KB3-tuning-rules.md#R-03",
+          "n": 6.0,
+          "n_ref": 4.0,
+          "conf": 1.0,
+          "freq_hz": 1181.0,
+          "band_floor_hz": 2000.0
+        }
+      ],
+      "contradicting_evidence": [
+        {
+          "feature": "step_response[0].damping_ratio_estimate",
+          "value": 0.28,
+          "operator": ">",
+          "threshold": 0.15,
+          "rho_prime": 1.867,
+          "penalty": 0.1,
+          "rule_id": "R-03c",
+          "note": "阻尼不算极低，说明谐振峰不算尖锐，与 Q≈27 一致但削弱'严重共振'的判断。`penalty` 不是自由参数：rho_prime 落在 [1,2) ⟹ 取 KB4 §2.4 的 v_j = 0.10（规则 16）"
+        }
+      ],
+      "ruled_out_alternatives": [
+        {
+          "fault_mode": "mechanical_encoder_periodic_error",
+          "display_name": "编码器每转周期误差（偏心/刻线误差）",
+          "why": "ripple.probing[].dominant_order_per_rev 未与每转周期锁定，且 encoder.per_rev_amplitude_counts 仅占 global.fe_rms_counts 的 23%",
+          "rule_id": "R-07"
+        }
+      ],
+      "recommendation": {
+        "action_id": "A1",
+        "class": "notch_filter",
+        "params": {
+          "center_hz": 1181.0,
+          "width_hz": 470.0,
+          "q": 2.5,
+          "depth_db": -20.0,
+          "cascade_second_notch_at_2f": true
+        },
+        "rationale": "峰频 1181 Hz，按 峰频/2.5 取宽度以避免过度削相位；第二陷波针对 2f 谐波（≈2362 Hz），不是针对反共振谷——共置构型下反共振谷在峰下方（440 Hz，f_m/f_a = sqrt(1+λ)，λ≈6.2），在谷上加陷波只会进一步削掉可用带宽（A-1）。",
+        "risk": "陷波会削弱该频段的指令跟踪带宽；若实际为电气噪声而非结构模态，将导致位置环响应变钝。",
+        "reversibility": "参数级，写入驱动器寄存器即可，可回读原值",
+        "requires_offline": false,
+        "expected_effect": {
+          "metric": "fe_rms_counts",
+          "from": 412.6,
+          "to": 155.1,
+          "improvement_pct": 62.4,
+          "basis": "simulation_validated",
+          "validation_id": "V1",
+          "derivation": "to = 实测 412.6 × (V1.candidate 152.3 / V1.baseline 405.1)。V1 基线是仿真复现值，与实测 412.6 的差是复现残差（fit_residual_pct 8.4），不是笔误；两者必须分列，否则读者会把仿真当实测。",
+          "caveat": "改进量来自 P-B 双惯量仿真，非现场实测；共振频率 −20% 扰动下最坏改进量 28.7%（见 V1.sensitivity）"
+        },
+        "field_procedure": [
+          "[L1|真值来源=③a 手册可查|核对=memory|执行者=人工] 1. 备份当前 Pn 参数表并截图（参数名与单位口径未经手册核对）",
+          "[L1|真值来源=③a 手册可查|核对=memory|执行者=人工] 2. 先只加第一陷波，做 3 次全行程定位，观察 1181 Hz 峰是否下降 >10 dB",
+          "[L1|真值来源=③a 手册可查|核对=memory|执行者=人工] 3. 若在 2f（≈2362 Hz）出现新峰抬升，补第二陷波；若 440 Hz 反共振谷附近的响应被一起削平，说明陷波带过宽、正在吃掉有效带宽，回退一档",
+          "[L1|真值来源=③a 手册可查|核对=memory|执行者=人工] 4. 每次改动后重新测量 settling_time_ms，超过 30 ms 则回退一档增益（30 ms 属机台验收限，非手册已核对值）"
+        ]
+      },
+      "next_data_to_collect": [
+        {
+          "ask": "补采 0-2 kHz 的 Bode 图（位置环开频响应）",
+          "why": "当前带宽为命令响应间接估计，置信度 0.6，不足以确认陷波后相位裕度",
+          "unlocks": [
+            "R-03d 相位裕度校验",
+            "陷波深度上限判定"
+          ]
+        },
+        {
+          "ask": "导出 temp 通道，或提供冷机/热机各一组同轨迹波形",
+          "why": "操作员备注'运行 40 分钟后变差'，当前无法区分谐振漂移与温漂",
+          "unlocks": [
+            "H3 热漂移假设的判定"
+          ]
+        }
+      ]
+    }
+  ],
+  "differential": {
+    "considered": [
+      "mechanical_resonance",
+      "electrical_feedforward_mismatch",
+      "mechanical_crawling",
+      "mechanical_encoder_periodic_error",
+      "mechanical_thermal_drift",
+      "electrical_position_pi_detune",
+      "mechanical_backlash",
+      "software_induced_pulse_eq_overwritten",
+      "software_induced_host_thread_jitter"
+    ],
+    "considered_display_names": {
+      "electrical_feedforward_mismatch": "前馈失配（旧示例写作 feedforward_mismatch）",
+      "mechanical_encoder_periodic_error": "编码器每转周期误差（旧：encoder_eccentricity）",
+      "mechanical_thermal_drift": "热漂移（旧：thermal_drift）",
+      "electrical_position_pi_detune": "增益过高自激（旧：gain_too_high_hunting / limit_cycle）",
+      "mechanical_crawling": "摩擦爬行（旧：friction_crawling）"
+    },
+    "not_evaluable": [
+      {
+        "fault_mode": "mechanical_thermal_drift",
+        "blocked_by": "absent_temp_channel",
+        "why": "缺 temp 通道，且无冷热机对比（结构性真空，A-64：本案例族无对外正例来源）"
+      },
+      {
+        "fault_mode": "software_induced_host_thread_jitter",
+        "blocked_by": "absent_events_jsonl",
+        "why": "本样本无 events.jsonl ⟹ 跟随误差尖峰与上位机调度抖动在结构上不可分"
+      },
+      {
+        "family": "software_induced_error",
+        "blocked_by": "absent_events_jsonl",
+        "why": "事件层缺席使整族降级为不可评估。族级标签只在这里出现，不进 hypotheses（A-18）"
+      }
+    ]
+  },
+  "validation": [
+    {
+      "id": "V1",
+      "action_id": "A1",
+      "method": "two_inertia_sim",
+      "verification_level": "L1",
+      "plant_id": "P-B",
+      "plant_source": "docs/kb/KB5-simulation-plant.md#P-B",
+      "plant_fit": {
+        "inertia_ratio_fitted": 6.2,
+        "resonance_hz": 1181.0,
+        "antiresonance_hz": 440.0,
+        "damping_fitted": 0.28,
+        "fit_residual_pct": 8.4,
+        "sensor_config_used": "motor_side"
+      },
+      "replay_check": {
+        "passed": true,
+        "max_normalized_error": 0.061
+      },
+      "baseline": {
+        "fe_rms_counts": 405.1,
+        "settling_time_ms": 41.6,
+        "overshoot_pct": 9.8,
+        "dominant_peak_db": 18.3
+      },
+      "candidate": {
+        "fe_rms_counts": 152.3,
+        "settling_time_ms": 18.9,
+        "overshoot_pct": 3.1,
+        "dominant_peak_db": 4.6
+      },
+      "improvement": {
+        "fe_rms_pct": 62.4,
+        "settling_pct": 54.6
+      },
+      "stability": {
+        "phase_margin_deg": 41.2,
+        "gain_margin_db": 8.7,
+        "new_peak_check": "候选频谱未出现基线没有的 >50% 主峰峰 ⟹ 未激发新模态"
+      },
+      "sensitivity": [
+        {
+          "param": "inertia_ratio",
+          "perturbation_pct": -20,
+          "fe_rms_improvement_pct": 44.1
+        },
+        {
+          "param": "inertia_ratio",
+          "perturbation_pct": 20,
+          "fe_rms_improvement_pct": 51.0
+        },
+        {
+          "param": "resonance_hz",
+          "perturbation_pct": -20,
+          "fe_rms_improvement_pct": 28.7
+        },
+        {
+          "param": "resonance_hz",
+          "perturbation_pct": 20,
+          "fe_rms_improvement_pct": 33.9
+        },
+        {
+          "param": "damping",
+          "perturbation_pct": -20,
+          "fe_rms_improvement_pct": 47.5
+        },
+        {
+          "param": "damping",
+          "perturbation_pct": 20,
+          "fe_rms_improvement_pct": 55.2
+        }
+      ],
+      "sensitivity_worst_improvement_pct": 28.7,
+      "fragile": false,
+      "caveats": [
+        "仿真模型由本波形反拟合，改进量是模型内推值，非实测",
+        "未建模热效应与导轨磨损",
+        "陷波深度在 −20% 共振频率扰动下改进量降到 28.7%，现场须按步骤 2 复测"
+      ],
+      "plots": [
+        "validation/V1_compare.png",
+        "validation/V1_spectral.png"
+      ]
+    }
+  ],
+  "safety": {
+    "writes_to_device": false,
+    "requires_human_approval": true,
+    "hard_blocks": [
+      "禁止在带工件/带负载状态下直接下发增益",
+      "限位与安全回路未验证前不得关闭陷波"
+    ],
+    "disclaimer": "本输出为辅助诊断，参数下发前须由设备工程师现场确认。"
+  },
+  "audit": {
+    "rules_fired": [
+      "R-03a",
+      "R-03b",
+      "R-03c",
+      "R-07",
+      "R-11"
+    ],
+    "rules_skipped": [
+      {
+        "rule_id": "R-05",
+        "reason": "依赖 crawling.low_speed_segments，本样本无恒低速段"
+      }
+    ],
+    "assumptions": [
+      {
+        "anchor": "global.fe_rms_counts",
+        "statement": "本示例的幅值一律以 counts 呈现，与 KB3 阈值逐格对齐；`inputs.counts_per_mm = 50000` 已知 ⟹ 可换算为 µm，但换算不改变判据档位（A-97 ①：`*_counts` 是历史名而非单位）"
+      },
+      {
+        "anchor": "R-15",
+        "statement": "H1（前馈失配）的 severity 取 KB4 §2.9 的 S2 行（按后果类型归档），属裁决分类锚点、非独立观测锚 ⟹ 不得写成唯一结论（A-100 ⑤）"
+      },
+      {
+        "anchor": "R-03",
+        "statement": "H2（机械谐振）的 severity 取 §2.9 的 S3 行；rank 1/2 的先后由 severity 这一第一排序键决定（规则 20），与 C(H1)=0.48 < C(H2)=0.65 不矛盾"
+      }
+    ],
+    "tier_ledger": [
+      {
+        "claim_id": "verdict.summary",
+        "source_tier": "T1-a",
+        "wording_ceiling": "实测支持该结论"
+      },
+      {
+        "claim_id": "H1",
+        "source_tier": "T2",
+        "wording_ceiling": "按 <出处> 的阈值",
+        "validation_id": null
+      },
+      {
+        "claim_id": "H2",
+        "source_tier": "T1-a",
+        "wording_ceiling": "实测支持现象，改进量为仿真验证",
+        "validation_id": "V1"
+      },
+      {
+        "claim_id": "recommendation.A1",
+        "source_tier": "T3",
+        "wording_ceiling": "改进量来自 P-B 仿真（T3），非现场实测；参数名口径未经外部核对",
+        "validation_id": "V1"
+      }
+    ],
+    "external_ledger": [
+      {
+        "claim_id": "recommendation.A1.field_procedure",
+        "assertion_class": "3a",
+        "external_reference": "memory",
+        "verified_against": {
+          "manual_id": null,
+          "revision": null,
+          "clause": null
+        },
+        "verified_by": "self",
+        "artifact_path": null,
+        "extracted": false,
+        "note": "Pn 参数名/单位口径与 30 ms 验收限均未对厂商工件核对；未标档即默认 memory（规则 17a）。手册 8.9 那类可查事实由第三方会话读过，对我们是 public-doc、不计 k（规则 17b）"
+      }
+    ],
+    "external_counts": {
+      "verified": 0,
+      "total": 1
+    },
+    "llm_calls": [
+      {
+        "stage": "verdict_narrative",
+        "model": "…",
+        "input_features_only": true
+      }
+    ],
+    "deterministic_core_hash": "sha256:7f986a75c0c96c935d464f56032e92694817d44d48a55f7b4d79feb804e186f8",
+    "human_review_checklist": [
+      "确认 1181 Hz 不是编码器/电流采样噪声混叠",
+      "确认机械结构近期无拆装"
+    ]
+  },
+  "freq_limits": {
+    "fs_hz": 8000.0,
+    "nyquist_hz": 4000.0,
+    "reliable_band_hz": 3200.0,
+    "blocked_rules": [],
+    "reason": null
+  }
+}

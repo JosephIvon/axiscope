@@ -1,0 +1,21 @@
+数据文件批量校验报告（初筛：时基 / 通道 / 运动特征）
+判据出处：KB2 §5.1 六条硬拒 + C1 数据质量红线；抖动口径同 C2 quality.dt_jitter_ratio
+自述一律不采信：.source.txt 声明值逐条 vs 实测（A-88/A-89）
+============================================================================================================
+
+◆ 2563_LDD_Transfer_function_Force_controlled.csv   [waveform_candidate]   verdict=reject
+  大小=64,274 B  sha256=90652a05b2034a05…
+  格式：layout=plain_matrix 分隔=semicolon 编码=utf-8 表头行=1 换行=CRLF BOM=False 小数逗号=True
+  行数：数据 2047 行，每行 31.4 B，每单元格 10.5 B
+  时基：递增启发列（身份未证实）：fs实测=16000.0Hz 抖动=0.000 时长=0.128s 单调=Y 单位来源=column_name:ms
+  通道：2 列，C1 规范名 → C0:Lineardirektantrieb.r77→未映射[lineardirektantrieb](40), C1:Lineardirektantrieb.r78[0]→未映射[lineardirektantrieb](41.5)
+        未映射（不猜语义，KB2 §三）：['C0:Lineardirektantrieb.r77', 'C1:Lineardirektantrieb.r78[0]']
+  运动：最多运动段=227 段，非零运动占比峰值=0.720，跟随误差恒等式=not_computable
+  红线：命中 有效时长<0.5s (实测 0.1279s) | cur_q/vel_fb/fe 未识别（2/2 列未映射，疑为命名族缺口而非数据缺失，须按数据集文档人工复判）
+    自述核对账：数值/哈希类 0/0 条与实体文件核过（证伪 0、无从核对 0）
+    自述核对[source sidecar] ABSENT — 无 .source.txt ⟹ external_reference 与 verified_against 无从登记，该样本不可进 KB2 接入卡
+
+============================================================================================================
+汇总（执行 N / 跳过 M 分列，A-87 口径）
+  2563_LDD_Transfer_function_Force_controlled.csv waveform_candidate reject                 红线 2
+  执行 1 / 跳过 0（非波形存证不判红线） ⟹ accept 0 / reject 1

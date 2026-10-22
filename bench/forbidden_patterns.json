@@ -1,0 +1,27 @@
+{
+  "_note": "KB8 §1.1 `forbidden_conclusions` 的 token → 可机检正则映射。token 取自 KB8 §1.6 示例（field_effective / thermal_drift / kHz_absent / sub_quantum_mm_claim）与 C5 §3「禁语违例」行、C5 §9 纪律第 2 条、KB5 §6.3「禁止措辞」表。正则是本轮自定的落盘约定，不是契约原文。",
+  "kHz_absent": {
+    "why": "C5 §9 纪律 2 / C2 规则 7：f_b=400 Hz 的数据上不得说「未发现谐振」——看不见≠查过没问题",
+    "patterns": ["未发现谐振", "未发现共振", "未检出谐振", "无谐振", "不存在谐振", "没有谐振", "无共振", "未发现.*谐振"]
+  },
+  "no_anomaly_claim": {
+    "why": "C5 §3「禁语违例」行（含「未发现异常」类越级措辞）",
+    "patterns": ["未发现异常", "未见异常", "无异常", "一切正常", "完全正常", "未发现任何", "no anomaly", "nothing abnormal"]
+  },
+  "field_effective": {
+    "why": "KB5 §5.4 claims_forbidden / C5 §1 T1-a 行：T1-a 不得支撑现场有效",
+    "patterns": ["已验证有效", "现场应可改善", "现场有效", "可用于现场", "可直接下发", "已对照官方手册原文核对"]
+  },
+  "thermal_drift": {
+    "why": "A-64 结构性真空：thermal_drift / motor_heating 的能力层无正例来源，只能进 not_evaluable",
+    "patterns": ["热漂移导致", "由于热漂移", "电机发热导致", "温升导致", "thermal drift caused", "由温升引起"]
+  },
+  "sub_quantum_mm_claim": {
+    "why": "C2 规则 11 / KB8 §1.5：counts_per_mm=null ⟹ 任何 µm 级声明都是臆造",
+    "patterns": ["\\d+(\\.\\d+)?\\s*(µm|μm|um)\\b", "\\d+(\\.\\d+)?\\s*毫米", "微米级"]
+  },
+  "simulation_validated_claim": {
+    "why": "KB5 §6.3「禁止措辞」表：出现即视为无依据成功声明",
+    "patterns": ["已验证有效", "仿真确认问题在机械侧", "该参数调整后现场应可改善", "通过仿真验证", "仿真验证.*置信度提升"]
+  }
+}

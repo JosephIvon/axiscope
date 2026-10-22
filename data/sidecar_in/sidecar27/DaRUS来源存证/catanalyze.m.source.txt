@@ -1,0 +1,14 @@
+url:                 https://darus.uni-stuttgart.de/api/access/datafile/251087
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（DaRUS / Dataverse 公开 API 直下）
+publisher:           Reichenbach, Thomas（DaRUS，University of Stuttgart / ISW）
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.18419/DARUS-3600
+original_filename:   catanalyze.m
+format_family:       其他（MATLAB 函数，非波形）
+device_or_software:  MATLAB；配套 Cable Actuator Testbed（TwinCAT 3 采集）
+sampling_rate:       N/A（脚本）
+rows:                N/A（脚本，9212 B）
+channels:            N/A
+variable_semantics:  该函数把 CSV 读入后计算派生量：p_diff_asco = p_asco_enc - p_test、v_diff_asco = v_asco_enc - v_test、p_diff_lsv = p_lsv_enc - p_test、v_diff_lsv = v_lsv_enc - v_test，并定义 ft_load/ft_test/ft_total、f_fric_*、pin_total、ppreload_lsv、pout_gen、pout_total、ploss_*、eff_total、dist_factor 等派生指标。是"误差量"的定义出处。
+notes:               MD5 = 8f5dbdbf7e516944e69541eba234ddcf，size = 9212 B，与 DaRUS API 记录一致。非波形数据；作为派生量与误差定义来源登记。

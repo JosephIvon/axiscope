@@ -1,0 +1,14 @@
+url:                 https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801
+retrieved_at:        2026-10-20
+retrieved_by:        AI 资源检索子智能体（匿名直下；fileId 由数据集页面组件状态提取）
+publisher:           Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng（通讯作者邮箱 panht@ipp.ac.cn）
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）
+original_filename:   data.zip（页面登记文件名；数据集标题 "Raw data of motor position in several cases"）
+format_family:       其他（ZIP，内含 MATLAB v5 .mat 文件）
+device_or_software:  两台机器人关节 × 三种控制器（数据集页面原文："point-to-point trajectory and periodic trajectory of two different robot joints under three controllers"）
+sampling_rate:       500 Hz（tout 步长 = 2.0e-3 s）
+rows:                周期轨迹 200001 行 / 点位轨迹 100001 行（每个 .mat 内各变量同长）
+channels:            11（tout, q1, q2, j1_qd, j2_qd, theta1, theta2, j1_eq, j2_eq, j1_etheta_pos, j2_etheta_pos）
+variable_semantics:  数据集页面原文仅给出："This dataset contains both the point-to-point trajectory and periodic trajectory of two different robot joints under three controllers."，未逐列定义变量含义与单位。此处仅登记 .mat 内部字段名（tout / q1 / q2 / j1_qd / j2_qd / theta1 / theta2 / j1_eq / j2_eq / j1_etheta_pos / j2_etheta_pos）。⚠️ 逐列物理含义与单位在数据集文档中缺失，属"来源未登记"项，不得自行推断。
+notes:               MD5 = c7506f625dde69a131333d6002f5e6a2，与数据集页面公布值完全一致；解压后 6 个 .mat，总大小约 48.15 MB；发布日 2022-10-24。资助信息：National Natural Science Foundation of China (Grant No.11905147)；China National Special Project for Magnetic Confinement Fusion Science Program (Grant No.2017YFE0300503)。.mat 头为 MATLAB 5.0 MAT-file, PCWIN64, Created on: Mon Oct 17 15:08:07 2022。

@@ -1,0 +1,14 @@
+url:                 https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，经 scipy 转换为 CSV 后打包）
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（本地 scipy.io 转换打包，非第三方下载）
+publisher:           Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng
+license:             CC BY 4.0（继承自原始数据集，可再分发,需署名）
+dataset_doi:         10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）
+original_filename:   NONE（由 data/*.mat 转换而来，非厂商/仪器原始导出）
+format_family:       其他（派生 CSV；源为 MATLAB v5 .mat）
+device_or_software:  两台机器人关节 × 三种控制器（与原始数据集一致）
+sampling_rate:       500 Hz（tout 步长 = 2.0e-3 s）
+rows:                Controller{1,2,3} 周期轨迹各 200001 行；Controller{1,2,3} 点位轨迹各 100001 行
+channels:            11（tout, q1, q2, j1_qd, j2_qd, theta1, theta2, j1_eq, j2_eq, j1_etheta_pos, j2_etheta_pos）
+variable_semantics:  同原始数据集：数据集文档未逐列定义变量含义与单位，仅登记 .mat/CSV 字段名。⚠️ 属"来源未登记"项，不得自行推断。
+notes:               本压缩包是派生文件（.mat → CSV），非原始导出，已明确标注。派生 CSV 各文件 MD5（依台账）：Controller1周期轨迹 4da745ed98aa702a32d87ae670eb986b；Controller1点位轨迹 446134687a304f0e823051773f10fd1b；Controller2周期轨迹 45066edfb85cf4b6eb5febac96326e30；Controller2点位轨迹 2735a131ccaaf3575aae61d806111017；Controller3周期轨迹 fbf87c0064443f404ea2ae3a27bfadcd；Controller3点位轨迹 d01d2f2b47fc9b668927d45744d0f682。

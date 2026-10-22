@@ -1,0 +1,14 @@
+url:                 https://darus.uni-stuttgart.de/api/access/datafile/244662
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（DaRUS / Dataverse 公开 API 直下）
+publisher:           Reichenbach, Thomas（DaRUS，University of Stuttgart / ISW）
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.18419/DARUS-3600
+original_filename:   ASCOspeed_Settings.md
+format_family:       其他（设备设置说明，非波形）
+device_or_software:  micro-epsilon ASCOspeed 5500 激光测速/测长传感器（型号 ASP5500-300-A-I-M-D-O；ROM-DATE 27.06.11；Softwareversion 2.009 Build 1；S/N 11110002）
+sampling_rate:       N/A（设置说明文档，1831 B）
+rows:                N/A
+channels:            N/A
+variable_semantics:  文档给出传感器侧设置项原文（AVErage、CALFactor、INCFactor、MINRate、PSTEp、S3Interface 等）与一条使用约束："Minimalvorschub bei Messungen: F18000 (0.3 m/s)"（测量最小进给 F18000 = 0.3 m/s）。可据 INCFactor/PSTEp 解释位置/速度通道的量纲来源。
+notes:               MD5 = 73417db351dd7a349e7a493cb4237a45，size = 1831 B，与 DaRUS API 记录一致。非波形数据；为相关 CSV 中 ASCOspeed 通道的单位/标定提供依据。

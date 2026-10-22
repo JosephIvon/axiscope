@@ -1,0 +1,73 @@
+{
+  "schema": "axiscope.diagnosis/1",
+  "case_id": "AX-T1A-20260312-07",
+  "generated_at": "2026-03-12T09:10:00+08:00",
+  "engine_version": "0.1.0",
+
+  "inputs": {
+    "sample_id": "AX-T1A-20260312",
+    "present_channels": ["pos_cmd", "pos_fb", "fe"],
+    "missing_channels": ["temp", "events.jsonl"],
+    "counts_per_mm": 50000.0,
+    "drive_params_known": [],
+    "context_complaint": "1 kHz 采样、无 temp、无事件流，kHz 谐振族与软件族整族被阻塞"
+  },
+
+  "freq_limits": {
+    "fs_hz": 1000.0,
+    "nyquist_hz": 500.0,
+    "reliable_band_hz": 400.0,
+    "blocked_rules": ["R-03", "R-04", "R-11#switching_freq"]
+  },
+  "event_context": {"available": false, "causal_claims_permitted": false},
+
+  "verdict": {
+    "primary": null,
+    "summary": "本样本在 fs=1 kHz（奈奎斯特 500 Hz、可靠带 400 Hz）下无法对 kHz 级谐振作出任何判定；缺 temp 通道与冷热机配对使热漂移不可评估；无 events.jsonl 使软件 induced 整族停在共现级。故本次不产出阳性假设，全部登记为不可评估。",
+    "overall_confidence": null,
+    "confidence_note": "无 primary ⟹ 不适用缺席扣减公式；规则 12 的诚实真空形状。",
+    "actionable": false
+  },
+
+  "hypotheses": [],
+
+  "differential": {
+    "considered": [],
+    "considered_display_names": {},
+    "not_evaluable": [
+      {"fault_mode": "mechanical_resonance", "blocked_by": "band_gate_fs_1k",
+       "why": "采样率不足，kHz 频段无信息（不代表不存在）——R-25 原文措辞，禁写未发现共振"},
+      {"fault_mode": "mechanical_thermal_drift", "blocked_by": "absent_temp_channel",
+       "why": "缺 temp 通道，且无冷热机对比"},
+      {"fault_mode": "electrical_torque_ripple", "blocked_by": "band_gate_pass_channel_gate_fail",
+       "why": "开关频率支路带被阻塞且本样本无 cur_q 通道"},
+      {"family": "software_induced_error", "blocked_by": "absent_events_jsonl",
+       "why": "无事件上下文，无法区分机械尖峰与调度抖动（R-30 原文）"}
+    ]
+  },
+
+  "validation": [],
+
+  "safety": {
+    "writes_to_device": false,
+    "requires_human_approval": true,
+    "hard_blocks": ["无阳性结论，禁止在无第二路独立反馈时下任何增益/陷波工单"],
+    "disclaimer": "本输出为辅助诊断，参数下发前须由设备工程师确认。"
+  },
+
+  "audit": {
+    "rules_fired": ["R-25", "R-30"],
+    "rules_skipped": [
+      {"rule_id": "R-03", "reason": "reliable_band_hz 400 < band⊥ 2000（INV-1）"},
+      {"rule_id": "R-04", "reason": "reliable_band_hz 400 < band⊥ 2000（INV-1）"}
+    ],
+    "tier_ledger": [
+      {"claim_id": "verdict.summary", "source_tier": "T1-a", "wording_ceiling": "实测支持现象，改进量为仿真验证"}
+    ],
+    "external_ledger": [],
+    "external_counts": {"verified": 0, "total": 0},
+    "llm_calls": [{"stage": "verdict_narrative", "model": "…", "input_features_only": true}],
+    "deterministic_core_hash": "sha256:81906ecbcf6ee17b80bee92eb1e947ab20f20f893e00dc9f3990ab5d6f2ac649",
+    "human_review_checklist": ["确认 fs 与可靠带读数正确", "确认确无 events.jsonl"]
+  }
+}

@@ -1,0 +1,14 @@
+url:                 https://china.scidb.cn/download?fileId=634e4983934f5e4e97ace801（原始包，经 scipy 转为 CSV）
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（本地 scipy.io 从 data/Controller2Periodic.mat 转换）
+publisher:           Science Data Bank（ScienceDB）；数据集作者：Huayuan Huang, Hongtao Pan, Yong Cheng
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.57760/sciencedb.04148（CSTR: 31253.11.sciencedb.04148）
+original_filename:   NONE（由 data/Controller2Periodic.mat 转换而来，非原始导出）
+format_family:       其他（派生 CSV；源为 MATLAB v5 .mat）
+device_or_software:  两台机器人关节 × 三种控制器（Controller2，周期轨迹）
+sampling_rate:       500 Hz（tout 步长 = 2.0e-3 s）
+rows:                200001 数据行（+1 行表头 = 200002 行）
+channels:            11（tout, q1, q2, j1_qd, j2_qd, theta1, theta2, j1_eq, j2_eq, j1_etheta_pos, j2_etheta_pos）
+variable_semantics:  同原始数据集：数据集文档未逐列定义变量含义与单位，仅登记 .mat/CSV 字段名。⚠️ 属"来源未登记"项，不得自行推断。
+notes:               MD5 = 45066edfb85cf4b6eb5febac96326e30，size = 29016455 B，与台账一致。派生文件，透明标注，不可当作原厂导出。

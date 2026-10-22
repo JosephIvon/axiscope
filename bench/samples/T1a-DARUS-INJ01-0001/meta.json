@@ -1,0 +1,533 @@
+{
+  "schema": "axiscope.waveform/1",
+  "source": {
+    "vendor": "beckhoff",
+    "drive_model": "TwinCAT3 ScopeView",
+    "export_format": "csv",
+    "original_filename": "Export10_244531.csv",
+    "tier": "T1-a",
+    "ingest_confidence": 0.9
+  },
+  "sample_rate_hz": 1000.0,
+  "sample_rate_source": "declared",
+  "units_are": "si_native",
+  "counts_per_mm": null,
+  "encoder_lines": null,
+  "rated_current_a": null,
+  "axis": {
+    "name": null,
+    "type": null,
+    "motor_rev_counts": null,
+    "travel_limit_neg_mm": null,
+    "travel_limit_pos_mm": null
+  },
+  "sensor_config": "unknown",
+  "cross_validation": {
+    "pairs": [
+      [
+        "dPosition_test",
+        "dPosition_asco_enc"
+      ],
+      [
+        "dPosition_test",
+        "dPosition_lsv_enc"
+      ],
+      [
+        "dPosition_asco",
+        "dPosition_asco_enc"
+      ]
+    ],
+    "note": "三套独立位置测量互不一致（§4.10）⟹ 全部经 extra_channels 保留，分歧本身是证据，不择一当 pos_fb（C2 sensor_disagreement）"
+  },
+  "drive": {
+    "position_loop_period_us": null,
+    "velocity_loop_gain_hz": null,
+    "current_loop_bandwidth_hz": null,
+    "rigidity_level": null,
+    "notch_filters": [],
+    "inertia_ratio": null,
+    "rated_torque_N_m": null,
+    "rated_torque_source": null,
+    "current_limit_a": null,
+    "current_limit_source": null
+  },
+  "present_channels": [
+    "vel_cmd",
+    "vel_fb",
+    "torque"
+  ],
+  "time_bases": [
+    {
+      "id": "tb0",
+      "role": "primary",
+      "n_samples": 5000,
+      "dt_median_s": 0.001,
+      "sample_rate_hz": 1000.0,
+      "dt_jitter_ratio": 0.0,
+      "strictly_monotonic": true,
+      "unit_source": "measured"
+    }
+  ],
+  "primary_time_base": "tb0",
+  "resample": [],
+  "channels": {
+    "vel_cmd": {
+      "raw_column": "dVelocity_test_tar",
+      "symbol": "Measurement_Connector.dVelocity_test_tar",
+      "unit": "m/s",
+      "role": "mapped",
+      "sign": 1,
+      "offset": 0.0,
+      "inferred": false,
+      "confidence": 0.6,
+      "time_base_ref": null,
+      "basis": "KB2 §4.1 映射表（`_tar` → vel_cmd）+ §4.10 实测 17,442/18,651 行有差、峰值 0.1270 m/s",
+      "note": "`_tar` 后缀本身不构成指令轨证据；本映射的授权是实测两列确有差，且 §4.10 判「速度目标 ≠ 速度实际」⟹ vel_err 类判据可用"
+    },
+    "vel_fb": {
+      "raw_column": "dVelocity_test",
+      "symbol": "Measurement_Connector.dVelocity_test",
+      "unit": "m/s",
+      "role": "mapped",
+      "sign": 1,
+      "offset": 0.0,
+      "inferred": false,
+      "confidence": 0.6,
+      "time_base_ref": null,
+      "basis": "KB2 §4.1 映射表（直映，本身带符号，不乘 dir）+ §4.10「本样本可撑 vel_err 类判据」",
+      "note": "bMovingForward 全程恒 0 ⟹ 作者脚本的 dir=-1 规则无法用作符号来源（KB3 纪律 9），按 §4.1 不乘 dir、sign=+1 直映"
+    },
+    "torque": {
+      "raw_column": "dTorque_test",
+      "symbol": "Measurement_Connector.dTorque_test",
+      "unit": "N_m",
+      "role": "mapped",
+      "sign": 1,
+      "offset": 0.0,
+      "inferred": false,
+      "confidence": 0.5,
+      "time_base_ref": null,
+      "basis": "KB2 §七-3（C1 torque.unit ∈ {percent_of_rated, N_m} 已于 A-4 落契约）",
+      "note": "绝对刻度未定：作者脚本 catanalyze.m 第 100-102 行另有 ×10 修正（KB2 §七-3 转述），本地无该脚本可核 ⟹ 按 ×1 原样入包"
+    }
+  },
+  "extra_channels": {
+    "dPosition_test": {
+      "raw_column": "dPosition_test",
+      "symbol": "Measurement_Connector.dPosition_test",
+      "native_unit": "位置/绳长残差（m），非 counts（KB2 §3.5 units_are=si_native）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "三套位置测量之一；§4.10 判三源互不一致 ⟹ 不择一当 pos_fb"
+    },
+    "dPosition_test_tar": {
+      "raw_column": "dPosition_test_tar",
+      "symbol": "Measurement_Connector.dPosition_test_tar",
+      "native_unit": "位置/绳长残差（m），非 counts（KB2 §3.5 units_are=si_native）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "§4.1 族卡可映 pos_cmd，但 §4.10 实测它与 dPosition_test 逐行全等（0/18,651 行有差）⟹ 样本卡优先，拒映 pos_cmd，否则会凭空造出 fe ≡ 0 的指令轨"
+    },
+    "dPosition_load": {
+      "raw_column": "dPosition_load",
+      "symbol": "Measurement_Connector.dPosition_load",
+      "native_unit": "位置/绳长残差（m），非 counts（KB2 §3.5 units_are=si_native）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "与 dPosition_load_tar 逐行全等（0/18,651）⟹ 同样不是独立反馈"
+    },
+    "dPosition_load_tar": {
+      "raw_column": "dPosition_load_tar",
+      "symbol": "Measurement_Connector.dPosition_load_tar",
+      "native_unit": "位置/绳长残差（m），非 counts（KB2 §3.5 units_are=si_native）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "与 dPosition_load 逐行全等 ⟹ 拒映 pos_cmd"
+    },
+    "dPosition_asco": {
+      "raw_column": "dPosition_asco",
+      "symbol": "Measurement_Connector.dPosition_asco",
+      "native_unit": "位置/绳长残差（m），非 counts（KB2 §3.5 units_are=si_native）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "光学 ASCO 测量；与 dPosition_asco_enc 峰值差 180.15 ⟹ 交叉验证输入"
+    },
+    "dPosition_asco_enc": {
+      "raw_column": "dPosition_asco_enc",
+      "symbol": "Measurement_Connector.dPosition_asco_enc",
+      "native_unit": "位置/绳长残差（m），非 counts（KB2 §3.5 units_are=si_native）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "光学 ASCO 编码器测量；与 dPosition_asco 峰值差 180.15"
+    },
+    "dPosition_lsv_enc": {
+      "raw_column": "dPosition_lsv_enc",
+      "symbol": "Measurement_Connector.dPosition_lsv_enc",
+      "native_unit": "位置/绳长残差（m），非 counts（KB2 §3.5 units_are=si_native）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "电感 LSV 测量；三源之一"
+    },
+    "dPosition_diff": {
+      "raw_column": "dPosition_diff",
+      "symbol": "Measurement_Connector.dPosition_diff",
+      "native_unit": "位置/绳长残差（m），非 counts（KB2 §3.5 units_are=si_native）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": [
+        "dPosition_load",
+        "dPosition_test"
+      ],
+      "derived_residual_max": 8.1601392309949e-15,
+      "note": "C1 派生规则 2 点名的「假朋友」：全 18,651 行实测 ≡ −(dPosition_test + dPosition_load)（行级最大残差 3.55e-15，corr 1.000000）⟹ 它是 PLC 现场计算列而非独立测量；本样本 fe 又恒零，规则 2 的 corr 自检分母退化，拒当 fe 的依据是恒等式本身而非相关性。按原名入 extra（绳长守恒残差，全程 0.1275…0.1354 m，即两绳总长仅守到 7.88 mm）"
+    },
+    "dVelocity_load": {
+      "raw_column": "dVelocity_load",
+      "symbol": "Measurement_Connector.dVelocity_load",
+      "native_unit": "速度（m/s）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "与 dVelocity_test 符号相反（缆索两端反向）；全程恒 +2 m/s 而 dVelocity_test 为 −2 m/s"
+    },
+    "dVelocity_load_tar": {
+      "raw_column": "dVelocity_load_tar",
+      "symbol": "Measurement_Connector.dVelocity_load_tar",
+      "native_unit": "速度（m/s）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "load 侧目标；与 dVelocity_test_tar 几乎无关（corr −0.009）"
+    },
+    "dVelocity_asco": {
+      "raw_column": "dVelocity_asco",
+      "symbol": "Measurement_Connector.dVelocity_asco",
+      "native_unit": "速度（m/s）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "ASCO 侧速度测量"
+    },
+    "dVelocity_asco_enc": {
+      "raw_column": "dVelocity_asco_enc",
+      "symbol": "Measurement_Connector.dVelocity_asco_enc",
+      "native_unit": "速度（m/s）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "ASCO 编码器速度测量"
+    },
+    "dVelocity_lsv_enc": {
+      "raw_column": "dVelocity_lsv_enc",
+      "symbol": "Measurement_Connector.dVelocity_lsv_enc",
+      "native_unit": "速度（m/s）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "LSV 编码器速度测量"
+    },
+    "dVelocity_diff": {
+      "raw_column": "dVelocity_diff",
+      "symbol": "Measurement_Connector.dVelocity_diff",
+      "native_unit": "速度（m/s）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "与 dPosition_diff 同族：全 18,651 行实测 ≡ −(dVelocity_test + dVelocity_load)（行级最大残差 4.44e-16）⟹ PLC 计算列，非独立测量"
+    },
+    "dRate_asco": {
+      "raw_column": "dRate_asco",
+      "symbol": "Measurement_Connector.dRate_asco",
+      "native_unit": "速度（m/s）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "速率（ASCO 侧，单位存疑）"
+    },
+    "dForce_load": {
+      "raw_column": "dForce_load",
+      "symbol": "Measurement_Connector.dForce_load",
+      "native_unit": "力（N）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "负载侧力；与 dForce_tar 全行有差（峰值 97.5）⟹ 力控工况"
+    },
+    "dForce_test": {
+      "raw_column": "dForce_test",
+      "symbol": "Measurement_Connector.dForce_test",
+      "native_unit": "力（N）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "试验侧力"
+    },
+    "dForce_tar": {
+      "raw_column": "dForce_tar",
+      "symbol": "Measurement_Connector.dForce_tar",
+      "native_unit": "力（N）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "力目标；本样本恒值 125 ⟹ 恒值列"
+    },
+    "dForce_diff": {
+      "raw_column": "dForce_diff",
+      "symbol": "Measurement_Connector.dForce_diff",
+      "native_unit": "力（N）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "力差残差通道"
+    },
+    "dForce_colinear": {
+      "raw_column": "dForce_colinear",
+      "symbol": "Measurement_Connector.dForce_colinear",
+      "native_unit": "力（N）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "同向力分量"
+    },
+    "dForce_orthogonal": {
+      "raw_column": "dForce_orthogonal",
+      "symbol": "Measurement_Connector.dForce_orthogonal",
+      "native_unit": "力（N）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "正交力分量"
+    },
+    "dForceSensorNo": {
+      "raw_column": "dForceSensorNo",
+      "symbol": "Measurement_Connector.dForceSensorNo",
+      "native_unit": "力（N）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "恒值 8 ⟹ 力传感器编号，非物理量"
+    },
+    "dTorque_load": {
+      "raw_column": "dTorque_load",
+      "symbol": "Measurement_Connector.dTorque_load",
+      "native_unit": "转矩（N·m，绝对刻度未定，见 torque 通道 note）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "§4.1 把 dTorque_* 两列同映 torque，C1 只有一个 torque ⟹ 取 test 侧，load 侧保留在 extra"
+    },
+    "dPower_load": {
+      "raw_column": "dPower_load",
+      "symbol": "Measurement_Connector.dPower_load",
+      "native_unit": "功率（W）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "负载侧功率"
+    },
+    "dPower_test": {
+      "raw_column": "dPower_test",
+      "symbol": "Measurement_Connector.dPower_test",
+      "native_unit": "功率（W）",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "试验侧功率"
+    },
+    "bMovingForward": {
+      "raw_column": "bMovingForward",
+      "symbol": "Measurement_Connector.bMovingForward",
+      "native_unit": "0/1",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "厂商布尔列 ⟹ 解析器内部输入，不入 waveform.tsv（C1 通道词表注 / KB2 §七-4）"
+    },
+    "bTrigger_Record": {
+      "raw_column": "bTrigger_Record",
+      "symbol": "Measurement_Connector.bTrigger_Record",
+      "native_unit": "0/1",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "触发门控内部输入（KB3 纪律 8）⟹ 不入 waveform.tsv"
+    },
+    "bTrigger_Export": {
+      "raw_column": "bTrigger_Export",
+      "symbol": "Measurement_Connector.bTrigger_Export",
+      "native_unit": "0/1",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "导出门控内部输入；本样本仅 2.7% 为真 ⟹ 门控用 bTrigger_Record"
+    },
+    "bTrigger_Scope": {
+      "raw_column": "bTrigger_Scope",
+      "symbol": "Measurement_Connector.bTrigger_Scope",
+      "native_unit": "0/1",
+      "role": "unmapped",
+      "confidence": 0.0,
+      "time_base_ref": null,
+      "derived_from": null,
+      "derived_residual_max": null,
+      "note": "示波器使能；本样本恒 1 ⟹ 无截断"
+    }
+  },
+  "io_bits": {},
+  "segments": [
+    {
+      "id": 0,
+      "kind": "move",
+      "t0": 0.0,
+      "t1": 4.999,
+      "axis": null,
+      "note": "变速段：|vel| 峰峰/均值 = 0.0521 > 0.05"
+    }
+  ],
+  "quality": {
+    "n_samples": 5000,
+    "dt_median_s": 0.001,
+    "dt_jitter_ratio": 0.0,
+    "gap_max_s": 0.001,
+    "nan_ratio": 0.0,
+    "nan_ratio_by_channel": {
+      "vel_cmd": 0.0,
+      "vel_fb": 0.0,
+      "torque": 0.0
+    },
+    "quantization_step_counts": null,
+    "nyquist_hz": 500.0,
+    "flags": [
+      "time_column_relative",
+      "trigger_gated:bTrigger_Record",
+      "units_si_native"
+    ]
+  },
+  "context": {
+    "machine": "缆索执行器试验台（cable-actuator-testbed，DARUS-3600）",
+    "complaint": null,
+    "operator_notes": "非故障工单样本：DaRUS 公开试验数据，用于验证接入链路与能力边界；不是产线故障记录，不得当作半导体设备现场证据"
+  },
+  "provenance": {
+    "n_rows_raw": 18652,
+    "n_rows_shape_mismatch": 1,
+    "dropped_head_rows": 0,
+    "trigger_gate": {
+      "channel": "bTrigger_Record",
+      "rows_kept": 5000,
+      "rows_in_gate": 5000,
+      "n_episodes": 1,
+      "rows_used": [
+        12070,
+        17069
+      ]
+    },
+    "header_rows": 13,
+    "citation": {
+      "author": "Reichenbach, Thomas — University of Stuttgart",
+      "doi": "10.18419/DARUS-3600",
+      "license": "CC BY 4.0",
+      "note": "脱敏只清主机路径/ADS NetID/绝对墙钟，不清署名与 DOI（KB2 §6.2）"
+    }
+  },
+  "audit": {
+    "assumptions": [
+      {
+        "anchor": "meta.sample_rate_source",
+        "statement": "厂商在表头声明 SampleTime[ms]=1；由采样序号列差分独立推得 fs=1000.000000 Hz，两者一致，声明值非孤证（`sample_rate_source=declared` 的依据）"
+      },
+      {
+        "anchor": "channels.pos_cmd",
+        "statement": "KB2 §4.10 样本卡优先于 §4.1 族卡 ⟹ dPosition_test_tar 拒映 pos_cmd：门控后 5000 行实测与 dPosition_test 有 0 行不同 ⟹ 逐行全等，映射后会凭空造出 fe ≡ 0 的指令轨（A-98 ③ 的冒充支）"
+      },
+      {
+        "anchor": "channels.vel_fb",
+        "statement": "bMovingForward 全程恒 0，作者脚本的 dir = ±1 规则在本样本上不产生符号信息（KB3 纪律 9）：vel_fb 按 KB2 §4.1 直映、不乘 dir，依赖方向的判据须放弃"
+      },
+      {
+        "anchor": "channels.torque",
+        "statement": "dTorque_* 绝对刻度未定：KB2 §七-3 转述作者脚本有 ×10 修正，本地无该脚本可核，torque 按 ×1 原样入包（KB0 §六 检查 23：字段须有载体，无载体不得填值）"
+      },
+      {
+        "anchor": "meta.audit.identity_check",
+        "statement": "列间恒等式核对（C1 派生规则 9 / A-105 ①）已在门控后 5000 行切片上执行：派生列 1、逐行全等组 3、常数列 2；独立位置测量列 = 5（dPosition_asco_enc, dPosition_asco, dPosition_load, dPosition_test, dPosition_lsv_enc）"
+      },
+      {
+        "anchor": "channels.vel_fb",
+        "statement": "符号一致性实测：d(dPosition_test)/dt 与 dVelocity_test 的 rms 残差 0.3858 m/s，与 dVelocity_load 为 4.018 m/s ⟹ dVelocity_test 与位置通道同向、dVelocity_load 反向（缆索两端反向是可能解释，但本地无列语义文档可证 ⟹ 只登记实测，不改 sign）"
+      }
+    ],
+    "identity_check": {
+      "performed": true,
+      "n_numeric_columns": 28,
+      "n_rows_checked": 5000,
+      "n_derived": 1,
+      "n_duplicate_groups": 3,
+      "n_constant_columns": 2,
+      "n_independent_position": 5,
+      "reason": null
+    }
+  }
+}

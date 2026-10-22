@@ -1,0 +1,14 @@
+url:                 https://darus.uni-stuttgart.de/api/datasets/:persistentId/?persistentId=doi:10.18419/DARUS-5171
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（DaRUS / Dataverse 公开 API，gzip 压缩传输直取）
+publisher:           DaRUS（University of Stuttgart）元数据 API；数据集作者：Reichenbach, Thomas
+license:             数据集本身为 CC BY 4.0（本 JSON 为公开 API 响应）
+dataset_doi:         10.18419/DARUS-5171
+original_filename:   NONE（API 响应，非厂商/设备导出）
+format_family:       其他（Dataverse 数据集元数据 JSON）
+device_or_software:  DaRUS 数据仓储 API（数据集标题 "Measurement Data for Experimental Modeling of Synthetic Fiber Ropes for Slip Compensation for Application in Cable Robots"）
+sampling_rate:       N/A（元数据）
+rows:                N/A
+channels:            N/A
+variable_semantics:  N/A（元数据文件，非波形）。文件内含 3488 个条目清单：3000 个 csv、203 个 svdx、203 个 nc、48 个 xml、31 个 lsvs、3 个 md。
+notes:               MD5 = 9a75442677ab36ffe1aab4fb44c86c17，size = 2616228 B。JSON 解析通过，latestVersion.files 共 3488 项。发布日 2026-07-20，版本 1.0（RELEASED）。用途：登记 DARUS-5171 的下载记录并据此核对其内部文件编号。

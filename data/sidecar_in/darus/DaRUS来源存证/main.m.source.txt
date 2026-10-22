@@ -1,0 +1,14 @@
+url:                 https://darus.uni-stuttgart.de/api/access/datafile/251085
+retrieved_at:        2026-10-20
+retrieved_by:        AI 智能体（DaRUS / Dataverse 公开 API 直下）
+publisher:           Reichenbach, Thomas（DaRUS，University of Stuttgart / ISW）
+license:             CC BY 4.0（可再分发，需署名）
+dataset_doi:         10.18419/DARUS-3600
+original_filename:   main.m
+format_family:       其他（MATLAB 脚本，非波形）
+device_or_software:  MATLAB；配套 Cable Actuator Testbed（TwinCAT 3 采集）
+sampling_rate:       N/A（脚本）
+rows:                N/A（脚本，21870 B）
+channels:            N/A
+variable_semantics:  脚本内 VarNames 定义了 TwinCAT 原始通道名 → 物理量短名的映射（按列序）：t, f_load, power_load, power_test, v_asco_enc, v_asco, asco_rate, p_asco_enc, p_asco, fno, mfw, trig_scope, trig_record, trig_export, t_test, t_load, v_diff_enc, v_test_tar, v_test, v_load_tar, v_load, p_diff_enc, p_load, p_test, p_test_tar, p_load_tar, f_diff, f_colinear, f_orthogonal, f_test, f_tar, p_lsv_enc, v_lsv_enc。脚本中另以 ylabel 例示量纲：位置 l /m、力 f /N、时间 t /s。
+notes:               MD5 = 73ba675c08415a5916ddaf6909c8d2f5，size = 21870 B，与 DaRUS API 记录一致。这是数据集提供的分析入口脚本（README 指"start with main.m"），非波形数据；作为变量语义的权威来源登记。

@@ -1,0 +1,2 @@
+{"axis": null, "code": "step_started", "detail": {"recipe_new": "WF125_R10", "recipe_old": "WF125_R1", "step": "rewind_fast"}, "level": "info", "source": "process", "t": 1.2}
+{"axis": null, "code": "scale_changed", "detail": {"counts_per_mm_new": 58.349, "counts_per_mm_old": 5.8349, "r": 10, "recipe_new": "WF125_R10", "recipe_old": "WF125_R1"}, "level": "warn", "source": "mes", "t": 1.2005}

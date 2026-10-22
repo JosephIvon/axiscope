@@ -1,0 +1,14 @@
+url:                 https://cdn.jsdelivr.net/gh/Chutian-Wang/cswave@HEAD/example_csv/RigolDS0.csv
+retrieved_at:        2026-10-20
+retrieved_by:        AI 资源检索子智能体（经 jsDelivr CDN 匿名拉取；raw.githubusercontent.com 在本环境不可达）
+publisher:           Chutian (Barry) Wang（GitHub 仓库 Chutian-Wang/cswave 作者，Copyright (c) 2026）
+license:             MIT License（仓库 cswave 声明；该文件为仓库 example_csv 示例波形，可再分发）
+dataset_doi:         NONE
+original_filename:   RigolDS0.csv
+format_family:       Rigol DS ASCII
+device_or_software:  普源 Rigol DS 系列示波器（文件内未标注具体型号；表头 CH1V / t0 / tInc 为该系列导出格式）
+sampling_rate:       2500000 Hz（2.5 MHz；表头 tInc = 4.000000e-07 s）
+rows:                10000 数据行（文件总行 10001 = 1 行表头 + 10000 行数据）
+channels:            1（CH1V；表头另有时间基准参数 t0/tInc，非数据列）
+variable_semantics:  取自文件表头原文：CH1V = CH1 通道电压采样值；t0 = -1.999200e-03（起始时刻，s）；tInc = 4.000000e-07（采样间隔，s）。文件与仓库 README 均未给出更多物理量或单位说明，此处不做推断。
+notes:               MD5 = aa3362d39952dc48f505615359776ca6，与抓取时台账记录逐字节一致。文件按本地上位机项目命名规则重命名（原名 RigolDS0.csv）。用途定位：真实仪器导出格式样例，供解析器回归自测；不作为"某厂商伺服软件导出"的代表性证据。

@@ -1,0 +1,14 @@
+url:                 https://cdn.jsdelivr.net/gh/Chutian-Wang/cswave@HEAD/example_csv/1t1r_set_read_0P1V.csv
+retrieved_at:        2026-10-20
+retrieved_by:        AI 资源检索子智能体（经 jsDelivr CDN 拉取；首次被截断，已重下补全至完整大小）
+publisher:           Chutian (Barry) Wang（GitHub 仓库 Chutian-Wang/cswave 作者）
+license:             MIT License（仓库 cswave 声明）
+dataset_doi:         NONE
+original_filename:   1t1r_set_read_0P1V.csv
+format_family:       其他（半导体参数分析仪 / PMU 采集导出；首列内嵌段名 PMU_SegArb_ExampleB）
+device_or_software:  半导体参数分析仪 / PMU（文件内仅见段名 PMU_SegArb_ExampleB，未标注具体型号；不得据此断定某具体机型）
+sampling_rate:       200000000 Hz（200 MHz；TimeOutput 步长 = 5.0000E-9 s）
+rows:                22260 数据行（含表头共 22261 行）
+channels:            11（表头：PMU_SegArb_ExampleB, VMeasCh1, IMeasCh1, VMeasCh2, IMeasCh2, TimeOutput, StatusCh1, StatusCh2, G, R, R_AV）
+variable_semantics:  取自文件表头原文：VMeasCh1 / IMeasCh1、VMeasCh2 / IMeasCh2 = 通道1/2 电压与电流测量值；TimeOutput = 输出时间列；StatusCh1 / StatusCh2 = 通道状态；G / R / R_AV = 电导、电阻类派生量；首列 PMU_SegArb_ExampleB = 段名。文件未标注各量单位，此处不推断。
+notes:               MD5 = 402d84bcdff08a61eae1341446a0dab4，与台账一致。原文件名 1t1r_set_read_0P1V.csv，本地已重命名。首列仅在首行出现段名、其后各行为空，解析时需容错。

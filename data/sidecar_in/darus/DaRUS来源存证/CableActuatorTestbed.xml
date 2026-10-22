@@ -1,0 +1,34 @@
+<models version="0.1">
+    <drivesystem>
+        <winch id="7" name="Fraunhofer IPAnema3" description="W7">
+            <cable nr_cables="1" f_max="200.0" f_hold="300.0" f_min="25.0" length_offset="0.0" />
+            <motor motor_type="Bosch Rexroth MSK061C-0600-NN" inertia="0.000" mass="0.0" max_power="0.0" angular_velocity_max="6000.000000" angular_acceleration_max="0.000000" torque_max="32" />
+            <gear ratio="5.0" wegaufz="1000000" wegaufn="171388" />
+            <drum r_drum="0.049" l_drum="0.0" />
+        </winch>
+        <winch id="8" name="Fraunhofer IPAnema3" description="W8">
+            <cable nr_cables="1" f_max="200.0" f_hold="300.0" f_min="25.0" length_offset="0.0" />
+            <motor motor_type="Bosch Rexroth MSK061C-0600-NN" inertia="0.000" mass="0.0" max_power="0.0" angular_velocity_max="6000.000000" angular_acceleration_max="0.000000" torque_max="32" />
+            <gear ratio="1.0" wegaufz="100000000" wegaufn="85694000" />
+            <drum r_drum="0.049" l_drum="0.0" />
+        </winch>
+    </drivesystem>
+    <controlsystem>
+        <controller id="1" name="velocity-cable-force" description="pid">
+            <parameter kp="0.001" ki="0.000000" kd="0.000000" />
+            <time low_pass="0.02" off="1" />
+        </controller>
+        <controller id="2" name="torque-cable-force" description="pid">
+            <parameter kff="1.5" kp="0.01" ki="0.1" kd="0.0005" />
+            <time low_pass="0.02" off="1" />
+        </controller>
+    </controlsystem>
+    <measurement>
+        <device id="1" name="ASCOspeed" description="5500">
+            <settings AVErage="2" INCFactor="50" />
+        </device>
+        <device id="2" name="LSV" description="2100-30">
+            <settings NoPulses="50000" ZeroVelocity="0.15"/>
+        </device>
+    </measurement>
+</models>

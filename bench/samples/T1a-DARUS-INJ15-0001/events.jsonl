@@ -1,0 +1,3 @@
+{"axis": null, "code": "move_started", "detail": {"target": -0.5}, "level": "info", "source": "motion", "t": 2.0}
+{"axis": null, "code": "thread_stall", "detail": {"stall_ms": 41.2}, "level": "warn", "source": "host", "t": 2.0412}
+{"axis": null, "code": "move_done", "detail": {"settled": false}, "level": "info", "source": "motion", "t": 2.0824}

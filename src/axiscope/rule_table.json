@@ -1,0 +1,758 @@
+{
+  "schema": "axiscope-rule-table/1",
+  "source_of_truth": "docs/kb/KB3-tuning-rules.md",
+  "scope": "C3 规则引擎最小可运行子集：只登记验收向量（KB4 算例 A/B、诚实真空例）真正走到的规则。后续规则按同一 schema 追加，不改结构。",
+  "numbering_convention": {
+    "rule": "`conditions[].n` 从 1 起，只在判据正文里编号的条款上递增；前置门禁（频带、`event_context.available ∧ causal_claims_permitted`）一律不占编号。",
+    "why": "KB3 原文与 C3 契约的锚点（`R-03#2` = 相干、`R-19#6` = `corr_fe_vs_accel`）都按这个口径写；把门禁算进编号会让全部锚点错位。",
+    "verified_against": [
+      "R-03#2/#3/#4/#5/#6/#7",
+      "R-19#2/#3/#4/#6"
+    ]
+  },
+  "band_floor_source": "src/axiscope/features.py::BAND_FLOOR / BRANCH_FLOOR（KB3 §2.1 的唯一真值，本表不重复登记）",
+  "evidence_policy": {
+    "formula": "g(ρ)/g_cat/n_factor/band_factor 的算术在 src/axiscope/confidence.py（KB4 §2.1），本表只登记每条判据的输入。",
+    "gate_conditions": "`evidence: false` 的条件是门，不计入 `A_sup`（KB4 §2.7 反自证条款：门禁条件计入支持证据会构成\"因为我能看所以我相信\"的自证）。带内成员条件同理——它声明的是可见性，不是强度。",
+    "sample_scale": "`n_source` 是 KB4 §2.1(c) 的样本量配方，`n_ref` 是同一行的下限。两者为 null ⟹ 该判据不可复算，引擎必须报错并登记，不得默认 n_factor=1。"
+  },
+  "n_source_recipes": {
+    "segment:<kind>": "segment_coverage.<kind>（C2 已登记）",
+    "event:<field>": "event_context.<field>（C2 已登记）",
+    "three_db_width_bins": "round(f0 / quality_factor_estimate / resonance.resolution_hz)（由 C2 已登记量导出）",
+    "welch_segments": "Welch 段数 —— **C2 未提供该字段**，见 open_gaps welch_segments_not_in_c2",
+    "band_bins": "峰邻域带宽内的 bin 数 —— **C2 未提供该字段**，见 open_gaps band_bins_not_in_c2"
+  },
+  "open_gaps": {
+    "welch_segments_not_in_c2": "KB4 §2.3 算例 A 第 1 行取 n=8（\"Welch 8/4=2\"），但 C2 `resonance.estimation` 只有 window/nperseg/noverlap/method，段数需要记录长度才能反推。引擎要求调用方以 `sample_counts` 侧车显式带入，并写入 `audit.assumptions`。",
+    "band_bins_not_in_c2": "算例 A 第 2 行取 n=96（\"带内 bin 96/15=6.4\"），而 `reliable_band_hz / resolution_hz = 3200/1.95 ≈ 1641`，两者对不上 ⟹ \"带内\"指的是峰邻域窗口，该窗口宽度在 C2 里没有承载字段。",
+    "n_ref_disagrees_with_2_1_c": "算例 A 用 `n_ref = 15`（带内 bin）与 `n_ref = 8`（3 dB 宽），KB4 §2.1(c) 的下限表里带内 bin 写的是 ≥ 32，而 3 dB 宽根本没有对应行。本表按**算例自身**取值以复现 KB4/C3 的逐格数字，该冲突已由 **KB0 A-102** 落裁（算例为权威锚点，§2.1(c) 改逐判据行，C2 补 `resonance.estimation.n_segments` / `bins_in_band` / `candidates[].three_db_width_bins`），引擎不在两处之间偷偷取另一个值。"
+  },
+  "ops": [
+    "gte",
+    "lte",
+    "gt",
+    "lt",
+    "eq",
+    "neq",
+    "between",
+    "is_true",
+    "is_false",
+    "branch",
+    "covers",
+    "empty_or_quiet"
+  ],
+  "threshold_ref_form": "{\"ref\": \"<C2 路径>\", \"scale\": <系数，缺省 1>}",
+  "scale_discipline": {
+    "rule": "凡是 feature 路径里出现 `counts` 的条件必须显式标注 `\"counts_scale\": \"absolute\"|\"ratio\"`（A-97 ④）。**未标注者引擎按绝对处理**（保守侧）。键名不叫 `scale`：`threshold.scale` 已被规则 15 的倍率占用，同名两用会让读者把「阈值 ×3」读成「绝对/比值」。",
+    "why": "`*_counts` 的后缀是历史名而非单位（A-97 ①）：绝对 counts 阈值在没有 counts 刻度的样本上不可套用（拿 m 当 counts 判是静默量纲替换），而比值/相关/相干类判据分子分母同单位、与刻度无关，必须照常评估。两种判据混在同一条规则里时，只有逐条标注才能区分「该阻塞」与「被连坐」。",
+    "absolute_effect": "counts 刻度缺失（meta.units_are != 'counts' 且 counts_per_mm == null）时，该叶登记 not_evaluable + blocked_by = absent_counts_scale，reason 取固定句式「无 counts 刻度，绝对阈值不可比」。",
+    "ratio_effect": "照算，不得被上一条连坐（KB3 §1.13b 同一条款）。"
+  },
+  "null_discipline": "null ≠ false（KB3 纪律 1）。必填条件取到 null 时按 `if_null` 处置，不得当成条件成立或不成立。",
+  "rules": {
+    "R-03": {
+      "title": "kHz 级机械谐振检出（双惯性/结构模态）",
+      "kind": "leaf",
+      "family": "mechanical_resonance",
+      "leaf": "mechanical_resonance",
+      "severity": 3,
+      "severity_provenance": "declared:KB4 §2.9 S3 + C3 示例 E1（单假设那份）",
+      "src_line": 657,
+      "gate": [
+        {
+          "expr": "freq_limits.reliable_band_hz >= band_floor('R-03')",
+          "effect": "R-25",
+          "_note": "不满足 ⟹ 本规则不得运行，进 blocked_rules，禁止输出\"未发现共振\"。不占条件编号。"
+        }
+      ],
+      "conditions": [
+        {
+          "n": 1,
+          "feature": "resonance.candidates[0].freq_hz",
+          "op": "between",
+          "threshold": [
+            1000,
+            6000
+          ],
+          "tier": "L",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": false,
+          "_note": "带内成员条件（可见性），不进 A_sup。"
+        },
+        {
+          "n": 2,
+          "feature": "resonance.candidates[0].coherence_torque_velocity",
+          "op": "gte",
+          "threshold": 0.7,
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "rule_id": "R-03a",
+          "n_source": "welch_segments",
+          "n_ref": 4
+        },
+        {
+          "n": 3,
+          "feature": "resonance.candidates[0].amplitude_ratio_vs_broadband",
+          "op": "gte",
+          "threshold": 4,
+          "tier": "L",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": "band_bins",
+          "n_ref": 15
+        },
+        {
+          "n": 4,
+          "feature": "resonance.candidates[0].present_in_dwell",
+          "op": "is_true",
+          "tier": null,
+          "required": true,
+          "if_null": "unverified_cap_0.55",
+          "evidence": true,
+          "n_source": "segment:dwell",
+          "n_ref": 1
+        },
+        {
+          "n": 5,
+          "feature": "resonance.candidates[0].present_in_rest",
+          "op": "is_false",
+          "tier": null,
+          "required": true,
+          "if_null": "unverified_cap_0.55",
+          "evidence": true,
+          "rule_id": "R-03b",
+          "n_source": "segment:rest",
+          "n_ref": 1
+        },
+        {
+          "n": 6,
+          "feature": "resonance.candidates[0].tracks_command_frequency",
+          "op": "is_false",
+          "tier": null,
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": "segment:move",
+          "n_ref": 4
+        },
+        {
+          "n": 7,
+          "feature": "resonance.candidates[0].quality_factor_estimate",
+          "op": "gte",
+          "threshold": 10,
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": "three_db_width_bins",
+          "n_ref": 8,
+          "guard": "resonance.resolution_hz <= 5"
+        }
+      ],
+      "refuters": [
+        {
+          "id": "R-03c",
+          "feature": "step_response[0].damping_ratio_estimate",
+          "op": "gt",
+          "threshold": 0.15,
+          "_note": "阻尼不低 ⟹ 峰不算尖锐，必须写进 contradicting_evidence（C3 规则 2）。"
+        }
+      ],
+      "segment_prereqs": [
+        "dwell >= 1",
+        "rest >= 1"
+      ],
+      "falsified_by": [
+        "R-10",
+        "R-11"
+      ]
+    },
+    "R-04": {
+      "title": "谐振-反谐振配对判定（双惯性负载）",
+      "kind": "leaf",
+      "family": "mechanical_resonance",
+      "leaf": "mechanical_resonance",
+      "severity": 1,
+      "severity_default": 3,
+      "severity_when": "meta.drive.inertia_ratio > 10",
+      "severity_provenance": "declared:KB4 §2.9 S1（inertia_ratio>10 ⟹ 参数对策无效、需机械整改）；默认级为同族推断，须记 assumption",
+      "src_line": 715,
+      "gate": [
+        {
+          "expr": "freq_limits.reliable_band_hz >= band_floor('R-04')",
+          "effect": "R-25"
+        }
+      ],
+      "conditions": [
+        {
+          "n": 1,
+          "feature": "delta(resonance.candidates[0].freq_hz, resonance.candidates[0].antiresonance_freq_hz)",
+          "op": "gte",
+          "threshold": 0,
+          "tier": "L",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": false,
+          "skip_when": "meta.sensor_config in ['unknown', 'mixed']",
+          "_note": "A-68：sensor_config ∈ {unknown, mixed} 时顺序项一律不参与判定且置信封顶；load_side 时镜像。顺序是门不是强度。"
+        },
+        {
+          "n": 2,
+          "feature": "ratio(resonance.candidates[0].freq_hz, resonance.candidates[0].antiresonance_freq_hz)",
+          "op": "between",
+          "threshold": [
+            1.05,
+            2.7
+          ],
+          "tier": "L",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null,
+          "_note": "f_m/f_a = sqrt(1+λ)；λ=0.01 ⟹ 1.005 与单惯量不可区分 ⟹ 本规则必须不触发。"
+        },
+        {
+          "n": 3,
+          "feature": "delta(resonance.candidates[0].freq_hz, resonance.candidates[0].antiresonance_freq_hz)",
+          "op": "gte",
+          "threshold": {
+            "ref": "resonance.resolution_hz",
+            "scale": 2
+          },
+          "tier": "L",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        },
+        {
+          "n": 4,
+          "feature": "resonance.candidates[0].is_double_inertia_pair",
+          "op": "is_true",
+          "tier": null,
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        },
+        {
+          "n": 5,
+          "feature": "resonance.candidates[0].peak_valley_power_ratio_db",
+          "op": "gte",
+          "threshold": 6,
+          "tier": "L",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        },
+        {
+          "n": 6,
+          "feature": "resonance.candidates[0].coherence_torque_velocity",
+          "op": "gte",
+          "threshold": 0.7,
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        },
+        {
+          "n": 7,
+          "feature": "meta.drive.inertia_ratio",
+          "op": "gte",
+          "threshold": 5,
+          "tier": "L",
+          "required": false,
+          "if_null": "unverified_branch_next_data",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        }
+      ],
+      "veto": [
+        {
+          "expr": "meta.drive.notch_filters covers resonance.candidates[0].antiresonance_freq_hz",
+          "effect": "reject",
+          "_note": "谷是滤波造成的，不是反谐振。空数组 ≠ 未知，需区分。"
+        },
+        {
+          "expr": "meta.sensor_config in ['unknown','mixed'] AND resonance.candidates[0].antiresonance_freq_hz > resonance.candidates[0].freq_hz",
+          "effect": "reject_and_contradict",
+          "_note": "纯两惯量不可能产生该顺序；转 R-10 与本条否决支，组合写入 contradicting_evidence。"
+        }
+      ],
+      "segment_prereqs": [
+        "move >= 2"
+      ],
+      "falsified_by": [
+        "R-03",
+        "R-09",
+        "R-10",
+        "R-13"
+      ]
+    },
+    "R-10": {
+      "title": "结构模态 vs 采样/混叠/陷波/量化伪峰判别（R-03 的证伪支）",
+      "kind": "gate",
+      "family": null,
+      "leaf": null,
+      "src_line": 1009,
+      "combining": "OR",
+      "_note": "恒运行（band⊥ = n/a），永不进 blocked_rules（C2 规则 7）。任一分支成立即判伪峰并阻断 R-03，只产证伪与降置信，不产参数动作。",
+      "conditions": [
+        {
+          "n": 1,
+          "feature": "resonance.candidates[0].present_in_rest",
+          "op": "is_true",
+          "if_null": "abstain_cap_0.55_next_data"
+        },
+        {
+          "n": 2,
+          "feature": "resonance.candidates[0].tracks_command_frequency",
+          "op": "is_true"
+        },
+        {
+          "n": 3,
+          "feature": "resonance.candidates[0].freq_hz",
+          "op": "gte",
+          "threshold": {
+            "ref": "freq_limits.nyquist_hz",
+            "scale": 0.8
+          },
+          "tier": "P"
+        },
+        {
+          "n": 4,
+          "feature": "meta.drive.notch_filters",
+          "op": "covers",
+          "threshold": {
+            "ref": "resonance.candidates[0].freq_hz"
+          }
+        },
+        {
+          "n": 5,
+          "feature": "global.fe_sign_change_rate_hz",
+          "op": "gte",
+          "threshold": {
+            "ref": "fs_hz",
+            "scale": 0.4
+          },
+          "tier": "P",
+          "then": "spectral.fe.tonality_index >= 0.6"
+        }
+      ],
+      "effects": [
+        {
+          "target": "R-03",
+          "action": "contradict",
+          "cap": 0.55
+        },
+        {
+          "target": null,
+          "action": "rules_skipped"
+        }
+      ]
+    },
+    "R-15": {
+      "title": "前馈失配（核心判据：加/减速段跟随误差不对称）",
+      "kind": "leaf",
+      "family": "electrical_feedforward_mismatch",
+      "leaf": "electrical_feedforward_mismatch",
+      "severity": 2,
+      "severity_provenance": "declared:KB4 §2.9 S2 + C3 示例 E2 的 rank 1（规则 20：S2 < S3 ⟹ 前馈压过 C 更高的谐振）",
+      "src_line": 1223,
+      "signed_asymmetry": {
+        "expr": "asymmetry_ratio >= 1 ? asymmetry_ratio : -1/asymmetry_ratio",
+        "_note": "A-26：两支必须严格镜像，只判加速段占优会系统性漏判减速段占优一侧。"
+      },
+      "branches": [
+        {
+          "id": 1,
+          "meaning": "欠补偿（kff 偏小，加速段占优）",
+          "A_s_gte": 1.5
+        },
+        {
+          "id": 2,
+          "meaning": "过补偿（kff 偏大，减速段占优）",
+          "A_s_lte": -1.5
+        }
+      ],
+      "combining": "any_branch AND all_common",
+      "conditions": [
+        {
+          "n": 1,
+          "feature": "ff_mismatch.asymmetry_ratio",
+          "op": "branch",
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        },
+        {
+          "n": 2,
+          "feature": "ff_mismatch.fe_vs_accel_corr",
+          "op": "gte",
+          "threshold": 0.6,
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        },
+        {
+          "n": 3,
+          "feature": "ff_mismatch.residual_slope_vs_jerk_corr",
+          "op": "lte",
+          "threshold": 0.6,
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        },
+        {
+          "n": 4,
+          "feature": "resonance.candidates",
+          "op": "empty_or_quiet",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": false,
+          "_note": "空，或 present_in_rest==false 且 spectral.cur_q.tonality_index<=0.5。"
+        },
+        {
+          "n": 5,
+          "feature": "global.friction_stiction_ratio",
+          "op": "lt",
+          "threshold": 1.5,
+          "required": true,
+          "if_null": "unverified",
+          "evidence": false,
+          "excludes": "R-06",
+          "veto_on_fail": true
+        },
+        {
+          "n": 6,
+          "feature": "global.backlash_estimate_counts",
+          "op": "lt",
+          "threshold": {
+            "ref": "global.fe_rms_counts",
+            "scale": 3
+          },
+          "counts_scale": "ratio",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": false,
+          "excludes": "R-08",
+          "veto_on_fail": true
+        },
+        {
+          "n": 7,
+          "feature": "step_response[0].damping_ratio_estimate",
+          "op": "gte",
+          "threshold": 0.5,
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": null,
+          "n_ref": null
+        }
+      ],
+      "segment_prereqs": [
+        "move >= 3"
+      ],
+      "quality_prereqs": [
+        "quality_ref.dt_jitter_ratio <= 0.05"
+      ],
+      "min_fs_hz": 500,
+      "arbitrated_by": "R-26"
+    },
+    "R-19": {
+      "title": "插补缓冲区欠载",
+      "kind": "leaf",
+      "family": "software_induced_interp_buffer_underrun",
+      "leaf": "software_induced_interp_buffer_underrun",
+      "severity": 2,
+      "severity_provenance": "classified:KB4 §2.9 S2 软件族分类行（A-100：插补欠载 ⟹ 轨迹中断/超差，按后果类型与 R-23/R-29 同档；分类锚点、非独立观测锚，引擎仍须记 audit.assumptions）",
+      "src_line": 1454,
+      "gate": [
+        {
+          "expr": "event_context.available == true AND causal_claims_permitted == true",
+          "effect": "R-30",
+          "_note": "不满足 ⟹ 走 R-30 登记 not_evaluable(family=software_induced_error)，不占条件编号。"
+        }
+      ],
+      "conditions": [
+        {
+          "n": 1,
+          "feature": "event_context.interp_underrun_during_path",
+          "op": "gte",
+          "threshold": 1,
+          "required": true,
+          "if_null": "unverified",
+          "evidence": false,
+          "_note": "有欠载事件是可见性门，不计入 A_sup。"
+        },
+        {
+          "n": 2,
+          "feature": "ratio(event_context.interp_underrun_during_path, event_context.interp_underrun_count)",
+          "op": "gte",
+          "threshold": 0.7,
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "denominator_floor": 1,
+          "n_source": "event:interp_underrun_count",
+          "n_ref": 3,
+          "_note": "C2 示例 11/12=0.92。"
+        },
+        {
+          "n": 3,
+          "feature": "ratio(event_context.fe_spike_aligned_to_underrun, event_context.fe_spike_count)",
+          "op": "gte",
+          "threshold": 0.5,
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "denominator_floor": 1,
+          "n_source": "event:fe_spike_count",
+          "n_ref": 3,
+          "_note": "示例 11/17=0.65。"
+        },
+        {
+          "n": 4,
+          "feature": "ratio(tracking.path_segments[0].fe_max_counts, tracking.path_segments[0].fe_rms_counts)",
+          "op": "gte",
+          "threshold": 2.0,
+          "counts_scale": "ratio",
+          "tier": "P",
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": "segment:path",
+          "n_ref": 1,
+          "_note": "示例 3100/1520=2.04，门限按示例定标（KB3 §3.2）。"
+        },
+        {
+          "n": 5,
+          "feature": "segment_coverage.path",
+          "op": "gte",
+          "threshold": 1,
+          "required": true,
+          "if_null": "unverified",
+          "evidence": false
+        },
+        {
+          "n": 6,
+          "feature": "tracking.path_segments[0].corr_fe_vs_accel",
+          "op": "gte",
+          "threshold": 0.7,
+          "required": true,
+          "if_null": "unverified",
+          "evidence": true,
+          "n_source": "segment:path",
+          "n_ref": 1
+        },
+        {
+          "n": 7,
+          "feature": "tracking.path_segments[0].corr_fe_vs_jerk",
+          "op": "lt",
+          "threshold": {
+            "ref": "tracking.path_segments[0].corr_fe_vs_accel"
+          },
+          "required": true,
+          "if_null": "unverified",
+          "evidence": false,
+          "_note": "KB4 §2.3 明文：该条与 `causal_claims_permitted` 同为门，不计入 A_sup。"
+        }
+      ],
+      "refuters": [
+        {
+          "id": "R-15#1",
+          "kind": "competing_explanation",
+          "feature": "ff_mismatch.asymmetry_ratio",
+          "op": "gte",
+          "threshold": 1.5,
+          "_note": "算例 B 反证 1：前馈主判据同时命中 ⟹ 必须并列呈现（C3 规则 2）。ρ′=2.26/1.5=1.507 ⟹ v_j 0.10。"
+        },
+        {
+          "id": "R-02#2",
+          "kind": "shape_absent",
+          "feature": "ratio(global.fe_p999_counts, global.fe_rms_counts)",
+          "op": "gte",
+          "threshold": 4,
+          "counts_scale": "ratio",
+          "_note": "算例 B 反证 2：尖峰集中度未达标（1380/412.6=3.34，ρ′=0.835<1）⟹ v_j 0.05。"
+        }
+      ],
+      "sync_prereqs": [
+        "sync.verified == true"
+      ],
+      "min_fs_hz": 500,
+      "arbitrated_by": "R-28",
+      "falsified_by": [
+        "R-20",
+        "R-21",
+        "R-15",
+        "R-23"
+      ]
+    },
+    "R-25": {
+      "title": "kHz 判据的频带不可见性与拒答义务（元规则）",
+      "kind": "meta",
+      "family": null,
+      "leaf": null,
+      "src_line": 1759,
+      "_note": "产物是登记义务（blocked_rules + not_evaluable + rules_skipped + rules_fired），不是假设。恒运行，永不进 blocked_rules。",
+      "triggers": [
+        "freq_limits.reliable_band_hz < rule.band_floor",
+        "spectral.*.dominant_freq_hz == null AND 带内 bin 数 < 8"
+      ],
+      "outputs": [
+        "blocked_rules",
+        "not_evaluable",
+        "rules_skipped",
+        "rules_fired"
+      ]
+    },
+    "R-26": {
+      "title": "谐振 ↔ 前馈失配仲裁",
+      "kind": "arbiter",
+      "family": null,
+      "leaf": null,
+      "src_line": 1793,
+      "_note": "有序链，自上而下首个命中即止。自身永不进 hypotheses（A-51），只改写 R-03/R-15 的 rank 与置信上限。",
+      "chain": [
+        {
+          "n": 1,
+          "expr": "present_in_rest == true",
+          "outcome": "electrical_or_spurious",
+          "handoff": [
+            "R-10",
+            "R-11"
+          ]
+        },
+        {
+          "n": 2,
+          "expr": "present_in_dwell == true AND coherence_torque_velocity >= 0.7 AND abs(A_s) < 1.5",
+          "outcome": "mechanical_resonance",
+          "leaf_rule": [
+            "R-03",
+            "R-09"
+          ],
+          "select_by": "band"
+        },
+        {
+          "n": 3,
+          "expr": "present_in_rest == false AND present_in_dwell == false AND fe_vs_accel_corr >= 0.6 AND abs(A_s) >= 1.5",
+          "outcome": "feedforward_mismatch",
+          "leaf_rule": [
+            "R-15"
+          ]
+        },
+        {
+          "n": 4,
+          "expr": "chain#2 AND chain#3",
+          "outcome": "resonance_primary_ff_rank2",
+          "mutual_contradiction": true
+        },
+        {
+          "n": 5,
+          "expr": "present_in_rest == null",
+          "outcome": "arbitration_ineligible",
+          "cap_all": 0.55,
+          "next_data": "补采静止使能 ≥1 s 段",
+          "_eval": "前置门：整条仲裁失效，引擎先于 1–4/6 求值（A-100 附注）"
+        },
+        {
+          "n": 6,
+          "expr": "present_in_dwell == true AND abs(A_s) < 1.5 AND chain#2 未成立（coherence < 0.7 或为 null）",
+          "outcome": "no_reorder",
+          "register_only": "audit.arbitration_notes",
+          "_note": "A-100 补第三支的补集；1–6 全不命中写「R-26 有序链无命中」，禁止静默挑一支或改序"
+        }
+      ],
+      "arbitrates": [
+        "R-03",
+        "R-15"
+      ]
+    },
+    "R-28": {
+      "title": "软件族内互斥仲裁",
+      "kind": "arbiter",
+      "family": null,
+      "leaf": null,
+      "src_line": 1862,
+      "_note": "择优键 s_* 全部来自 C2 event_context 已登记路径（A-9）。某路计数为 null ⟹ 该路不参与择优并登记 not_evaluable。",
+      "scores": {
+        "s_host": "ratio(event_context.fe_spike_aligned_to_host_pause, event_context.fe_spike_count)",
+        "s_intp": "ratio(event_context.fe_spike_aligned_to_underrun, event_context.fe_spike_count)",
+        "s_net": "ratio(event_context.fe_spike_aligned_to_network_miss, event_context.fe_spike_count)",
+        "s_vision": "ratio(event_context.fe_spike_aligned_to_vision_result, event_context.fe_spike_count)"
+      },
+      "win": [
+        {
+          "expr": "max(s_*) >= 0.5",
+          "tier": "P"
+        },
+        {
+          "expr": "max(s_*) - second(s_*) >= 0.2",
+          "tier": "P"
+        },
+        {
+          "expr": "alignment_residual_ms <= sync.uncertainty_ms",
+          "_note": "A-82 方向（更正 A-50）：残差落在不确定度预算内才算同步可信；超预算的对齐不得作因果证据，只能共现。"
+        },
+        {
+          "expr": "causal_claims_permitted == true"
+        }
+      ],
+      "bus_cycle_miss_extra_conditions": {
+        "rule": "R-20",
+        "cap": 0.6,
+        "_note": "A-45：三条件齐才可进 hypotheses 且上限就是 0.6，不因择优胜出而抬高；缺任一 ⟹ 只到共现级，禁入 hypotheses、只进 considered。"
+      },
+      "on_fail": "software_induced_* 全部候选进 differential.considered；not_evaluable 登记\"对齐区分度不足\"；本族不得产出任何归因",
+      "min_fs_hz": 1000,
+      "arbitrates": [
+        "R-18",
+        "R-19",
+        "R-20",
+        "R-21"
+      ]
+    },
+    "R-30": {
+      "title": "软件族不可评估的登记义务（元规则）",
+      "kind": "meta",
+      "family": null,
+      "leaf": null,
+      "src_line": 1954,
+      "_note": "无 events.jsonl 时软件族不运行，但必须显式登记，不允许沉默跳过。",
+      "triggers": [
+        "event_context.available == false",
+        "sync.verified == false",
+        "缺 temp 通道"
+      ],
+      "outputs": [
+        "not_evaluable"
+      ]
+    }
+  }
+}
