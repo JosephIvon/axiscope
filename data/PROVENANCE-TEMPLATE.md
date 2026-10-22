@@ -50,7 +50,7 @@ notes:               <截断、重命名、单位换算等处理痕迹>
 ## sidecar 盘点（2026-10-20 已完成，核对结果另存）
 
 27 份 sidecar 已就位：`data/raw/` 13 份、`data/staging/` 6 份、`data/staging/原始mat/` 6 份，
-另有 2 份对应 `D:\迅雷下载` 里的 zip 母包（未随文件安装）。
+另有 2 份对应 `<本机下载目录>` 里的 zip 母包（未随文件安装）。
 逐份 vs 实体的核对结果见 `validate_out.txt` / `validate_staging.txt` 的「自述核对账」，
 本会话亲自执行的独立重抓取结果见 `VERIFICATION-2026-10-20.md`。
 

@@ -792,7 +792,7 @@ host 停顿 / 插补欠载 / 丢周期，并按上表强制产出"无事件"与"
 
 **参考来源（设计思路，非代码）**：`motion_lab.py` 的七段 jerk 受限轨迹生成器，
 路径
-`C:\Users\admin\.minimax\sessions\mvs_838bec01bb00476594f48711e6b172d0\workspace\mcopilot\src\mcopilot\agents\motion_lab.py`
+`<另一会话的工作区>\mcopilot\src\mcopilot\agents\motion_lab.py`
 （`_accel_phase` / `build_profile` / `Segment` 的段状态传播结构）。
 依据 `docs/AUDIT-minimax-mcopilot.md` §三（"`motion` 模块进 C4 轨迹发生器"）与 §三后的
 归属纪律（"复用部分必须标注来源，不得以'我写的'呈现"）：

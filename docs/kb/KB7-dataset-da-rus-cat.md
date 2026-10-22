@@ -179,7 +179,7 @@ approximately **83.3 Hz**"；而本地文件实测 `Sample` 步长**恒为 4**�
 
 ```
 行 1   Name<TAB>Measurement
-行 2   File<TAB>[REDACTED_HOST_PATH] 10.csv      ← 原始路径泄露，须脱敏
+行 2   File<TAB>[REDACTED_HOST_PATH]\Export 10.csv      ← 原始路径泄露，须脱敏
 行 3   Starttime of export<TAB>[REDACTED_WALLCLOCK]<TAB>[REDACTED_WALLCLOCK]<TAB>[REDACTED_WALLCLOCK]
 行 4   Endtime of export<TAB>...
 行 5-6 空

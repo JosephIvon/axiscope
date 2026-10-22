@@ -292,7 +292,7 @@ CSV 全部是 `Export <N>.csv`，N=1…34，RW / UW 两侧各一份，**同名�
 ## 5. 表头原文（实测落盘字节，id=394141 为例）
 
 > `Name <TAB> Measurement_Ch2 <TAB> `
-> `File <TAB> [REDACTED_HOST_PATH] 5.csv <TAB> `
+> `File <TAB> [REDACTED_HOST_PATH]\Export 5.csv <TAB> `
 > `Starttime of export <TAB> [REDACTED_WALLCLOCK] <TAB> [REDACTED_WALLCLOCK] <TAB> [REDACTED_WALLCLOCK]`
 > `Endtime of export <TAB> [REDACTED_WALLCLOCK] <TAB> [REDACTED_WALLCLOCK] <TAB> [REDACTED_WALLCLOCK]`
 

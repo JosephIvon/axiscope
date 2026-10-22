@@ -2,7 +2,7 @@
 
 日期：2026-10-20　方式：验证性执行（实跑 pytest、实跑 `compile_check.ps1`、逐文件字节头检查、
 跨文件签名一致性实读、diff 比对旧产物）　对象：
-`C:\Users\admin\.minimax\sessions\mvs_838bec01bb00476594f48711e6b172d0\workspace\mcopilot\`
+`<另一会话的工作区>\mcopilot\`
 
 ## 一、一句话结论
 

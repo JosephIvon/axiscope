@@ -48,7 +48,7 @@ sample/
 | 物理行 | 首字段（field[0]） | 含义 | 示例值（实测） | 解析动作 |
 |---|---|---|---|---|
 | 1 | `Name` | 导出集标题 | `Name<TAB>Measurement` | 存 `provenance.export_title`；仅 2 字段 |
-| 2 | `File` | 原始导出文件的**本机绝对路径** | `[REDACTED_HOST_PATH] 10.csv` | **PII**：脱敏（§六）；只留 basename 或占位 |
+| 2 | `File` | 原始导出文件的**本机绝对路径** | `[REDACTED_HOST_PATH]\Export 10.csv` | **PII**：脱敏（§六）；只留 basename 或占位 |
 | 3 | `Starttime of export` | 导出起始墙钟 | `[REDACTED_WALLCLOCK]`（.NET ticks，100 ns 单位）+ `[REDACTED_WALLCLOCK]` + `[REDACTED_WALLCLOCK]` | 存 `provenance`，**仅溯源**；时区未标注（KB7）→ 不作为绝对时基，不参与 C6 对齐 |
 | 4 | `Endtime of export` | 导出结束墙钟 | `[REDACTED_WALLCLOCK]` + 德语日期 + 时间 | 同上；可用于算导出总时长（≈18.65 s = 18650 行 × 1 ms，自洽） |
 | 5 | （空） | 分隔 | — | 跳过 |
@@ -785,7 +785,7 @@ C1「数据质量红线」→ 解析器端**可判定检查**。红线**按过�
 
 | 位置 | 内容 | 处置 | 保留? |
 |---|---|---|---|
-| L2 `File` | `[REDACTED_HOST_PATH] 10.csv` | 只留 basename `Export 10.csv`，路径整体替换为 `[REDACTED_HOST_PATH]`；`raw/` 内原文件同步改 | 否（路径 PII） |
+| L2 `File` | `[REDACTED_HOST_PATH]\Export 10.csv` | 只留 basename `Export 10.csv`，路径整体替换为 `[REDACTED_HOST_PATH]`；`raw/` 内原文件同步改 | 否（路径 PII） |
 | L3/L4 `Starttime/Endtime` | .NET ticks + 德语墙钟（时区未标注，KB7） | ticks 与墙钟**均**替换为 `[REDACTED_WALLCLOCK]`；仅保留「相对时长 ≈ 18.65 s」这类不含绝对时刻的量 | 否 |
 | L11 `NetID` | `[REDACTED_ADS_NETID]`（ADS 路由/类 IP） | 替换为 `[REDACTED_ADS_NETID]`；正则 `NetID` 奇数列整列抹掉 | 否（网络标识） |
 | L12 `Port` | `851` | 保留（协议常识，非 PII）；可选统一为 `[PORT]` | 可选 |

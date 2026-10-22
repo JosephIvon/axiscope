@@ -11,7 +11,7 @@
 | 断言 | 本会话实测 | 结论 |
 |---|---|---|
 | "写了 27 份 `.source.txt`" | `find data/sidecar_in/sidecar27 -name '*.source.txt' \| wc -l` = **27**（9 DaRUS + 6 .mat + 6 派生 CSV + 4 仪器样例 + 2 zip） | 数量相符 |
-| 27 份 sidecar 与我方安装的副本一致 | 25 份与 `data/raw`、`data/staging`、`data/staging/原始mat` 逐字节 `cmp` 全部 SAME；2 份目标 zip 未安装（目标在 `D:\迅雷下载`） | 交付未被事后改动 |
+| 27 份 sidecar 与我方安装的副本一致 | 25 份与 `data/raw`、`data/staging`、`data/staging/原始mat` 逐字节 `cmp` 全部 SAME；2 份目标 zip 未安装（目标在 `<本机下载目录>`） | 交付未被事后改动 |
 | 两个 zip 存在 | `波形来源存证sidecar_27份.zip` md5 `9ed064cdc39c5d9c4ba2bb752ce7dfc3`；`DaRUS原始文件_含sidecar.zip` md5 `7ea1736f01f1d61c2aed41885819c128` | 已记录（无外部对照值，仅自证） |
 
 ## 二、外部来源：本会话亲自重新抓取并比对字节
