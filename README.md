@@ -101,3 +101,15 @@ CWRU / Paderborn CM / Aalto / MFPT 的正式标识在 `docs/kb/KB7-dataset-da-ru
 引用纪律：外部会话（minimax 三轮、GLM 系）的手册与 SDK 绑定**不在本仓库**，故其核对结论对本仓库
 只是 `public-doc` / `verified_by = third_party_report`，**不计入本仓库的 `已核对 k`**
 （`docs/kb/KB2-waveform-formats.md:619-628`，A-32 / A-89）。
+
+---
+
+## 许可与第三方材料
+
+- 本仓**自有的代码与文档**：MIT（见 `LICENSE` ✓）。
+- 本仓**收录了第三方材料**（DaRUS / ScienceDB / Zenodo 数据集的派生样本卡与知识库引文）✓，
+  全部为 **CC BY 4.0，须署名** ✓ —— 完整署名正文见上文「**数据来源与署名**」一节 ✓
+  （DaRUS / ScienceDB / Zenodo / 追加 DOI / T1-b / 脱敏门禁 / 复用设计标注 七节 ✓）。
+- 本仓**不含原始数据** ✓：原始数据集均有 DOI 可随时重下 ✓，
+  入库的是派生样本卡 + 独立算出的真值，两者靠指纹绑定 ✓（见 `data/PROVENANCE-TEMPLATE.md` ✓）。
+- 逐件登记与"不替你决定的事"见 **`NOTICE.md`** ✓。
