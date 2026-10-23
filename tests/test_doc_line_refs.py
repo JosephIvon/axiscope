@@ -119,6 +119,26 @@ def test_the_missing_file_class_survives_outside_audit_docs(tmp_path):
     assert p_audit[0]["status"] == "external-target"
 
 
+def test_not_in_repo_targets_are_loud_but_not_cases(tmp_path):
+    """不入库区豁免的边界（2026-10-23 干净克隆实测加的）。
+
+    指向 `build/`、`out/` 这类**生成物**的指针不判断链——公开克隆里它们本来就不在位，
+    每个干净克隆都会必红。但必须改判成 `not-in-repo` 一桶、不许静默吞掉；
+    而**不入库区以外**的缺失文件仍判 `missing-file` 病例（豁免不是漂移洗白机）。
+    """
+    root = str(tmp_path)
+    _write(tmp_path, "kb/tgt.md", ["# 标题", "甲句 alpha-one 在这里"])
+    gen = _write(tmp_path, "kb/gen.md", ["生成物 `build/out.txt:1`：「甲句 alpha-one」。"])
+    gone = _write(tmp_path, "kb/gone.md", ["真缺失 `kb/nope.md:1`：「甲句 alpha-one」。"])
+    index = probe.build_index(root)
+    p_gen, _, _ = probe.scan_doc(os.path.join(root, gen), root, index, probe.Opts([]))
+    p_gone, _, _ = probe.scan_doc(os.path.join(root, gone), root, index, probe.Opts([]))
+    assert p_gen[0]["status"] == "not-in-repo"
+    assert p_gen[0]["status"] not in CASE_STATUS
+    assert p_gen[0]["detail"], "不入库区豁免必须带说明，不许无声"
+    assert p_gone[0]["status"] == "missing-file"
+
+
 def test_probe_selftest_is_green(capsys):
     """探针自己的负向例是它的检测力证明；它自己必须先绿，数字取自它的打印行。"""
     assert probe.selftest() == 0

@@ -17,6 +17,18 @@ import sys
 
 import pytest
 
+
+# 原始数据按 A-131 口径不入库；缺件时本文件整份 loud SKIP
+# （口径见 tests/conftest.py；跳过 ≠ 通过，原因会写在 skip 理由里）
+REQUIRES_DATA = (
+    "data/raw/Export10_244531.csv",
+    "data/raw/参数分析仪波形_PMU_1t1r_CVSV导出样例.csv",
+    "data/incoming/2563_LDD_Transfer_function_Force_controlled.csv",
+    "data/incoming/6114_lsmc.csv",
+    "data/incoming/6114_ObserverTestSet.tab",
+    "data/incoming/current-hunt/3900_const_vel_110.tab",
+)
+
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
 from axiscope import c1, features                      # noqa: E402

@@ -187,7 +187,7 @@ def _run_cli(tmp_path: Path, inp: Path) -> subprocess.CompletedProcess:
     )
 
 
-def test_cli_dialect_rejection_exits_2_not_crash(tmp_path):
+def test_cli_dialect_rejection_exits_2_not_crash(tmp_path, require_cli_data):
     r = _run_cli(tmp_path, ROOT / "data/incoming/6114_ObserverTestSet.tab")
     err = r.stderr.decode("utf-8", "replace")
     assert r.returncode == 2, err[-400:]
@@ -195,6 +195,6 @@ def test_cli_dialect_rejection_exits_2_not_crash(tmp_path):
     assert "Traceback" not in err
 
 
-def test_cli_clean_run_still_exits_zero(tmp_path):
+def test_cli_clean_run_still_exits_zero(tmp_path, require_cli_data):
     r = _run_cli(tmp_path, ROOT / "data/raw/Export10_244531.csv")
     assert r.returncode == 0, r.stderr.decode("utf-8", "replace")[-400:]

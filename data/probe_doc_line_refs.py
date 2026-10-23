@@ -302,6 +302,18 @@ def check_ptr(tgt, n, m, quotes, whole):
     return "stale", "未命中：" + "；".join(where)
 
 
+def is_not_in_repo(target):
+    """被指文件是不是**不入库区**（生成物，如 `build/`、`out/`）——
+    仓内文档可以指向它们（那是「跑出来的东西」），但公开克隆里它们不在位。
+
+    口径：这类指针**不判病例**（那会让每个干净克隆必红），
+    但也**不许静默吞掉** → 单列 `not-in-repo` 一桶打印出来，条数在
+    `tests/test_doc_line_refs.py` 里锁死（多一条 = 可能真漂移，少一条 = 引用被改掉了）。
+    """
+    t = (target or "").replace("\\", "/")
+    return t.startswith("build/") or t.startswith("out/")
+
+
 def is_audit_doc(rel):
     """引用方是不是 `docs/AUDIT-*.md`（第三方项目审计纪要）——那里引的是**被审计方**的路径。
 
@@ -359,10 +371,13 @@ def scan_doc(path, root, index, opts):
                     status, detail = "missing-file", ""
             else:
                 status, detail = check_ptr(tgt, n, m, quotes, whole)
-            if status == "missing-file" and is_audit_doc(rel):
+            if status == "missing-file":
                 # 两条判定路径（带引文 / 不带引文）都会落到 missing-file，豁免放在这里统一改判，
                 # 否则「引文写得越全越像病例」这种反直觉的差别会留在实现里。
-                status, detail = "external-target", "指向被审计项目的文件，不在本仓可核范围"
+                if is_audit_doc(rel):
+                    status, detail = "external-target", "指向被审计项目的文件，不在本仓可核范围"
+                elif is_not_in_repo(tgt.cands[0] if tgt.cands else ptext):
+                    status, detail = "not-in-repo", "指向不入库区（生成物），公开克隆里不在位：当前不可自动复核"
             recs.append({"doc": rel, "line": i, "ptr": mt.group(0), "status": status,
                          "quote": "／".join(quotes)[:60], "detail": detail,
                          "target": tgt.cands[0] if tgt.cands else ptext,
@@ -433,11 +448,11 @@ def main(argv):
           "不带路径的续写形态 %d 处（`:560` / `KB7:10` 一类，未判定）；路径歧义 %d 条" % (
               opts, skipped_code, skipped_bare, len(ambig)))
     print("扫描指针 %d 条 | 命中 %d | stale %d | partial-quote %d | no-quote %d | "
-          "missing-file %d | range-out-of-bounds %d | external-target %d | 病例 %d" % (
+          "missing-file %d | range-out-of-bounds %d | external-target %d | not-in-repo %d | 病例 %d" % (
               total, counts.get("hit", 0), counts.get("stale", 0),
               counts.get("partial-quote", 0), counts.get("no-quote", 0),
               counts.get("missing-file", 0), counts.get("range-out-of-bounds", 0),
-              counts.get("external-target", 0), cases))
+              counts.get("external-target", 0), counts.get("not-in-repo", 0), cases))
     return 1 if cases else 0
 
 

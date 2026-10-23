@@ -18,6 +18,11 @@ import sys
 
 import pytest
 
+
+# 原始数据按 A-131 口径不入库；缺件时本文件整份 loud SKIP
+# （口径见 tests/conftest.py；跳过 ≠ 通过，原因会写在 skip 理由里）
+REQUIRES_DATA = ("data/raw/Export10_244531.csv",)
+
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
 from axiscope import assertions as asrt          # noqa: E402

@@ -87,6 +87,11 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     try:
         return run(args.inp, args.outdir, args.sample_id)
+    except FileNotFoundError as exc:
+        # 缺输入是**拒收**，不是崩溃：契约是「拒收即退 2」，
+        # 抛栈会让调用方以为程序崩了（干净克隆里原始数据不在位，必踩）。
+        print(f"拒收：输入文件不存在（{getattr(exc, 'filename', None) or exc}）", file=sys.stderr)
+        return 2
     except (c1.PackError, features.FeatureError, ScopeFormatError) as exc:
         print(f"拒收：{exc}", file=sys.stderr)
         return 2
