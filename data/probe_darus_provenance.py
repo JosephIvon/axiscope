@@ -9,6 +9,15 @@ from __future__ import annotations
 import json
 import os
 import urllib.request
+import sys
+
+try:
+    # 控制台不是 UTF-8 时 print 会抛 UnicodeEncodeError——脚本崩在打印上，
+    # 而不是给出判定。Windows 控制台默认 cp936/cp1252，GitHub runner 是 cp1252。
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:  # pragma: no cover - 环境相关
+    pass
+
 
 CANDIDATES = [
     "10.18419/darus-2563", "10.18419/darus-3003", "10.18419/darus-3109",

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""verify_book_numbers.py —— 书里「带文件名的数字」必须与真文件一致。
+"""verify_book_numbers.py —— 书里的数字必须与实跑一致。
 
 抓的是这种形状：正文写「`src/axiscope/engine.py`（859 行）」，而那个文件
 现在 900 行；或者「`docs/kb/` 下 7 件知识库」，而现在是 8 件。
@@ -11,11 +11,26 @@
 文件多长了几行、目录里多了一件文件，坐标照样全绿，而书里的话已经是假的。
 所以**数字要有另一道门**。
 
-判据：正文里 `路径（N 行 / N 文件 / N 条）` 这类写法，N 必须等于真文件的行数。
-  · 指名道姓带路径的 → 核；
-  · 聚合数（「全仓 12,136 行」）→ **不核**（核它要遍历全仓，且它本来就是
-    「当时账面上」的说法，与历史陈述冲突时该由正文说清是哪个时点）；
-  · 指不到具体文件的 → 只计数，不判失败。
+本工具判三件事：
+
+  ① **带文件名的行数**：正文里 `路径（N 行）` 这类写法，N 必须等于真文件的行数。
+     · 指名道姓带路径的 → 核；
+     · 聚合数（「全仓 12,136 行」）→ **不核**（核它要遍历全仓，且它本来就是
+       「当时账面上」的说法，与历史陈述冲突时该由正文说清是哪个时点）；
+     · 指不到具体文件的 → 只计数，不判失败。
+
+  ② **本卷清单的行数**：`ASSETS.md` 的资产表里每件东西的「行」，
+     以及「全卷合计：N 件 / M 行」——必须与 `book/` 目录的现状一致。
+     理由同上：资产表会随编辑漂移，漂了就是一张**假清单**。
+     （字节数不核——**写下一个数字会改变文件大小**，那是无法自洽的引用。）
+
+  ③ **本卷自报的门禁数字**：书里写「引用 743 ｜ 可解析 743 ｜ 失败 0 ｜
+     行锚断言核对 365」，这些数**必须等于当场实跑的结果**。
+     理由：书里最容易被自己写旧的，恰恰是**关于它自己**的那几行——
+     改一次正文，坐标数就变，而正文里那句"引用 743"没人会去核对。
+     本项把「自己说的」和「实跑的」绑在一起。
+
+判据：任一项不符 → exit 1。
 """
 from __future__ import annotations
 
@@ -51,18 +66,117 @@ def file_lines(rel: str) -> int | None:
         return None
 
 
+# ---- ② 本卷清单：ASSETS.md 的资产表行数 + 全卷合计 ------------------------------
+
+# 表格行：| `路径` | N | …… |   （路径相对 book/）
+ASSET_ROW = re.compile(r"^\|\s*`(?P<path>[^`]+)`\s*\|\s*(?P<n>\d+)\s*\|", re.M)
+# 合计行：全卷合计：N 件 / M 行
+TOTAL_ROW = re.compile(r"全卷合计：\s*(?P<files>\d+)\s*件\s*/\s*(?P<lines>[\d\s]+)\s*行")
+
+
+def book_files() -> list[Path]:
+    out = []
+    for p in sorted(BOOK.rglob("*")):
+        if p.is_dir() or p.name.startswith(".") or "__pycache__" in p.parts:
+            continue
+        if p.suffix.lower() in (".md", ".json", ".py"):
+            out.append(p)
+    return out
+
+
+def check_assets(book_texts: dict[str, str]) -> tuple[int, int]:
+    """核 ASSETS.md 里的资产表行数与全卷合计。返回 (核过几处, 不符几处)。"""
+    checked = bad = 0
+    assets = BOOK / "ASSETS.md"
+    if not assets.is_file():
+        return 0, 0
+    text = book_texts.get("ASSETS.md", "")
+    for m in ASSET_ROW.finditer(text):
+        rel, n = m.group("path"), int(m.group("n"))
+        p = BOOK / rel.replace("/", os.sep)
+        if not p.is_file():
+            continue
+        real = file_lines(str(p.relative_to(REPO)).replace("\\", "/"))
+        if real is None:
+            continue
+        checked += 1
+        if real != n:
+            bad += 1
+            line = text[:m.start()].count("\n") + 1
+            print(f"  [MISMATCH] ASSETS.md:{line}  清单称「{rel}」{n} 行，实为 {real} 行")
+    m = TOTAL_ROW.search(text)
+    if m:
+        files = book_files()
+        real_files = len(files)
+        real_lines = sum(len(p.read_text(encoding="utf-8", errors="replace").splitlines())
+                         for p in files)
+        want_files = int(m.group("files"))
+        want_lines = int(m.group("lines").replace(" ", "").replace("\u3000", ""))
+        checked += 1
+        if want_files != real_files or want_lines != real_lines:
+            bad += 1
+            line = text[:m.start()].count("\n") + 1
+            print(f"  [MISMATCH] ASSETS.md:{line}  合计称 {want_files} 件 / {want_lines} 行，"
+                  f"实为 {real_files} 件 / {real_lines} 行")
+    return checked, bad
+
+
+# ---- ③ 本卷自报的门禁数字：必须等于当场实跑 -------------------------------------
+
+# 「引用 743 ｜ 可解析 743 ｜ 失败 0 ｜ 行锚断言核对 365 处」两种排法都收
+SELF_CLAIM = re.compile(
+    r"(?:\*\*)?(?:坐标审计\s*)?引用\s*\**(\d+)\**\s*｜\s*(?:\*\*)?可解析\s*\**(\d+)\**\s*｜\s*"
+    r"(?:\*\*)?失败\s*\**(\d+)\**\s*｜\s*(?:\*\*)?行锚断言核对\s*\**(\d+)\**\s*处")
+
+
+def live_gate_numbers() -> tuple[int, int, int, int] | None:
+    """实跑坐标审计，取它的四个数（引用/可解析/失败/行锚断言）。"""
+    import subprocess
+    p = subprocess.run([sys.executable, str(BOOK / "tools" / "audit_coords.py")],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    for ln in (p.stdout or "").splitlines():
+        if "坐标审计合计" in ln:
+            nums = [int(x) for x in re.findall(r"\d+", ln)]
+            if len(nums) >= 4:
+                return nums[0], nums[1], nums[2], nums[3]
+    return None
+
+
+def check_self_numbers(book_texts: dict[str, str]) -> tuple[int, int]:
+    live = live_gate_numbers()
+    if live is None:
+        print("  [WARN] 坐标审计没跑出合计行，自报数字无法核对")
+        return 0, 0
+    checked = bad = 0
+    for name, text in sorted(book_texts.items()):
+        for m in SELF_CLAIM.finditer(text):
+            got = tuple(int(x) for x in m.groups())
+            checked += 1
+            if got != live:
+                bad += 1
+                line = text[:m.start()].count("\n") + 1
+                print(f"  [MISMATCH] {name}:{line}  自报 {got}，实跑 {live}")
+            else:
+                print(f"  [OK] {name}  自报门禁数字与实跑一致：{live}")
+    return checked, bad
+
+
 def main() -> int:
     files = []
     chapters = BOOK / "chapters"
     if chapters.is_dir():
         files += [chapters / f for f in sorted(os.listdir(chapters)) if f.endswith(".md")]
-    for extra in ("前言.md", "尾声.md", "ASSETS.md", "OUTLINE.md"):
+    for extra in ("前言.md", "尾声.md", "ASSETS.md", "OUTLINE.md", "README.md"):
         if (BOOK / extra).is_file():
             files.append(BOOK / extra)
 
+    book_texts: dict[str, str] = {}
+    for p in files:
+        book_texts[p.name] = io.open(p, encoding="utf-8").read()
+
     checked = unresolved = bad = 0
     for p in files:
-        text = io.open(p, encoding="utf-8").read()
+        text = book_texts[p.name]
         for m in PAT.finditer(text):
             rel, n, unit = m.group("path"), int(m.group("n")), m.group("unit")
             if unit != "行":
@@ -80,8 +194,20 @@ def main() -> int:
                 line = text[:m.start()].count("\n") + 1
                 print(f"  [OK] {p.name}:{line}  {rel}（{n} 行）")
 
-    print(f"已核 {checked} 处带文件名的数字，全部一致" if not bad
-          else f"已核 {checked} 处，{bad} 处不一致")
+    # ② 本卷清单
+    a_checked, a_bad = check_assets(book_texts)
+    checked += a_checked
+    bad += a_bad
+    if a_checked:
+        print(f"  资产表与合计：核 {a_checked} 处，{a_bad} 处不符")
+
+    # ③ 本卷自报的门禁数字
+    s_checked, s_bad = check_self_numbers(book_texts)
+    checked += s_checked
+    bad += s_bad
+
+    print(f"已核 {checked} 处数字，{bad} 处不一致" if bad
+          else f"已核 {checked} 处数字，全部一致")
     if unresolved:
         print(f"另有 {unresolved} 处解不出（路径不在仓内或不是行数口径），只计数不判失败")
     return 1 if bad else 0

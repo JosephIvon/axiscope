@@ -15,6 +15,15 @@ kvi = kv·ω_v/5）——**规格没给 kv/kvi 数值，这条推导是本实现
 判据（§1.5 第 379 行）：全部 |z| < 1，最坏 |z| ≤ 0.995。
 """
 import numpy as np
+import sys
+
+try:
+    # 控制台不是 UTF-8 时 print 会抛 UnicodeEncodeError——脚本崩在打印上，
+    # 而不是给出判定。Windows 控制台默认 cp936/cp1252，GitHub runner 是 cp1252。
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:  # pragma: no cover - 环境相关
+    pass
+
 
 WN = 2 * np.pi * 85.0
 J = 8.11e-6

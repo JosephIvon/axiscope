@@ -26,6 +26,14 @@ from scipy.io import loadmat
 
 import probe_tally   # 与脚本同目录（data/）：判定行数由脚本自数，见其 docstring
 
+try:
+    # 控制台不是 UTF-8 时 print 会抛 UnicodeEncodeError——脚本崩在打印上，
+    # 而不是给出判定。Windows 控制台默认 cp936/cp1252，GitHub runner 是 cp1252。
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:  # pragma: no cover - 环境相关
+    pass
+
+
 MAT_DIR = "data/staging/原始mat"
 CSV_DIR = "data/staging"
 DATACITE = "data/datacite_sciencedb_04148_2026-10-20.json"

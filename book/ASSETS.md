@@ -2,6 +2,10 @@
 
 > 一句话：**这本书有哪些文件、各是干什么的、门禁在哪儿、现在跑出来什么结果。**
 > 清单在 2026-10-24 实测，数字可复核（命令见每节末尾）。
+>
+> **清单里的行数与合计由 `tools/verify_book_numbers.py` 核**——
+> 资产表会随编辑漂移，漂了就是一张假清单，所以它有门。
+> （**字节数不写进正文**：写下一个数字会改变文件大小，那种引用无法自洽。）
 
 ---
 
@@ -20,25 +24,23 @@
 | `chapters/ch06-特征与归因.md` | 482 | S(e) 四因子、聚合公式、CAP、算例手算、ECE |
 | `chapters/ch07-评估协议.md` | 403 | A-88、60/40 冻结、指标、top1_hit=0、规模下限 |
 | `chapters/ch08-数据与脱敏.md` | 395 | 三组公开数据、侧车 19 字段、四条硬规则、三 token 门 |
-| `chapters/ch09-诚实账与停机点.md` | 414 | 账面 vs 实测、三笔账、四件套、停机宣告、本卷自己的账 |
+| `chapters/ch09-诚实账与停机点.md` | 483 | 账面 vs 实测、三笔账、四件套、停机宣告、本卷自己的账 |
 | `前言.md` | 109 | 定位、为什么用坐标、本卷怎么写自己 |
 | `尾声.md` | 135 | 三件结论、本卷的诚实账、给下一个来的人 |
-| **小计** | **3 631** | 12 件 |
 
 ### 1.2 工具（`book/tools/`）
 
 | 文件 | 行 | 干什么 | 失败时 |
 |---|---|---|---|
-| `_anchor.py` | 25 | 锚点**唯一**定义 | — |
-| `audit_coords.py` | 295 | 坐标解析 + 行锚断言 | exit 1 |
-| `check_book_structure.py` | 149 | 逐章必备件 + 锚点串一致性 | exit 1 |
-| `verify_crops_verbatim.py` | 68 | 裁剪件逐字核对 | exit 1 |
-| `verify_book_numbers.py` | 91 | 书中数字对实文件 | exit 1 |
-| `scan_absolute_paths.py` | 173 | 脱敏/绝对路径扫描 | exit 1 |
-| `check_broken_links.py` | 213 | 断链分七类 | exit 1 |
-| `build_crops.py` | 208 | 裁剪件生成器（唯一生成器） | — |
-| `locate.py` | 77 | 写作期反查：这句话在哪一行 | exit 1 |
-| **小计** | **1 299** | 9 件 | |
+| `tools/_anchor.py` | 25 | 锚点**唯一**定义 | — |
+| `tools/audit_coords.py` | 295 | 坐标解析 + 行锚断言 | exit 1 |
+| `tools/check_book_structure.py` | 149 | 逐章必备件 + 锚点串一致性 | exit 1 |
+| `tools/verify_crops_verbatim.py` | 68 | 裁剪件逐字核对 | exit 1 |
+| `tools/verify_book_numbers.py` | 217 | 书中数字：带文件名的行数、资产表行数、**自报门禁数字** | exit 1 |
+| `tools/scan_absolute_paths.py` | 173 | 脱敏/绝对路径扫描 | exit 1 |
+| `tools/check_broken_links.py` | 215 | 断链分八类 | exit 1 |
+| `tools/build_crops.py` | 208 | 裁剪件生成器（唯一生成器） | — |
+| `tools/locate.py` | 77 | 写作期反查：这句话在哪一行 | exit 1 |
 
 `locate.py` 是**写作期**工具，不是门禁：写书时先查出行号再落笔，
 免得凭印象写坐标。
@@ -52,9 +54,9 @@
 | `evidence/REGISTRY.json` | 25 | 仓外原件登记：指针 + size + sha256 |
 | `known_findings.json` | 21 | 查出来但不修改的既有问题（K-1） |
 | `crops/裁剪版.md` | 187 | 裁剪件（**生成物**，勿手改） |
-| **小计** | **726** | 5 件 |
+| `README.md` | 125 | 书的入口页 |
 
-**全卷合计：26 件 / 5 636 行 / 257.5 KB。**
+**全卷合计：29 件 / 6 226 行。**
 
 ---
 
@@ -64,13 +66,13 @@
 
 | 门禁 | 命令 | 结果 |
 |---|---|---|
-| 坐标审计 | `python book/tools/audit_coords.py` | **引用 743 ｜ 可解析 743 ｜ 失败 0 ｜ 行锚断言核对 365** ✅ |
+| 坐标审计 | `python book/tools/audit_coords.py` | **引用 746 ｜ 可解析 746 ｜ 失败 0 ｜ 行锚断言核对 365** ✅ |
 | 结构体检 | `python book/tools/check_book_structure.py` | **章数 9/9；问题章数 0** ✅ |
 | 裁剪件逐字 | `python book/tools/verify_crops_verbatim.py` | **18 段逐字命中；不一致 0** ✅ |
-| 书中数字 | `python book/tools/verify_book_numbers.py` | **带文件名的数字 0 处，全部一致** ✅ |
+| 书中数字 | `python book/tools/verify_book_numbers.py` | **全部一致** ✅ |
 | 脱敏/路径 | `python book/tools/scan_absolute_paths.py` | **未清 0 处**（豁免/登记 42 处） ✅ |
-| 断链 | `python book/tools/check_broken_links.py` | **真断链 0** ｜ 记录性 3 ｜ 反例 11 ｜ 不入库区 28 ｜ 外部项目 2 ✅ |
-| 仓内测试 | `python -m pytest -q` | **404 passed** ✅ |
+| 断链 | `python book/tools/check_broken_links.py` | **真断链 0** ｜ 记录性 3 ｜ 反例 11 ｜ 不入库区 31 ｜ 外部项目 2 ✅ |
+| 仓内测试 | `python -m pytest -q` | **404 passed**（本机有原始数据时）；干净克隆里 294 passed / 110 skipped ✅ |
 
 **一条坐标的完整链路**（读者可以照着走一遍）：
 
@@ -88,7 +90,21 @@
 光验"行号存在"只能挡住行锚腐烂，挡不住**指错行**——
 而指错行更常见，也更危险。
 
-## 三、坐标的两个发现
+## 三、三个自指的门
+
+这一卷的门禁里有三个是**指向它自己**的，值得单说：
+
+| 门 | 挡的是什么 |
+|---|---|
+| `checks.json`（行锚断言） | 坐标指向**错的行**——行在，但不在说那句话 |
+| 资产表行数核对 | 清单随编辑**漂了**——改完正文忘了改清单，清单就成了假清单 |
+| 自报门禁数字核对 | 书里**关于自己**的那几行写旧了——改一次正文，坐标数就变，而正文里那句"引用 746"没人会去核对 |
+
+第三条是这卷里最晚写、也最有用的一条：
+**书里最容易变旧的，恰恰是它自己**。
+所以工具会把「书里说的」和「当场实跑的」绑在一起对。
+
+## 四、坐标的两个发现
 
 **其一**：`src/agent` 目录**在 `ddd03af` 与 `0bf4ad4` 两个提交下都不存在**，
 而收尾文档的账面栏写了"`src/axiscope` + `src/agent`"
@@ -100,11 +116,12 @@
 两个数字都对，差的是口径——**不交代口径就报差值，等于制造一个不存在的发现**。
 ch09 §9.3 整节讲这件事。
 
-## 四、复现
+## 五、复现
 
 ```powershell
-git clone https://github.com/<owner>/axiscope
+git clone https://github.com/JosephIvon/axiscope
 cd axiscope
+python -m pip install "pytest==9.1.1" "numpy==2.5.3" "scipy==1.18.1"
 python -m pytest -q                      # 仓内测试
 python book/tools/audit_coords.py        # 坐标审计
 python book/tools/check_book_structure.py
@@ -128,12 +145,12 @@ python book/tools/locate.py "看不见"          # 这句话在哪个文件第�
 python book/tools/locate.py --file KB4 "1641"
 ```
 
-## 五、边界声明
+## 六、边界声明
 
 | 项 | 状态 |
 |---|---|
 | 本卷改动的仓内代码 | **0 行**（`src/` `docs/` `tests/` 一行未动） |
-| 本卷动过的仓外文件 | 2 件：`README.md`（加书入口，既有义务段一字未动）、CI workflow（加 `book` 作业 + 修「CI 从没装过任何依赖、从来就是红的」这个既有 bug） |
+| 本卷动过的仓外文件 | 3 处：`README.md`（加书入口，既有义务段一字未动）、CI workflow（加 `book` 作业 + 修「CI 从没装过任何依赖、从来就是红的」这个既有 bug）、`data/*.py` 19 个探针脚本（补 stdout 强制 utf-8 的房规，runner 控制台是 cp1252） |
 | 本卷新增的目录 | **仅 `book/`** |
 | 本卷发现的既有问题 | 1 条（`K-1`），**登记在册并披露**，未修改 |
 | 坐标锚点 | `axiscope@0bf4ad4`（单点定义于 `book/tools/_anchor.py`） |

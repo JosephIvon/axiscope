@@ -91,7 +91,7 @@
 | 6 | 真断链 0 | `tools/check_broken_links.py` |
 | 7 | 仓内测试全绿 | `python -m pytest -q` |
 | 8 | **本卷没有改动 `src/` `docs/` `tests/` 任何一行** | `git diff <anchor> -- src docs tests` |
-| 9 | 本卷只动过 `README.md`（加书入口，既有义务段一字未动）与 CI workflow（加 book 作业 + 修既有 bug） | `git diff <anchor> --stat` |
+| 9 | 本卷动过三处仓外文件：`README.md`（加书入口）、CI workflow（加 book 作业 + 修既有 bug）、`data/*.py` 19 个探针（补 stdout utf-8 房规） | `git diff <anchor> --stat` |
 
 第 8 条是**停机点纪律**（ch09 §9.6）：本卷是一次新战役，
 它只新增 `book/`，不在别人的停机点上叠加。
