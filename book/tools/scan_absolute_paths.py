@@ -120,8 +120,12 @@ def main() -> int:
                            i, m.group(0))
                     if label == "脱敏标识值":
                         # 登记在册的已知项：命中即查登记
+                        # **已清偿的登记项不提供豁免**——它当初值就长在那个位置，
+                        # 现在那个位置必须干净；值再出现就是复发，判失败。
                         registered = False
                         for kid, f in known.items():
+                            if str(f.get("state", "open")) == "cleared":
+                                continue
                             if (f.get("file") == rec[1] and int(f.get("line", -1)) == rec[2]
                                     and rec[3] in str(f.get("token", ""))):
                                 seen_known.add(kid)
@@ -136,12 +140,19 @@ def main() -> int:
                     hits.append(rec)
 
     # 登记了但没在书里披露的 → 判失败（护栏：登记表不得变成沉默的白名单）
+    # 已清偿的项不再要求「在扫描里被命中」——值已经不在仓里了，
+    # 命中不到才是对的；但**披露**这一条照旧要求（不许悄悄销账）。
     undisclosed = []
     for kid, f in known.items():
-        if kid not in seen_known:
+        if kid not in disclosed_ids(book_text):
             undisclosed.append((kid, f.get("file"), f.get("line")))
-        elif kid not in disclosed_ids(book_text):
+        elif str(f.get("state", "open")) != "cleared" and kid not in seen_known:
             undisclosed.append((kid, f.get("file"), f.get("line")))
+
+    cleared = [k for k, f in known.items() if str(f.get("state", "open")) == "cleared"]
+    if cleared:
+        print(f"已清偿的登记项（**不再豁免扫描**——值若重新出现即判失败）：{'、'.join(sorted(cleared))}")
+        print()
 
     if exempt:
         print("策略语境 / 登记在册（不计失败）——这些 token 出现在脱敏策略、计量文本或已登记的已知项里：")
@@ -163,9 +174,10 @@ def main() -> int:
             for label, f, i, frag in hits:
                 print(f"  ✗ [{label}] {f}:{i}  →  {frag[:60]}")
         print(f"\n合计 {len(hits)} 处未清（豁免/登记 {len(exempt)} 处）；"
-              f"登记未披露 {len(undisclosed)} 处。")
+              f"登记未披露 {len(undisclosed)} 处；已清偿登记 {len(cleared)} 条。")
         return 1
-    print(f"合计 0 处（豁免/登记 {len(exempt)} 处）；必改项清零才算公开就绪。")
+    print(f"合计 0 处（豁免/登记 {len(exempt)} 处）；"
+          f"已清偿登记 {len(cleared)} 条；必改项清零才算公开就绪。")
     return 0
 
 
