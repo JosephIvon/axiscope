@@ -1,0 +1,27 @@
+{
+  "_about": "仓外原件登记表：本卷引用了不在本仓的文件时，把原件 vendor 进 book/evidence/，并在这里登记【指针 + size + sha256】。理由：一条坐标如果只有作者自己能点开，它就不是坐标，是内部暗号；而没有登记的『仓外文件』会让坐标审计器变成只会说『通过』的摆设——拼错一个文件名也能过关。",
+  "_rule": "vendor 的副本必须与原件【逐字节一致】：sha256 相同才算登记有效。",
+  "externals": [
+    {
+      "path": "book/decision-lists/axiscope-36e2c74.md",
+      "path_note": "path 是**原件在 origin_repo 里的仓内路径**（不是本仓路径）；两个仓的路径拼起来才是完整指针。同一份原件在 forensics-learning-book 的 decision-lists 目录下也有一份（该书仓未公开发布）",
+      "vendored_as": "book/evidence/axiscope-36e2c74-decision-list.md",
+      "size": 4353,
+      "sha256": "119973f7459b147dfd69711ac68eb216c11ce4d2349dd4d76d19ef2f5217a3e6",
+      "lines": 72,
+      "origin_repo": "forensics-mcopilot（已公开发布）",
+      "why": "axiscope 的收尾决策清单。收尾文档把它列为『四件套』之一（docs/项目回顾与收尾_20261022.md:62）。原件现在**公开可读**（forensics-mcopilot 仓已推送 ✓），但本卷仍然 vendor 一份进来，理由是**坐标要自足**：读者只 clone 本仓就能核到每一个坐标，不必再 clone 另一个仓——仓外原件随时可能搬家、可能撤下，而本卷的门禁要能在**只有本仓**的环境里自证。",
+      "verified": "2026-10-24 逐字节比对：原件与副本 **blob 内容**相同，sha256 = 119973f7…a3e6（两个仓的 git blob 哈希同为 12381c29…。**复核时要注意算的是哪一份**：两仓都开了 core.autocrlf，**工作区文件是 CRLF**，直接 Get-FileHash 工作区文件会得到另一个哈希；要复核请对**仓库内容**算——`git cat-file blob HEAD:book/evidence/axiscope-36e2c74-decision-list.md`（本仓），另一侧的文件由本表 `origin_repo` + `path` 两个字段指明，取出后两者应当逐字节一致。"
+    }
+  ],
+  "vendored": [
+    {
+      "vendored_as": "book/evidence/axiscope-36e2c74-decision-list.md",
+      "sha256": "119973f7459b147dfd69711ac68eb216c11ce4d2349dd4d76d19ef2f5217a3e6",
+      "size": 4353,
+      "lines": 72,
+      "note": "标题：# 收尾决策清单：axiscope（@36e2c74）。停机点 36e2c74，收尾日 2026-10-22。六节：一、否决了什么；二、划了什么边界；三、……；六、清偿追记（2026-10-22，adf4c4b）。",
+      "sha_note": "**本文件一个字节都没动**，sha256 与仓外原件仍然相同（登记规则要求逐字节一致）。因此文内提到的 36e2c74 / ddd03af / adf4c4b 指向的是 **2026-10-24 改写历史之前**的提交号：同一批提交在改写后的新 SHA 分别是 b780400 / d5717fb / cbddb23。改写 axiscope 历史不动 forensics-learning-book，所以仓外原件的**文件名也还叫** axiscope-36e2c74.md——本地副本沿用同名，是为了让 path 与 vendored_as 一一对应。**快照的固有性质就是『它记录的是那个时刻』**；里面的旧 SHA 失效，是历史的错，不是快照的错。书卷 ch09 §9.7.2 记了这次改写。"
+    }
+  ]
+}
