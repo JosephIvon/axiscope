@@ -123,10 +123,21 @@ def check_assets(book_texts: dict[str, str]) -> tuple[int, int]:
 
 # ---- ③ 本卷自报的门禁数字：必须等于当场实跑 -------------------------------------
 
-# 「引用 743 ｜ 可解析 743 ｜ 失败 0 ｜ 行锚断言核对 365 处」两种排法都收
-SELF_CLAIM = re.compile(
-    r"(?:\*\*)?(?:坐标审计\s*)?引用\s*\**(\d+)\**\s*｜\s*(?:\*\*)?可解析\s*\**(\d+)\**\s*｜\s*"
-    r"(?:\*\*)?失败\s*\**(\d+)\**\s*｜\s*(?:\*\*)?行锚断言核对\s*\**(\d+)\**\s*处")
+# 自报数字有两种排法，**两种都收**：
+#   A「引用 N ｜ 可解析 N ｜ 失败 N ｜ 行锚断言核对 N[ 处]」
+#   B「坐标审计 N 引用 ｜ N 可解析 ｜ N 失败 ｜ 行锚断言核对 N」
+# 「处」可有可无（ASSETS 表格里那一处没有它，README 那一处用的是 B 排法）。
+#
+# **为什么写成两个正则而不是一个**：只写一种排法，就是**给假绿开后门**——
+# 排法一变，正则匹配 0 处，门照样全绿，却一个字也没核对。
+# 本仓自己写过这条纪律：门要对着「我发出去的东西」清（ch08 §8.5.2）。
+# 每次改这里的正则，必须当场确认**匹配到的处数 > 0**（main() 里有这条断言）。
+SELF_CLAIM_A = re.compile(
+    r"引用\s*\**(\d+)\**\s*｜\s*(?:\*\*)?可解析\s*\**(\d+)\**\s*｜\s*"
+    r"(?:\*\*)?失败\s*\**(\d+)\**\s*｜\s*(?:\*\*)?行锚断言核对\s*\**(\d+)\**\s*处?")
+SELF_CLAIM_B = re.compile(
+    r"坐标审计\s*\**(\d+)\**\s*引用\s*｜\s*\**(\d+)\**\s*可解析\s*｜\s*"
+    r"\**(\d+)\**\s*失败\s*｜\s*(?:\*\*)?行锚断言核对\s*\**(\d+)\**")
 
 
 def live_gate_numbers() -> tuple[int, int, int, int] | None:
@@ -149,9 +160,18 @@ def check_self_numbers(book_texts: dict[str, str]) -> tuple[int, int]:
         return 0, 0
     checked = bad = 0
     for name, text in sorted(book_texts.items()):
-        for m in SELF_CLAIM.finditer(text):
-            got = tuple(int(x) for x in m.groups())
+        for m in SELF_CLAIM_A.finditer(text):
             checked += 1
+            got = tuple(int(x) for x in m.groups())
+            if got != live:
+                bad += 1
+                line = text[:m.start()].count("\n") + 1
+                print(f"  [MISMATCH] {name}:{line}  自报 {got}，实跑 {live}")
+            else:
+                print(f"  [OK] {name}  自报门禁数字与实跑一致：{live}")
+        for m in SELF_CLAIM_B.finditer(text):
+            checked += 1
+            got = tuple(int(x) for x in m.groups())
             if got != live:
                 bad += 1
                 line = text[:m.start()].count("\n") + 1
@@ -205,6 +225,13 @@ def main() -> int:
     s_checked, s_bad = check_self_numbers(book_texts)
     checked += s_checked
     bad += s_bad
+    # **匹配到 0 处 = 门失效，不是门通过。**
+    # 这一条是本文件自己的护栏：正则一旦与书里的排法脱节，
+    # ③ 就会「一个数也没核」却照样全绿——那正是本书 §8.5.2 讲的假绿形状。
+    if s_checked == 0:
+        print("  [FAIL] 自报门禁数字一处也没匹配到：正则与书里的排法脱节了，"
+              "③ 现在是**空转**，不能算通过")
+        bad += 1
 
     print(f"已核 {checked} 处数字，{bad} 处不一致" if bad
           else f"已核 {checked} 处数字，全部一致")
