@@ -56,7 +56,7 @@ jobs:
   book:
     # 书卷门禁：坐标、结构、裁剪、数字、脱敏、断链——六道，全绿才算书写完了。
     #
-    # **fetch-depth: 0 是硬要求**：坐标审计按**锚点 commit**（axiscope@0bf4ad4）
+    # **fetch-depth: 0 是硬要求**：坐标审计按**锚点 commit**（axiscope@7f7c37e）
     # 读源文件（git show <rev>:<path>）。浅克隆里没有那个 commit，
     # 审计会读不到文件——而读不到文件的那一档必须判失败，不能当"通过"。
     runs-on: windows-latest
