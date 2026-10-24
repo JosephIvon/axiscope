@@ -15,7 +15,7 @@ docstring 原文口径：「只做『读成结构化表』这一件事，语义�
 | `gate_episodes(flags) -> list[tuple[int, int]]` | 函数 | 触发门控为真的极大连续区间（NaN/0 视为假）——D1 取「最长一次门控」样本的依据 |
 | `timebase_stats(index, dt_ms) -> dict` | 函数 | 键 `dt_median_s, dt_jitter_ratio, strictly_monotonic`（`dts` 非空时另有 `gap_max_s`） |
 
-内部细节：`REDACT_PATTERNS = ("Versuchsstand", "[REDACTED_ADS_NETID]", r"C:\\")`，命中计数进 `redaction_hits`（脱敏纪律的读数口）；`_to_float` 把空串/`nan`/`na`/`#NAN` 折成 NaN。
+内部细节：`REDACT_PATTERNS = ("Versuchsstand", "141.58.", r"C:\\")`，命中计数进 `redaction_hits`（脱敏纪律的读数口）；`_to_float` 把空串/`nan`/`na`/`#NAN` 折成 NaN。
 
 ## 2. `src/axiscope/dialects.py` — 非 D1 方言分派器
 

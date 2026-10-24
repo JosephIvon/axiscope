@@ -49,8 +49,8 @@ sample/
 |---|---|---|---|---|
 | 1 | `Name` | 导出集标题 | `Name<TAB>Measurement` | 存 `provenance.export_title`；仅 2 字段 |
 | 2 | `File` | 原始导出文件的**本机绝对路径** | `[REDACTED_HOST_PATH]\Export 10.csv` | **PII**：脱敏（§六）；只留 basename 或占位 |
-| 3 | `Starttime of export` | 导出起始墙钟 | `[REDACTED_WALLCLOCK]`（.NET ticks，100 ns 单位）+ `[REDACTED_WALLCLOCK]` + `[REDACTED_WALLCLOCK]` | 存 `provenance`，**仅溯源**；时区未标注（KB7）→ 不作为绝对时基，不参与 C6 对齐 |
-| 4 | `Endtime of export` | 导出结束墙钟 | `[REDACTED_WALLCLOCK]` + 德语日期 + 时间 | 同上；可用于算导出总时长（≈18.65 s = 18650 行 × 1 ms，自洽） |
+| 3 | `Starttime of export` | 导出起始墙钟 | `[REDACTED_WALLCLOCK]`（.NET ticks，100 ns 单位 + 德语日期 + 时刻；原值已按 §六 令牌化） | 存 `provenance`，**仅溯源**；时区未标注（KB7）→ 不作为绝对时基，不参与 C6 对齐 |
+| 4 | `Endtime of export` | 导出结束墙钟 | `[REDACTED_WALLCLOCK]` + 德语日期 + 时间（原值已令牌化） | 同上；可用于算导出总时长（≈18.65 s = 18650 行 × 1 ms，自洽） |
 | 5 | （空） | 分隔 | — | 跳过 |
 | 6 | （空） | 分隔 | — | 跳过 |
 | 7 | `Name` | **通道名表头行（约定 A：Scope 别名）** | `Name<TAB>dForce_load<TAB>Name<TAB>dPower_load<TAB>…` | 定位 names；通道数 `N = 奇数列个数`；见下 |
@@ -526,7 +526,7 @@ DARUS-5171 的 `x_T` 风格别名列（KB7）在**未在本文件实测**的通�
   许可 CC BY 4.0，署名 Reichenbach, Thomas — University of Stuttgart，DOI `10.18419/DARUS-3600`。
 - **发布前必做**：计数由 `python data/probe_pii.py` 打印（口径=**正则命中次数**，不是行数也不是文件数；
   KB0 §6 检查 27 要求文档抄打印行）。本文件实测：`Versuchsstand` **1**（第 2 行 `File` 的原机绝对路径）、
-  `NetID` **32** 与内网地址 `[REDACTED_INTERNAL_IP]` **32**（集中在第 11 元数据行的重复标签对）、`C:` + 反斜杠 **1**。
+  `NetID` **32** 与内网地址（`141.58.` 网段）**32**（集中在第 11 元数据行的重复标签对）、`C:` + 反斜杠 **1**。
   两个 `.source.txt` 侧车各再带 1 次 `Versuchsstand` ⟹ `data/raw` 合计 `Versuchsstand` **4**、盘符路径 **3**，
   脱敏范围必须含侧车。此前此行的 `NetID（×6）`/`Versuchsstand（×9）` 是人工点数、在本仓任何一份样本上
   都不可复现，已撤销（A-110）。引擎产物 `build/Export10_244531/` 实测 `Versuchsstand` **0**、IP **0**、
@@ -565,7 +565,7 @@ DARUS-5171 的 `x_T` 风格别名列（KB7）在**未在本文件实测**的通�
   自述核对 **3/4 计入 k**（rows/channels/fs 相符；哈希按同源派生剔除）。
   许可 CC BY 4.0（本会话读 5171 `latestVersion.license`），署名 Reichenbach, Thomas — University of Stuttgart，DOI `10.18419/DARUS-5171`。
 - **发布前必做**：同一脚本实测本文件 `Versuchsstand` **1**（`File` 行）、`C:` + 反斜杠 **1**、
-  `NetID`/`[REDACTED_INTERNAL_IP]` **0** ⟹ 本变体**不含 ADS 路由标识**，与 §4.10 的脱敏清单不同，勿照抄。
+  `NetID`/`141.58.` 网段 **0** ⟹ 本变体**不含 ADS 路由标识**，与 §4.10 的脱敏清单不同，勿照抄。
   侧车 `DD_head.csv.source.txt` 另带 `Versuchsstand` **1**，脱敏须一并处理。
   此前此行的 `Versuchsstand（×3）` 是人工点数、不可复现，已撤销（A-110）。
 
@@ -787,7 +787,7 @@ C1「数据质量红线」→ 解析器端**可判定检查**。红线**按过�
 |---|---|---|---|
 | L2 `File` | `[REDACTED_HOST_PATH]\Export 10.csv` | 只留 basename `Export 10.csv`，路径整体替换为 `[REDACTED_HOST_PATH]`；`raw/` 内原文件同步改 | 否（路径 PII） |
 | L3/L4 `Starttime/Endtime` | .NET ticks + 德语墙钟（时区未标注，KB7） | ticks 与墙钟**均**替换为 `[REDACTED_WALLCLOCK]`；仅保留「相对时长 ≈ 18.65 s」这类不含绝对时刻的量 | 否 |
-| L11 `NetID` | `[REDACTED_ADS_NETID]`（ADS 路由/类 IP） | 替换为 `[REDACTED_ADS_NETID]`；正则 `NetID` 奇数列整列抹掉 | 否（网络标识） |
+| L11 `NetID` | 目标 PLC 的 ADS 路由（完整 NetID；原值按 §六 令牌化，此处不复述） | 替换为 `[REDACTED_ADS_NETID]`；正则 `NetID` 奇数列整列抹掉 | 否（网络标识） |
 | L12 `Port` | `851` | 保留（协议常识，非 PII）；可选统一为 `[PORT]` | 可选 |
 | L10 `SymbolName` | `Measurement_Connector.dPosition_test` 等 | **保留**（符号名不含主机路径/PII）；是语义映射输入 | 是 |
 | L1 `Name`/标题 | `Measurement` | 保留 | 是 |

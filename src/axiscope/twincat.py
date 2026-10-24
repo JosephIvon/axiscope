@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 
 REDACT_PATTERNS = (
     "Versuchsstand",
-    "[REDACTED_ADS_NETID]",
+    "141.58.",  # 网段前缀：与 assertions.REDACT_TOKENS 同形；不写完整路由标识
     r"C:\\",
 )
 
