@@ -24,6 +24,14 @@ import atexit
 import re
 import sys
 
+try:
+    # 控制台不是 UTF-8 时 print 会抛 UnicodeEncodeError——脚本崩在打印上，
+    # 而不是给出判定。Windows 控制台默认 cp936/cp1252，GitHub runner 是 cp1252。
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:  # pragma: no cover - 环境相关
+    pass
+
+
 OK_TAIL = re.compile(r"(?<!不)成立(?:（[^）]*）)?\**$")
 BAD_TAIL = re.compile(r"不成立(?:（[^）]*）)?\**$")
 NA_TAIL = re.compile(r"无法复算（.*）\**$")
