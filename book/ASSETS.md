@@ -36,7 +36,7 @@
 | `tools/audit_coords.py` | 295 | 坐标解析 + 行锚断言 | exit 1 |
 | `tools/check_book_structure.py` | 160 | 逐章必备件 + 锚点串一致性 | exit 1 |
 | `tools/verify_crops_verbatim.py` | 68 | 裁剪件逐字核对 | exit 1 |
-| `tools/verify_book_numbers.py` | 285 | 书中数字：带文件名的行数、资产表行数、**自报门禁数字** | exit 1 |
+| `tools/verify_book_numbers.py` | 291 | 书中数字：带文件名的行数、资产表行数、**自报门禁数字** | exit 1 |
 | `tools/scan_absolute_paths.py` | 185 | 脱敏/绝对路径扫描（已清偿的登记项**不再豁免**） | exit 1 |
 | `tools/check_broken_links.py` | 215 | 断链分八类 | exit 1 |
 | `tools/build_crops.py` | 208 | 裁剪件生成器（唯一生成器） | — |
@@ -58,7 +58,7 @@
 | `README.md` | 125 | 书的入口页 |
 | `ASSETS.md` | 160 |
 
-**全卷合计：28 件 / 6,454 行。**
+**全卷合计：29 件 / 6,631 行。**
 
 ---
 

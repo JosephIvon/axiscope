@@ -73,7 +73,9 @@ def file_lines(rel: str) -> int | None:
 ROW_PAT = re.compile(r"^\|\s*`(?P<path>[^`]+)`\s*\|\s*(?P<n>\d+)\s*\|", re.M)
 ASSET_ROW = re.compile(r"^\|\s*`(?P<path>[^`]+)`\s*\|\s*(?P<n>\d+)\s*\|", re.M)
 # 合计行：全卷合计：N 件 / M 行
-TOTAL_ROW = re.compile(r"全卷合计：\s*(?P<files>\d+)\s*件\s*/\s*(?P<lines>[\d\s]+)\s*行")
+# 千位逗号必须算进字符类：合计写成 `6,625` 时，`[\d\s]+` 匹配不上，
+# 于是「合计核对」整条**空转**——总行数写错了也照样绿（2026-10-24 真踩到）。
+TOTAL_ROW = re.compile(r"全卷合计：\s*(?P<files>\d+)\s*件\s*/\s*(?P<lines>[\d,\s]+)\s*行")
 
 
 def book_files() -> list[Path]:
@@ -106,6 +108,10 @@ def check_assets(book_texts: dict[str, str]) -> tuple[int, int]:
             bad += 1
             line = text[:m.start()].count("\n") + 1
             print(f"  [MISMATCH] ASSETS.md:{line}  清单称「{rel}」{n} 行，实为 {real} 行")
+    if "全卷合计" in text and TOTAL_ROW.search(text) is None:
+        print("  [FAIL] ASSETS.md 里有「全卷合计」但解析不出来——格式与正则脱节，"
+              "这一项等于没核（不许静默跳过）")
+        return 0, 1
     m = TOTAL_ROW.search(text)
     if m:
         files = book_files()
@@ -113,7 +119,7 @@ def check_assets(book_texts: dict[str, str]) -> tuple[int, int]:
         real_lines = sum(len(p.read_text(encoding="utf-8", errors="replace").splitlines())
                          for p in files)
         want_files = int(m.group("files"))
-        want_lines = int(m.group("lines").replace(" ", "").replace("\u3000", ""))
+        want_lines = int(m.group("lines").replace(",", "").replace(" ", "").replace("\u3000", ""))
         checked += 1
         if want_files != real_files or want_lines != real_lines:
             bad += 1
