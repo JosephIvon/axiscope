@@ -133,6 +133,7 @@ python book/tools/locate.py --file KB4 "1641"
 | 项 | 状态 |
 |---|---|
 | 本卷改动的仓内代码 | **0 行**（`src/` `docs/` `tests/` 一行未动） |
+| 本卷动过的仓外文件 | 2 件：`README.md`（加书入口，既有义务段一字未动）、CI workflow（加 `book` 作业 + 修「CI 从没装过 pytest」这个既有 bug） |
 | 本卷新增的目录 | **仅 `book/`** |
 | 本卷发现的既有问题 | 1 条（`K-1`），**登记在册并披露**，未修改 |
 | 坐标锚点 | `axiscope@0bf4ad4`（单点定义于 `book/tools/_anchor.py`） |

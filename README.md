@@ -3,6 +3,10 @@
 仓库的规范与事实分散在 `docs/contracts/`（C1–C7）、`docs/kb/`（KB0、KB2–KB8）与 `docs/AUDIT-*.md`。
 本节只承担两项既有披露义务：**数据来源与署名**、**复用设计标注**。二者均不新增结论，只抄录仓内已登记的原文并给出出处。
 
+另有一本**电子书**与本仓同仓：[`book/README.md`](book/README.md) ——
+讲的是**怎么让每个技术主张都能被第三方当场核验**；
+它的坐标锚在本仓自己的 `axiscope@0bf4ad4`，一个 clone 就能当场复核。
+
 ## 数据来源与署名
 
 ### 1. DaRUS（斯图加特大学）—— CC BY 4.0，须署名
@@ -113,3 +117,30 @@ CWRU / Paderborn CM / Aalto / MFPT 的正式标识在 `docs/kb/KB7-dataset-da-ru
 - 本仓**不含原始数据** ✓：原始数据集均有 DOI 可随时重下 ✓，
   入库的是派生样本卡 + 独立算出的真值，两者靠指纹绑定 ✓（见 `data/PROVENANCE-TEMPLATE.md` ✓）。
 - 逐件登记与"不替你决定的事"见 **`NOTICE.md`** ✓。
+
+---
+
+## 电子书（`book/`）——与代码同仓
+
+`book/` 是一本讲**方法**的书：怎么让每一个技术主张都能被第三方当场核验。
+它原先不是这个仓的一部分；2026-10-24 起随本仓同在，
+**坐标锚在本仓自己的某一次提交上**（`axiscope@0bf4ad4`）。
+
+**读者手里没有锚点，坐标就只剩作者能核**——而"当场可核"正是这本书要证伪的那件事。
+
+| 入口 | 内容 |
+|---|---|
+| [`book/README.md`](book/README.md) | 从哪读起 + 坐标怎么用 + 门禁怎么跑 |
+| [`book/chapters/`](book/chapters/) | 九章正文 + 导读 + 前言 + 尾声 |
+| [`book/crops/裁剪版.md`](book/crops/裁剪版.md) | 每章的「可验证主张」+「讲师 90 分钟切分」（**一件**） |
+| [`book/tools/`](book/tools/) | 书自己的自检工具链（坐标审计 / 结构体检 / 裁剪核对 / 数字核对 / 脱敏扫描 / 断链检查） |
+
+**书里的引用会过期，过期的引用比没有引用更坏**，所以有一道机器门禁：
+
+```powershell
+python book\tools\audit_coords.py        # 每处「文件:行号」解析回源文件 + 行锚断言
+python book\tools\check_book_structure.py # 逐章必备件 + 锚点串一致性
+```
+
+CI 里 `book` 作业跑这六道门（`fetch-depth: 0` 是硬要求：
+坐标审计要按**锚点 commit** 读源文件，浅克隆里没有那个 commit）。
