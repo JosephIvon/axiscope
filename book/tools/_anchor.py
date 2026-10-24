@@ -16,7 +16,7 @@
 from __future__ import annotations
 
 #: 代码坐标按这个 commit 读（`git show <rev>:<path>`）
-ANCHOR_COMMIT = "7f7c37e"
+ANCHOR_COMMIT = "3576c9c"
 
 #: 书里正文用的写法（与正文里的字符串必须逐字一致，由结构门禁核对）
 ANCHOR_LABEL = f"axiscope@{ANCHOR_COMMIT}"

@@ -156,5 +156,5 @@ python book/tools/locate.py --file KB4 "1641"
 | 本卷动过的仓外文件 | 3 处：`README.md`（加书入口，既有义务段一字未动）、CI workflow（加 `book` 作业 + 修「CI 从没装过任何依赖、从来就是红的」这个既有 bug）、`data/*.py` 19 个探针脚本（补 stdout 强制 utf-8 的房规，runner 控制台是 cp1252） |
 | 本卷新增的目录 | **仅 `book/`** |
 | 本卷发现的既有问题 | 2 条（`K-1` 文档侧 NetID、`K-2` 仓内未脱敏原始数据副本），**都已清偿**（清账战役，含**重写历史**把那份从历史里清掉；代价见 ch09 §9.7.2） |
-| 坐标锚点 | `axiscope@7f7c37e`（单点定义于 `book/tools/_anchor.py`） |
+| 坐标锚点 | `axiscope@3576c9c`（单点定义于 `book/tools/_anchor.py`） |
 | 仓外原件 | 1 件（收尾决策清单），已 vendor + 登记 sha256 |
