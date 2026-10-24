@@ -223,7 +223,7 @@ def test_leaked_host_path_is_caught(built):
     path = os.path.join(built["pack_dir"], "meta.json")
     blob = io.open(path, encoding="utf-8").read()
     io.open(path, "w", encoding="utf-8").write(
-        blob.replace('"units_are"', '"note": "C:\\\\Versuchsstand\\\\log", "units_are"', 1))
+        blob.replace('"units_are"', '"note": "C:\\\\tmp\\\\Versuchsstand.log", "units_are"', 1))
     try:
         ok, detail = _results(built)["包内不含主机路径 / ADS NetID（KB2 §6.3）"]
         assert ok is False and "Versuchsstand" in detail
@@ -234,7 +234,7 @@ def test_leaked_host_path_is_caught(built):
 def test_leaked_ads_netid_is_caught(built):
     path = os.path.join(built["pack_dir"], "meta.json")
     blob = io.open(path, encoding="utf-8").read()
-    io.open(path, "w", encoding="utf-8").write(blob.replace('"units_are"', '"net": "[REDACTED_ADS_NETID]", "units_are"', 1))
+    io.open(path, "w", encoding="utf-8").write(blob.replace('"units_are"', '"net": "141.58.xxx", "units_are"', 1))
     try:
         ok, detail = _results(built)["包内不含主机路径 / ADS NetID（KB2 §6.3）"]
         assert ok is False and "141.58." in detail

@@ -3,6 +3,14 @@ data/raw/
 data/incoming/
 data/staging/
 
+# 侧车暂存区里的**原始数据件**同样不入库：侧车 .source.txt 与公开元数据入库，
+# 原始波形不入库。2026-10-24 清账：这里曾混进一份**未脱敏**的母本副本
+# （首个提交 ddd03af 就带着它），是 KB2 §六「只清除主机路径/ADS NetID/绝对墙钟」
+# 只在 data/raw/ 生效、没覆盖到暂存区的后果。
+data/sidecar_in/**/*.csv
+data/sidecar_in/**/*.mat
+data/sidecar_in/**/*.zip
+
 # 构建产物与可再生缓存
 build/
 __pycache__/
