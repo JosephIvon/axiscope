@@ -59,9 +59,37 @@ DOC_PATTERNS = [
     ("绝对墙钟 ticks（18 位）", r"\b1\d{17}\b"),
     ("绝对墙钟（德语日期时刻）",
      r"(Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Samstag|Sonntag), \d{1,2}\. \w+ \d{4}"),
+    # **日期+时刻**才算绝对墙钟：只有时刻（如某次自检的时刻）不定位任何一次实验，
+    # 带着日期才是"这次采集发生在什么时候"——那是要清的。
+    # 这一档是 2026-10-24 重写历史时才发现的：两份侧车的「导出时刻」带着日期，
+    # 之前的门只认 ticks 与德语日期，没认出「YYYY-MM-DD HH:MM:SS.mmm」这一种。
+    ("绝对墙钟（日期+时刻）", r"\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}\.\d{3}"),
     ("完整 ADS NetID（6 段）", r"141\.58\.\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
     ("内网 IP（4 段）", r"141\.58\.\d{1,3}\.\d{1,3}"),
 ]
+
+#: 形状对、语义不对的命中：**登记豁免，但只豁免到上限**。
+#:
+#: 「日期+时刻」这一档的形状是通用的——DOI 注册局自己的登记时刻、
+#: 另一份公开数据集的首列时间戳、测 ISO epoch 解析的合成夹具，
+#: 长得一模一样，却都不是**本数据集导出**的墙钟（KB2 §6.1 那一行是字段级的：
+#: 说的是 L3/L4 导出起始/结束时刻，不是仓里所有 ISO 时间戳）。
+#:
+#: 所以这里按「文件 + 类别 + 上限 + 理由」登记：
+#: 命中数**不超过上限**才豁免；**多出一处就判失败**——
+#: 豁免是"这几处我知道为什么无害"，不是"这个文件从此免检"。
+#: 理由必须写清楚，否则下一个来的人只能靠猜。
+DOC_EXEMPTIONS = {
+    "data/datacite_sciencedb_04148_2026-10-20.json": (
+        "绝对墙钟（日期+时刻）", 3,
+        "DOI 注册局自己的登记/更新时刻（公开元数据，非本数据集的导出墙钟）"),
+    "data/research_current_channel.md": (
+        "绝对墙钟（日期+时刻）", 1,
+        "另一份公开数据集的首列时间戳（本仓只引用它，不导出它）"),
+    "tests/test_validate_raw_intake.py": (
+        "绝对墙钟（日期+时刻）", 3,
+        "合成夹具：测 ISO epoch 解析，人造时间，与任何一次实验无关"),
+}
 
 # 原始数据与构建产物：各自单列成组，不进 ③。
 SKIP_DIR_NAMES = {".git", "__pycache__", "build", "node_modules", ".pytest_cache"}
@@ -148,20 +176,30 @@ def report_docs():
     print("== 仓内跟踪文件（= 会被发布出去的那些）==")
     totals = {name: 0 for name, _ in DOC_PATTERNS}
     hit_files = 0
+    exempted = []
     for p in files:
         try:
             counts = scan_doc(p)
         except OSError:
             continue
+        rel = os.path.relpath(p, ROOT).replace(os.sep, "/")
+        ex = DOC_EXEMPTIONS.get(rel)
+        if ex:
+            cls, cap, why = ex
+            if counts.get(cls, 0) <= cap:
+                counts[cls] = 0
+                exempted.append((rel, cls, cap, why))
         if any(counts.values()):
             hit_files += 1
-            print("  %-52s %s" % (os.path.relpath(p, ROOT),
+            print("  %-52s %s" % (rel,
                                   " ".join("%s=%d" % (k, v) for k, v in counts.items() if v)))
         for k, v in counts.items():
             totals[k] += v
     print("  命中文件数 %d / %d" % (hit_files, len(files)))
     for k, v in totals.items():
         print("  合计 %-24s %d" % (k + ":", v))
+    for rel, cls, cap, why in exempted:
+        print("  豁免 %-46s %s ≤ %d 处：%s" % (rel, cls, cap, why))
     return totals
 
 
