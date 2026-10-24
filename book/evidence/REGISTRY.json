@@ -1,0 +1,25 @@
+{
+  "_about": "仓外原件登记表：本卷引用了不在本仓的文件时，把原件 vendor 进 book/evidence/，并在这里登记【指针 + size + sha256】。理由：一条坐标如果只有作者自己能点开，它就不是坐标，是内部暗号；而没有登记的『仓外文件』会让坐标审计器变成只会说『通过』的摆设——拼错一个文件名也能过关。",
+  "_rule": "vendor 的副本必须与原件【逐字节一致】：sha256 相同才算登记有效。",
+  "externals": [
+    {
+      "path": "forensics-learning-book/decision-lists/axiscope-36e2c74.md",
+      "vendored_as": "book/evidence/axiscope-36e2c74-decision-list.md",
+      "size": 4353,
+      "sha256": "119973f7459b147dfd69711ac68eb216c11ce4d2349dd4d76d19ef2f5217a3e6",
+      "lines": 72,
+      "origin_repo": "forensics-learning-book（未公开发布）",
+      "why": "axiscope 的收尾决策清单。收尾文档把它列为『四件套』之一（docs/项目回顾与收尾_20261022.md:62），但那份书仓没有公开发布——读者点不开它。本卷把原件 vendor 进来，坐标才可达。",
+      "verified": "2026-10-24 逐字节比对：原件与副本 sha256 相同（Get-FileHash -Algorithm SHA256）"
+    }
+  ],
+  "vendored": [
+    {
+      "vendored_as": "book/evidence/axiscope-36e2c74-decision-list.md",
+      "sha256": "119973f7459b147dfd69711ac68eb216c11ce4d2349dd4d76d19ef2f5217a3e6",
+      "size": 4353,
+      "lines": 72,
+      "note": "标题：# 收尾决策清单：axiscope（@36e2c74）。停机点 36e2c74，收尾日 2026-10-22。六节：一、否决了什么；二、划了什么边界；三、……；六、清偿追记（2026-10-22，adf4c4b）。"
+    }
+  ]
+}

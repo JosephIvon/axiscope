@@ -1,0 +1,421 @@
+{
+  "_about": "行锚断言表：给关键坐标登记『这一行必须含有哪几个词』。登记了就当硬门——那一行不含登记词即判失败。",
+  "_why": "「行还在」不等于「行在说那句话」。只验行号存在的那种审计，能挡住行锚腐烂，挡不住指错行——而指错行恰好是更常见也更危险的那一种。",
+  "_how": "键 = 书里写的坐标（原样）；值 = 该行（或该行段）必须包含的词。命中数 = audit_coords.py 报告的「行锚断言核对 N 处」。",
+  "_scope": "只给**承重**坐标登记：错了会带歪整章论证的那些。不登记的坐标只验「行在不在」。",
+  "docs/wiki/01-overview.md:8": [
+    "离线的伺服",
+    "契约自检引擎"
+  ],
+  "docs/wiki/01-overview.md:12": [
+    "writes_to_device",
+    "requires_human_approval",
+    "代码级承诺"
+  ],
+  "docs/wiki/01-overview.md:13": [
+    "confidence",
+    "display"
+  ],
+  "docs/wiki/01-overview.md:44": [
+    "src/axiscope/"
+  ],
+  "docs/wiki/01-overview.md:70": [
+    "单向依赖"
+  ],
+  "docs/wiki/01-overview.md:72": [
+    "numpy",
+    "scipy",
+    "0 处 import"
+  ],
+  "docs/wiki/01-overview.md:75": [
+    "退出码"
+  ],
+  "docs/wiki/01-overview.md:79": [
+    "端到端断言"
+  ],
+  "docs/wiki/01-overview.md:80": [
+    "FAIL"
+  ],
+  "docs/wiki/01-overview.md:81": [
+    "拒收"
+  ],
+  "docs/DECISION-2026-10-19-方向裁决.md:12": [
+    "冻结契约",
+    "评测集"
+  ],
+  "docs/DECISION-2026-10-19-方向裁决.md:17": [
+    "该断言错误"
+  ],
+  "docs/DECISION-2026-10-19-方向裁决.md:21": [
+    "闭环反馈"
+  ],
+  "docs/DECISION-2026-10-19-方向裁决.md:9": [
+    "真机"
+  ],
+  "docs/contracts/C1-canonical-waveform.md:350-354": [
+    "2000",
+    "0.2",
+    "0.05"
+  ],
+  "docs/contracts/C2-features.md:15": [
+    "reliable_band_hz"
+  ],
+  "docs/contracts/C2-features.md:268": [
+    "null 不是 0"
+  ],
+  "docs/contracts/C3-diagnosis.md:952": [
+    "不可协商的规则"
+  ],
+  "docs/contracts/C3-diagnosis.md:954": [
+    "supporting_evidence"
+  ],
+  "docs/contracts/C3-diagnosis.md:958": [
+    "contradicting_evidence"
+  ],
+  "docs/contracts/C3-diagnosis.md:967": [
+    "next_data_to_collect"
+  ],
+  "docs/contracts/C3-diagnosis.md:969": [
+    "writes_to_device",
+    "false"
+  ],
+  "docs/contracts/C3-diagnosis.md:973": [
+    "三方归因族",
+    "fault_mode"
+  ],
+  "docs/contracts/C3-diagnosis.md:986": [
+    "fault_mode",
+    "slug"
+  ],
+  "docs/contracts/C4-validation.md:3-4": [
+    "仿真"
+  ],
+  "docs/contracts/C5-evaluation-protocol.md:10-17": [
+    "证明力"
+  ],
+  "docs/contracts/C5-evaluation-protocol.md:78": [
+    "ECE"
+  ],
+  "docs/contracts/C5-evaluation-protocol.md:84": [
+    "负向"
+  ],
+  "docs/contracts/C6-machine-context.md:85-87": [
+    "因果",
+    "共现"
+  ],
+  "docs/contracts/C7-process-context.md:31-36": [
+    "blocked",
+    "not_evaluable"
+  ],
+  "docs/kb/KB0-conventions.md:5": [
+    "追加"
+  ],
+  "docs/kb/KB0-conventions.md:7": [
+    "R-NN"
+  ],
+  "docs/kb/KB0-conventions.md:14-15": [
+    "2000"
+  ],
+  "docs/kb/KB0-conventions.md:20": [
+    "三大族"
+  ],
+  "docs/kb/KB0-conventions.md:24-33": [
+    "mechanical_"
+  ],
+  "docs/kb/KB3-tuning-rules.md:26-29": [
+    "看不见",
+    "没有"
+  ],
+  "docs/kb/KB0-conventions.md:56": [
+    "source_tier"
+  ],
+  "docs/kb/KB0-conventions.md:81": [
+    "memory",
+    "最低档"
+  ],
+  "docs/kb/KB0-conventions.md:105": [
+    "source_tier",
+    "external_reference",
+    "basis"
+  ],
+  "docs/kb/KB0-conventions.md:137": [
+    "引用完整性"
+  ],
+  "docs/kb/KB0-conventions.md:189": [
+    "A-NN",
+    "连续"
+  ],
+  "docs/kb/KB0-conventions.md:205": [
+    "证明力"
+  ],
+  "docs/kb/KB0-conventions.md:304": [
+    "重跑产物"
+  ],
+  "docs/kb/KB0-conventions.md:549": [
+    "A-133"
+  ],
+  "docs/kb/KB2-waveform-formats.md:147": [
+    "1000"
+  ],
+  "docs/kb/KB2-waveform-formats.md:156": [
+    "reliable_band_hz"
+  ],
+  "docs/kb/KB2-waveform-formats.md:161-164": [
+    "R-03",
+    "R-04",
+    "not_evaluable"
+  ],
+  "docs/kb/KB2-waveform-formats.md:662-665": [
+    "第三方转录"
+  ],
+  "docs/kb/KB2-waveform-formats.md:673": [
+    "请厂商指出不符项"
+  ],
+  "docs/kb/KB2-waveform-formats.md:683-685": [
+    "抽取式"
+  ],
+  "docs/kb/KB2-waveform-formats.md:804": [
+    "绝不清除署名与 DOI",
+    "不改动数值"
+  ],
+  "docs/kb/KB2-waveform-formats.md:816": [
+    "REDACT_TOKENS",
+    "Versuchsstand"
+  ],
+  "docs/kb/KB3-tuning-rules.md:4": [
+    "FFT",
+    "阈值"
+  ],
+  "docs/kb/KB4-attribution-model.md:351": [
+    "不得反推",
+    "1641"
+  ],
+  "docs/kb/KB4-attribution-model.md:354": [
+    "MissingSampleScale"
+  ],
+  "docs/kb/KB3-tuning-rules.md:2017": [
+    "1.25"
+  ],
+  "docs/kb/KB4-attribution-model.md:9": [
+    "规则号"
+  ],
+  "docs/kb/KB4-attribution-model.md:319": [
+    "S(e)"
+  ],
+  "docs/kb/KB4-attribution-model.md:327": [
+    "g(ρ)"
+  ],
+  "docs/kb/KB4-attribution-model.md:330": [
+    "0.500",
+    "1.000"
+  ],
+  "docs/kb/KB4-attribution-model.md:352": [
+    "n_factor"
+  ],
+  "docs/kb/KB4-attribution-model.md:357-358": [
+    "0.80",
+    "阻塞"
+  ],
+  "docs/kb/KB4-attribution-model.md:363-369": [
+    "A_sup",
+    "A_con",
+    "overall_confidence"
+  ],
+  "docs/kb/KB4-attribution-model.md:476-477": [
+    "0.20",
+    "0.10",
+    "0.05"
+  ],
+  "docs/kb/KB4-attribution-model.md:496-507": [
+    "CAP"
+  ],
+  "docs/kb/KB4-attribution-model.md:509-512": [
+    "C2",
+    "C4"
+  ],
+  "docs/kb/KB4-attribution-model.md:844-846": [
+    "UNRESOLVED"
+  ],
+  "docs/kb/KB4-attribution-model.md:848-850": [
+    "held-out"
+  ],
+  "docs/kb/KB8-benchmark-cases.md:144-146": [
+    "案例身份"
+  ],
+  "docs/kb/KB8-benchmark-cases.md:425": [
+    "N = 120",
+    "dev = 72",
+    "hidden = 48"
+  ],
+  "docs/kb/KB8-benchmark-cases.md:264-267": [
+    "软件"
+  ],
+  "docs/kb/KB7-dataset-da-rus-cat.md:3": [
+    "非页面描述转述"
+  ],
+  "docs/kb/KB7-dataset-da-rus-cat.md:235-240": [
+    "verified_by"
+  ],
+  "docs/kb/KB7-dataset-da-rus-cat.md:497-498": [
+    "不编造"
+  ],
+  "docs/AUDIT-minimax-mcopilot.md:72": [
+    "归属纪律",
+    "不得以"
+  ],
+  "docs/AUDIT-minimax-round3.md:79": [
+    "public-doc"
+  ],
+  "docs/AUDIT-glm-code-factory.md:82": [
+    "虚拟控制器"
+  ],
+  "docs/AUDIT-glm-code-factory.md:86": [
+    "自己"
+  ],
+  "docs/wiki/02-integration-layer.md:3": [
+    "不认识故障"
+  ],
+  "docs/wiki/02-integration-layer.md:12": [
+    "ScopeFormatError"
+  ],
+  "docs/wiki/02-integration-layer.md:22": [
+    "时间轴"
+  ],
+  "docs/wiki/02-integration-layer.md:72": [
+    "VOCAB_ORDER",
+    "14"
+  ],
+  "docs/wiki/03-analysis-core.md:43": [
+    "规则族"
+  ],
+  "docs/wiki/04-validation-report-cli.md:27": [
+    "24"
+  ],
+  "docs/wiki/04-validation-report-cli.md:42": [
+    "read_scope",
+    "engine.analyze"
+  ],
+  "docs/wiki/05-toolchain.md:43": [
+    "test_offline_discipline"
+  ],
+  "docs/wiki/06-docs-system.md:17": [
+    "没有代码实现"
+  ],
+  "docs/wiki/06-docs-system.md:46": [
+    "派生件哈希只是自证",
+    "URL 打不开不等于不存在"
+  ],
+  "docs/wiki/06-docs-system.md:49": [
+    "596 MB",
+    "不入 git"
+  ],
+  "docs/wiki/07-run-guide.md:23": [
+    "归因",
+    "断言"
+  ],
+  "docs/wiki/07-run-guide.md:27": [
+    "不是 bug"
+  ],
+  "docs/wiki/07-run-guide.md:56": [
+    "top1_hit",
+    "ece"
+  ],
+  "docs/项目回顾与收尾_20261022.md:4": [
+    "403 passed",
+    "24.71s"
+  ],
+  "docs/项目回顾与收尾_20261022.md:26": [
+    "5,263"
+  ],
+  "docs/项目回顾与收尾_20261022.md:27": [
+    "3,743",
+    "403"
+  ],
+  "docs/项目回顾与收尾_20261022.md:28": [
+    "19 件"
+  ],
+  "docs/项目回顾与收尾_20261022.md:47-54": [
+    "诚实账",
+    "脱敏未完成",
+    "KB7 标题不一致未核",
+    "Tier C 真机"
+  ],
+  "docs/项目回顾与收尾_20261022.md:56-63": [
+    "四件套",
+    "决策清单",
+    "停机点"
+  ],
+  "docs/项目回顾与收尾_20261022.md:65-69": [
+    "停机点",
+    "不在本停机点上叠加"
+  ],
+  "docs/项目回顾与收尾_20261022.md:75-80": [
+    "已清偿",
+    "token 归零"
+  ],
+  "docs/项目回顾与收尾_20261022.md:81-84": [
+    "已裁决"
+  ],
+  "docs/项目回顾与收尾_20261022.md:85": [
+    "量程边界"
+  ],
+  "src/axiscope/c1.py:3": [
+    "契约",
+    "assumptions"
+  ],
+  "src/axiscope/assertions.py:18": [
+    "REDACT_TOKENS",
+    "Versuchsstand"
+  ],
+  "src/axiscope/assertions.py:130": [
+    "REDACT_TOKENS"
+  ],
+  "README.md:8": [
+    "CC BY 4.0",
+    "署名"
+  ],
+  "README.md:19": [
+    "10.18419/DARUS-3600",
+    "10.18419/DARUS-5171"
+  ],
+  "README.md:36": [
+    "ScienceDB",
+    "独立署名"
+  ],
+  "README.md:55": [
+    "Zenodo",
+    "不得并入"
+  ],
+  "README.md:69": [
+    "待核"
+  ],
+  "README.md:74": [
+    "脱敏门禁",
+    "已执行"
+  ],
+  "README.md:83-99": [
+    "复用设计标注"
+  ],
+  "README.md:85-86": [
+    "归属纪律"
+  ],
+  "book/evidence/axiscope-36e2c74-decision-list.md:1": [
+    "收尾决策清单",
+    "36e2c74"
+  ],
+  "book/evidence/axiscope-36e2c74-decision-list.md:3": [
+    "停机点"
+  ],
+  "docs/contracts/C3-diagnosis.md:986-987": [
+    "fault_mode",
+    "slug"
+  ],
+  "src/axiscope/core_hash.py:3-5": [
+    "共用本模块",
+    "各自发明"
+  ],
+  "docs/wiki/07-run-guide.md:23-24": [
+    "归因",
+    "断言"
+  ]
+}
