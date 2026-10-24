@@ -28,7 +28,7 @@ except Exception:  # pragma: no cover - 环境相关
     pass
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _anchor import ANCHOR_COMMIT, ANCHOR_LABEL  # noqa: E402
+from _anchor import ANCHOR_COMMIT, ANCHOR_LABEL, VOLUME_NAME  # noqa: E402
 
 BOOK = Path(__file__).resolve().parents[1]
 SRC = BOOK / "chapters"
@@ -144,6 +144,17 @@ if wrong:
         print(f"      {fn}: axiscope@{h}")
 else:
     print(f"  ✅ 锚点字符串一致（全书 {len(declared)} 处，均为 axiscope@{ANCHOR_COMMIT}）")
+
+# ---- 卷名核对：本书自称的名字必须是本册的 ----
+_readme = BOOK / "README.md"
+if _readme.is_file():
+    _rt = io.open(_readme, encoding="utf-8").read()
+    if VOLUME_NAME in _rt:
+        print(f"  ✅ 卷名与 tools/_anchor.py 一致：{VOLUME_NAME}")
+    else:
+        bad += 1
+        _seen = re.findall(r"《[^》]+卷》", _rt)
+        print(f"  ❌ README 里没有本册的正式名 {VOLUME_NAME}；出现了 {sorted(set(_seen)) or '无卷名'}")
 
 print("问题章数：", bad)
 sys.exit(1 if bad else 0)

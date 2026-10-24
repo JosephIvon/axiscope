@@ -32,11 +32,11 @@
 
 | 文件 | 行 | 干什么 | 失败时 |
 |---|---|---|---|
-| `tools/_anchor.py` | 25 | 锚点**唯一**定义 | — |
+| `tools/_anchor.py` | 32 | 锚点**唯一**定义 | — |
 | `tools/audit_coords.py` | 295 | 坐标解析 + 行锚断言 | exit 1 |
-| `tools/check_book_structure.py` | 149 | 逐章必备件 + 锚点串一致性 | exit 1 |
+| `tools/check_book_structure.py` | 160 | 逐章必备件 + 锚点串一致性 | exit 1 |
 | `tools/verify_crops_verbatim.py` | 68 | 裁剪件逐字核对 | exit 1 |
-| `tools/verify_book_numbers.py` | 244 | 书中数字：带文件名的行数、资产表行数、**自报门禁数字** | exit 1 |
+| `tools/verify_book_numbers.py` | 285 | 书中数字：带文件名的行数、资产表行数、**自报门禁数字** | exit 1 |
 | `tools/scan_absolute_paths.py` | 185 | 脱敏/绝对路径扫描（已清偿的登记项**不再豁免**） | exit 1 |
 | `tools/check_broken_links.py` | 215 | 断链分八类 | exit 1 |
 | `tools/build_crops.py` | 208 | 裁剪件生成器（唯一生成器） | — |
@@ -54,9 +54,11 @@
 | `evidence/REGISTRY.json` | 27 | 仓外原件登记：指针 + size + sha256 |
 | `known_findings.json` | 51 | 查出来的既有问题及其处置（K-1、K-2，**均已清偿**） |
 | `crops/裁剪版.md` | 187 | 裁剪件（**生成物**，勿手改） |
+| `OUTLINE.md` | 125 | 本卷规格：每章交付什么、什么算完成 |
 | `README.md` | 125 | 书的入口页 |
+| `ASSETS.md` | 160 |
 
-**全卷合计：29 件 / 6 561 行。**
+**全卷合计：28 件 / 6,454 行。**
 
 ---
 

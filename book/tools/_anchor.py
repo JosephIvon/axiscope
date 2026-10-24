@@ -21,5 +21,12 @@ ANCHOR_COMMIT = "7f7c37e"
 #: 书里正文用的写法（与正文里的字符串必须逐字一致，由结构门禁核对）
 ANCHOR_LABEL = f"axiscope@{ANCHOR_COMMIT}"
 
+#: 本卷在三册里的正式名。三册的对应关系由书仓 `OUTLINE-VOL2S.md` 规定：
+#:   第一册《协议域卷》= mcopilot ｜ 第二册《审计与合规卷》= axiscope ｜
+#:   第三册《代码工厂与真值链卷》= trae_factory
+#: **这一条只能是本册的名字**——曾经写成《协议域卷》（那是 mcopilot 那本），
+#: 抄结构时带过来的，结构门禁不查卷名所以一直没红。现在查了。
+VOLUME_NAME = "《审计与合规卷》"
+
 #: 仓名（书里 `axiscope@<commit>` 的前半截）
 REPO_NAME = "axiscope"

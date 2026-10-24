@@ -37,6 +37,7 @@ from __future__ import annotations
 import io
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -69,6 +70,7 @@ def file_lines(rel: str) -> int | None:
 # ---- ② 本卷清单：ASSETS.md 的资产表行数 + 全卷合计 ------------------------------
 
 # 表格行：| `路径` | N | …… |   （路径相对 book/）
+ROW_PAT = re.compile(r"^\|\s*`(?P<path>[^`]+)`\s*\|\s*(?P<n>\d+)\s*\|", re.M)
 ASSET_ROW = re.compile(r"^\|\s*`(?P<path>[^`]+)`\s*\|\s*(?P<n>\d+)\s*\|", re.M)
 # 合计行：全卷合计：N 件 / M 行
 TOTAL_ROW = re.compile(r"全卷合计：\s*(?P<files>\d+)\s*件\s*/\s*(?P<lines>[\d\s]+)\s*行")
@@ -181,6 +183,42 @@ def check_self_numbers(book_texts: dict[str, str]) -> tuple[int, int]:
     return checked, bad
 
 
+def check_assets_coverage() -> tuple[int, int]:
+    """ASSETS 的表格必须覆盖 `book/` 下每个文件。
+
+    只核**已有的行**是不够的：少一行，`check_assets()` 照样绿。
+    本卷就漏过 `OUTLINE.md`（29 个文件只列了 28 个），而门禁全绿。
+    所以这里反过来查：**仓里有、表里没有**的，判失败。
+    """
+    p = BOOK / "ASSETS.md"
+    if not p.is_file():
+        return 0, 0
+    rows = set()
+    for ln in io.open(p, encoding="utf-8").read().splitlines():
+        m = ROW_PAT.match(ln)
+        if m:
+            rows.add(m.group("path").replace("\\", "/"))
+    root = BOOK.parent
+    try:
+        tracked = subprocess.run(["git", "-C", str(root), "-c", "core.quotepath=false",
+                                  "ls-files", "-z", "--", "book"],
+                                 capture_output=True).stdout.decode("utf-8", "replace")
+        files = {f[len("book/"):] for f in tracked.split("\0") if f.startswith("book/")}
+    except Exception:  # pragma: no cover - 环境相关
+        files = {pp.relative_to(BOOK).as_posix() for pp in BOOK.rglob("*") if pp.is_file()}
+    files = {f for f in files if not f.endswith(".pyc") and "__pycache__" not in f}
+    miss = sorted(files - rows)
+    if miss:
+        print(f"  [MISSING] ASSETS.md 的清单漏了 {len(miss)} 个文件（只核在场行 = 默认漏的不重要）：")
+        for m in miss[:10]:
+            print(f"      · {m}")
+        if len(miss) > 10:
+            print(f"      …另 {len(miss) - 10} 个")
+        return len(miss), len(miss)
+    print(f"  [OK] ASSETS 覆盖性：{len(files)} 个文件全部在清单里")
+    return len(files), 0
+
+
 def main() -> int:
     files = []
     chapters = BOOK / "chapters"
@@ -216,6 +254,9 @@ def main() -> int:
 
     # ② 本卷清单
     a_checked, a_bad = check_assets(book_texts)
+    c_n, c_bad = check_assets_coverage()
+    checked += c_n
+    bad += c_bad
     checked += a_checked
     bad += a_bad
     if a_checked:
